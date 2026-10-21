@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="referrer" content="no-referrer">
+<title>实验员后台 · f5-sh-pilot</title>
+<link rel="icon" type="image/svg+xml" href="/favicon-admin.svg">
+<link rel="stylesheet" href="/app.css">
+<script type="module" src="/admin.js"></script>
+</head>
+<body class="admin" data-view="sessions" data-pane="list">
+<a class="skip-link" href="#main">跳到主要内容</a>
+
+<header class="appbar">
+  <div class="brand"><span class="brand-mark" aria-hidden="true"></span><div class="brand-text"><strong>实验员后台</strong><span>f5-sh-pilot</span></div></div>
+  <p id="device" class="device" data-tone="neutral" role="status"><span class="dot" aria-hidden="true"></span><span id="device-text">正在读取眼镜状态…</span></p>
+  <div class="header-actions">        <details class="card network-entry" id="network-card">
+          <summary id="network-title">主试二维码</summary>
+          <div class="network-content"><div class="network-fields">
+          <p class="hint">手机连接电脑热点后，扫码打开主试后台。电脑上选好会话，再点击“在本机打开被试页面”。</p>
+          <label class="field-label" for="share-address">其他设备访问地址</label>
+          <select id="share-address"></select>
+          <p id="network-hint" class="hint" aria-live="polite"></p>
+          <label class="field-label" for="network-url">主试后台（直接进入）</label>
+          <input id="network-url" readonly>
+          <div class="action-row"><button id="copy-network" type="button" class="btn primary">复制主试地址</button><button id="refresh-network" type="button" class="btn">刷新网卡地址</button></div>
+          <details class="disclosure"><summary>其他设备打不开？</summary><ol><li>确认已连接这台电脑的热点或同一局域网。</li><li>网卡较多时切换上方地址后重试；不要在另一设备输入 127.0.0.1。</li><li>在 Windows 或 macOS 防火墙提示中允许 Node.js 接收入站连接。切换网络后点击刷新地址。</li></ol><p class="hint">电脑本机能打开，不代表另一设备已连通；请以另一设备实际打开页面为准。</p></details>
+          </div><img id="network-qr" class="connection-qr" alt="主试后台二维码"></div>
+        </details>
+  <nav class="appnav" aria-label="后台视图">
+    <button id="nav-sessions" type="button" aria-pressed="true">会话</button>
+    <button id="nav-setup" type="button" aria-pressed="false">准备与检查</button>
+  </nav>
+  </div>
+</header>
+
+
+<main id="main" class="layout">
+  <!-- 左栏：新建会话 + 会话列表 + 已删除会话 -->
+  <aside class="pane-list" aria-label="会话列表">
+    <section class="card create-card" aria-labelledby="create-title">
+      <h2 id="create-title" class="card-title">新建会话</h2>
+      <form id="start" class="create-form" novalidate>
+        <label class="field-label" for="config-file">实验配置文件</label>
+        <select id="config-file"><option value="">当前已导入配置</option></select>
+        <label for="participant" class="field-label">被试编号</label>
+        <div class="create-row">
+          <select id="participant" required aria-describedby="participant-hint"><option value="">请选择被试</option></select>
+          <button type="submit" class="btn primary" disabled>创建会话</button>
+        </div>
+        <div id="participant-hint" class="inline-hint" hidden><p id="participant-hint-text"></p><button id="participant-hint-view" type="button" class="btn subtle small">查看该会话</button></div>
+        <details id="assignment-section" class="disclosure" hidden><summary>查看此被试的预分配条件</summary><ol id="assignment" class="assignment-list"></ol></details>
+      </form>
+    </section>
+
+    <section class="card list-card" aria-labelledby="sessions-title">
+      <div class="card-head"><h2 id="sessions-title" class="card-title">会话</h2><span id="session-count" class="count-pill">0</span></div>
+      <div id="group-active" class="session-group" hidden><h3 class="group-title" id="active-title">进行中</h3><ul id="active-list" class="session-list" aria-labelledby="active-title"></ul></div>
+      <div id="group-ended" class="session-group" hidden><h3 class="group-title" id="ended-title">已结束</h3><ul id="ended-list" class="session-list" aria-labelledby="ended-title"></ul></div>
+      <p id="sessions-empty" class="empty-text">暂无会话。在上方选择被试编号并创建会话。</p>
+      <div class="export-all">
+        <button id="export-all" type="button" class="btn">导出全部会话（ZIP）</button>
+        <p id="export-all-scope" class="hint">包含本实验全部未删除会话：000 调试、未完成、提前结束及同一编号的多次会话；不含已删除会话。</p>
+      </div>
+    </section>
+
+    <details id="deleted-section" class="card deleted-card">
+      <summary><span>已删除会话</span><span id="deleted-count" class="count-pill">0</span></summary>
+      <p class="hint">已删除的会话不在列表和“导出全部”中，原始记录仍保留。恢复后回到原来的“已完成/提前结束”状态，不会重新开始实验。</p>
+      <ul id="deleted-list" class="deleted-list"></ul>
+      <p id="deleted-empty" class="empty-text">暂无已删除的会话。</p>
+    </details>
+  </aside>
+
+  <!-- 右栏：会话详情 / 空状态 / 准备与检查 -->
+  <div class="pane-detail" id="detail-pane">
+    <section id="empty-state" class="empty-state" aria-labelledby="empty-title">
+      <h2 id="empty-title">选择或新建一个会话</h2>
+      <p class="hint">左侧列表中选择会话后，这里显示实时状态、干预操作、被试入口和访谈备注。</p>
+      <ol class="flow">
+        <li><strong>开场前</strong><span>在“准备与检查”中确认眼镜状态、材料与被试配置。</span></li>
+        <li><strong>创建会话</strong><span>选择被试编号，创建后在本机打开被试页面。</span></li>
+        <li><strong>实验进行中</strong><span>查看当前页面、作答进度和消息状态，必要时暂停或跳过休息。</span></li>
+        <li><strong>访谈</strong><span>结束后在会话中记录访谈与观察。</span></li>
+        <li><strong>导出</strong><span>导出当前会话，或导出全部会话。</span></li>
+      </ol>
+      <button id="empty-setup" type="button" class="btn">打开准备与检查</button>
+    </section>
+
+    <article id="selected" class="session" hidden aria-labelledby="selected-title">
+      <header class="session-head">
+        <button id="back" type="button" class="btn subtle back"><span aria-hidden="true">‹</span> 会话列表</button>
+        <div class="session-heading">
+          <h2 id="selected-title" tabindex="-1">会话</h2>
+          <div id="selected-badges" class="badges"></div>
+        </div>
+        <p id="selected-meta" class="session-meta"></p>
+      </header>
+
+      <div id="attention" class="attention" role="group" aria-labelledby="attention-title" hidden>
+        <p id="attention-title" class="attention-title">需要核查</p>
+        <ul id="attention-list"></ul>
+      </div>
+
+      <div class="session-grid">
+        <div class="col-main">
+          <section class="card" id="state-card" aria-labelledby="state-title">
+            <div class="card-head"><h3 id="state-title" class="card-title">实时状态</h3><span id="state-updated" class="hint"></span></div>
+            <p id="state-current" class="state-current"></p>
+            <ol id="stepper" class="stepper" aria-label="任务组进度"></ol>
+            <dl id="state-values" class="facts"></dl>
+            <div id="message" class="message-box" aria-labelledby="message-title">
+              <div class="message-head"><h4 id="message-title">本组消息</h4><span id="message-source" class="tag"></span></div>
+              <p id="message-condition" class="message-condition"></p>
+              <ol id="message-steps" class="message-steps"></ol>
+              <p class="hint">“请求已接受”只说明发送请求被接收，不代表被试已在眼镜上看到消息。</p>
+            </div>
+          </section>
+
+          <section class="card" id="control-card" aria-labelledby="control-title">
+            <h3 id="control-title" class="card-title">实验干预</h3>
+            <form id="control" novalidate>
+              <p hidden id="control-help" class="hint"></p>
+              <div id="admin-debug" class="debug-box" hidden>
+                <label for="admin-debug-target" class="field-label">题目跳转调试（主试）</label>
+                <div class="create-row"><select id="admin-debug-target"></select><button type="submit" value="debug_jump" class="btn">跳转</button></div>
+              </div>
+              <div id="reason-wrap" class="field">
+                <label for="reason" class="field-label">操作原因（可选）</label>
+                <input id="reason" maxlength="4000" autocomplete="off" placeholder="例如：被试请求暂停、设备异常、调试检查" aria-describedby="control-help">
+              </div>
+              <div id="regular-actions" class="action-row">
+                <button type="submit" value="pause" class="btn primary">暂停实验</button>
+                <button type="submit" value="stop" class="btn danger-outline">停止实验</button>
+                <button type="submit" value="resume" class="btn primary">恢复实验</button>
+                <button type="submit" value="skip_break" class="btn">跳过休息</button>
+              </div>
+              <div id="danger" class="danger-zone">
+
+                <div class="action-row">
+
+                  <button type="button" data-confirm="delete" class="btn danger-outline">删除此会话记录…</button>
+                </div>
+                <p hidden id="danger-help" class="hint"></p>
+                <div id="confirm" class="confirm" role="group" aria-labelledby="confirm-text" hidden>
+                  <p id="confirm-text"></p>
+                  <div class="action-row"><button id="confirm-yes" type="submit" class="btn danger">确认</button><button id="confirm-no" type="button" class="btn">取消</button></div>
+                </div>
+              </div>
+            </form>
+          </section>
+
+          <section class="card" id="notes-card" aria-labelledby="notes-title">
+            <div class="card-head"><h3 id="notes-title" class="card-title">访谈与备注</h3><span id="notes-count" class="count-pill">0</span></div>
+            <details id="prompts-section" class="disclosure"><summary>访谈参考问题</summary><ol id="prompts" class="prompts"></ol></details>
+            <form id="note">
+              <fieldset class="segmented"><legend class="field-label">备注类型</legend><div class="seg-options">
+                <label><input type="radio" name="category" value="interview" checked><span>访谈记录</span></label>
+                <label><input type="radio" name="category" value="observation"><span>任务观察</span></label>
+                <label><input type="radio" name="category" value="anomaly"><span>异常备注</span></label>
+              </div></fieldset>
+              <div class="field"><label for="note-stage" class="field-label">关联任务组</label><select id="note-stage"><option value="">全实验</option></select></div>
+              <div class="field"><label for="note-text" class="field-label">记录内容</label><textarea id="note-text" rows="4" required maxlength="50000" aria-describedby="note-hint"></textarea><p id="note-hint" class="hint">按 Ctrl/⌘ + Enter 保存。备注只能追加，保存后不可修改。</p></div>
+              <div class="action-row"><button type="submit" class="btn primary">保存备注</button></div>
+            </form>
+            <ol id="notes" class="notes" aria-label="已保存的备注（最新在前）"></ol>
+            <p id="notes-empty" class="empty-text">尚无备注。</p>
+          </section>
+        </div>
+
+        <div class="col-side">
+          <section class="card" id="access-card" aria-labelledby="access-title">
+            <h3 id="access-title" class="card-title">被试入口</h3>
+            <div id="access-link" hidden>
+              <label for="access-url" class="field-label">被试链接（仅限本次会话）</label>
+              <input id="access-url" readonly>
+              <img id="access-qr" class="connection-qr" alt="当前被试会话二维码">
+              <p id="participant-connection" class="hint" aria-live="polite"></p>
+              <div class="action-row"><button id="copy-link" type="button" class="btn primary">复制链接</button><a id="open-link" class="btn" target="_blank" rel="noopener noreferrer" href="/experiment">在本机打开被试页面</a></div>
+            </div>
+            <p id="access-empty" class="hint" hidden>本标签页没有保存此会话的入口。如需重新打开被试页面，请生成恢复入口。</p>
+            <p id="access-ended" class="hint" hidden>会话已结束，被试页面只会显示结束页。</p>
+            <div class="action-row"><button id="recover" type="button" class="btn subtle">生成恢复入口…</button></div>
+            <div id="recover-confirm" class="confirm" role="group" aria-labelledby="recover-text" hidden>
+              <p id="recover-text">生成新入口后，旧链接立即失效；被试正在使用的页面需要改用新链接打开。实验进度不会重置。</p>
+              <div class="action-row"><button id="recover-yes" type="button" class="btn primary">确认生成</button><button id="recover-no" type="button" class="btn">取消</button></div>
+            </div>
+          </section>
+
+          <section class="card" id="export-card" aria-labelledby="export-title">
+            <h3 id="export-title" class="card-title">导出当前会话</h3>
+            <p id="export-one-scope" class="hint"></p>
+            <div class="action-row"><button id="export-one" type="button" class="btn">导出当前会话（ZIP）</button></div>
+          </section>
+
+          <details id="tech" class="card disclosure-card">
+            <summary>技术记录</summary>
+            <h4 class="sub-title">消息请求与回执</h4>
+            <div class="table-scroll"><table class="data-table"><thead><tr><th scope="col">任务组</th><th scope="col">条件</th><th scope="col">状态</th><th scope="col">来源</th><th scope="col">发送</th><th scope="col">回执</th></tr></thead><tbody id="interventions"></tbody></table></div>
+            <details class="disclosure"><summary>预分配与会话摘要（JSON）</summary><pre id="details" class="code"></pre></details>
+            <div class="action-row"><button id="logs" type="button" class="btn">读取完整事件日志</button></div>
+            <pre id="events" class="code" hidden></pre>
+          </details>
+        </div>
+      </div>
+    </article>
+
+    <section id="setup" class="setup" hidden aria-labelledby="setup-title">
+      <header class="setup-head"><h2 id="setup-title" tabindex="-1">准备与检查</h2><p class="hint">检查设备、发送测试通知，再创建实验会话。</p></header>
+      <div class="setup-grid">
+
+        <section class="card" aria-labelledby="device-title">
+          <h3 id="device-title" class="card-title">眼镜与显示端</h3>
+          <p id="device-detail" class="device-detail"></p>
+          <p id="device-host-state" class="hint" aria-live="polite"></p>
+          <div class="action-row device-controls">
+            <button id="device-open" type="button" class="btn primary">唤醒并打开显示端</button>
+            <button id="device-probe" type="button" class="btn">刷新设备状态</button>
+            <button id="device-reconnect" type="button" class="btn">重新连接 USB 通道</button>
+            <button id="device-host" type="button" class="btn" aria-pressed="false">开启上位机守护</button>
+            <button id="device-scrcpy" type="button" class="btn">打开眼镜画面（scrcpy）</button>
+          </div>
+          <p class="hint">上位机守护会在显示端失联或离开前台时自动唤醒并拉回应用。展示期间保留眼镜独立计时；恢复连接不补发旧消息。</p>
+          <p id="device-control-error" class="field-error" role="status"></p>
+          <form id="device-notify" class="device-notify">
+            <label for="device-notify-text" class="field-label">手动发送通知</label>
+            <select id="device-notify-mode" aria-label="通知模态"><option value="legacy_8500">原始无声8.5秒</option><option value="tone_8500">通知音8.5秒</option><option value="confirm_until_ack">无声持续至确认</option></select>
+            <textarea id="device-notify-text" rows="3" maxlength="500" required>这是一条眼镜测试通知。
+请阅读通知内容。</textarea>
+            <p class="hint">会话进行中也可发送；手动通知单独标记。眼镜忙碌时不会覆盖或排队。</p>
+            <div class="action-row"><button id="device-notify-send" type="submit" class="btn primary">发送通知</button><button id="device-notify-confirm" type="button" class="btn">确认收起手动通知</button></div>
+          </form>
+          <p id="device-debug-result" class="hint" aria-live="polite"></p>
+          <details class="disclosure"><summary>最近的设备控制与测试记录</summary><div id="device-debug-history"></div></details>
+          <p class="hint">“模拟（Mock）”只用于软件预演，不会在眼镜上显示任何内容；硬件呈现仍需现场验收。</p>
+        </section>
+        <section class="card" aria-labelledby="check-title">
+          <h3 id="check-title" class="card-title">材料与配置检查</h3>
+          <p class="hint">核对材料文件哈希、默认配置、源配置及运行目录写入权限。</p>
+          <div class="action-row"><button id="preflight" type="button" class="btn primary">运行检查</button></div>
+          <div id="check-result" class="check-result" aria-live="polite"></div>
+        </section>
+        <section class="card wide" aria-labelledby="config-title">
+          <div class="card-head"><h3 id="config-title" class="card-title">被试预分配配置</h3><span id="config-count" class="count-pill">0</span></div>
+          <div class="table-scroll"><table class="data-table config-table"><thead id="config-head"></thead><tbody id="config-body"></tbody></table></div>
+          <p class="hint">N＝通知型消息，A＝AI 主动服务型消息；T0＝补充资料首次展示时，T1＝第2单元首次展示时；无消息＝本组不发送消息。000 调试测试者由系统提供，仅用于预演。</p>
+          <details class="disclosure"><summary>JSON 格式与导入说明</summary>
+            <p>先下载当前配置作为模板。顶层保留 experiment_id 为 f5-sh-pilot、schema_version 为 1.0，participants 数组内填写完整被试名单。</p>
+            <p>每名被试填写字符串 participant_id（如 "001"，不可重复或使用 "000"）、version_label 和 stages。每人必须恰好包含 SH01—SH05 五组；数组顺序不改变任务呈现顺序。</p>
+            <p>每组的 condition 为 N-T0、N-T1、A-T0、A-T1 或 NONE。message_id 的 N/A 与条件一致，数字与任务组一致（如 SH03 的 A-T0 配 A03）；NONE 必须填 null。</p>
+            <p>导入会替换整份预分配，新建会话使用新配置，已有会话保留原快照。000 使用独立固定的调试配置，不随导入变化；source_ref、source_value、source_cell 可保留用于追溯。</p>
+          </details>
+          <div class="action-row"><button id="config-download" type="button" class="btn">下载当前配置（JSON）</button></div>
+          <form id="import" class="import-form">
+            <label for="config" class="field-label">导入新的预分配配置（JSON）</label>
+            <div class="create-row"><input id="config" type="file" accept=".json,application/json" required><button type="submit" class="btn">校验并导入</button></div>
+            <p class="hint">导入前会完整校验，不合法的配置不会生效；已开始的会话继续使用原配置。</p>
+          </form>
+        </section>
+      </div>
+    </section>
+  </div>
+</main>
+
+<div class="toasts">
+  <div id="notice" class="toast" data-tone="ok" role="status" aria-live="polite" hidden><p id="notice-text"></p><button id="notice-action" type="button" class="btn small" hidden></button><button type="button" class="toast-close" data-close="notice" aria-label="关闭提示">×</button></div>
+  <div id="error" class="toast" data-tone="bad" role="alert" hidden><p id="error-text"></p><button id="error-action" type="button" class="btn small" hidden></button><button type="button" class="toast-close" data-close="error" aria-label="关闭错误提示">×</button></div>
+</div>
+</body>
+</html>

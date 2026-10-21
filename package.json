@@ -1,0 +1,27 @@
+{
+  "name": "a1a2-experiments",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "基于现有 A5 程序迁移的 A1/A2 实验工作区，当前保留 SH 基线",
+  "engines": {
+    "node": ">=24"
+  },
+  "workspaces": [
+    "f5-*-*",
+    "a1-notification-pilot"
+  ],
+  "scripts": {
+    "start": "npm run start --workspace=a1-notification-pilot",
+    "doctor": "npm run doctor --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present && npm run test:launcher",
+    "test:launcher": "node --test scripts/tests/launcher.test.mjs",
+    "check": "npm run check --workspaces --if-present && npm run test:launcher",
+    "launcher": "node scripts/experiment-launcher.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "typescript": "^7.0.2"
+  }
+}

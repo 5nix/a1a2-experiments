@@ -1,0 +1,1009 @@
+{
+  "source_repository": "/Users/chronicen/Documents/ChatGPT/a5-experiments",
+  "source_commit": "404236539b6c8851434f56fcd2e14c3c1de41edd",
+  "source_dirty": false,
+  "copied_files": [
+    {
+      "source": ".editorconfig",
+      "destination": ".editorconfig",
+      "sha256": "7bf0f1612630d06cbf2e1b140e59d7c63881fac690574f20df6da8173dc674d7"
+    },
+    {
+      "source": ".gitattributes",
+      "destination": ".gitattributes",
+      "sha256": "9b8f08fbf35947600727f4d68d333a2f2480f576c3d326dc550f3a65675c6af0"
+    },
+    {
+      "source": ".gitignore",
+      "destination": ".gitignore",
+      "sha256": "bba77ed05367b5ab447f5602be6b2b57fed3124a531334a8a119d5f367f9b959"
+    },
+    {
+      "source": ".node-version",
+      "destination": ".node-version",
+      "sha256": "68ca3fba3b7e864770cb61aeb306d4bd4354b68ab4dd38450860c5d823e42a53"
+    },
+    {
+      "source": "a5-experiments.bat",
+      "destination": "a1a2-experiments.bat",
+      "sha256": "c803abd466added6cb8c5afdd966c5984b9f7cb781de849e7964c0d520eb27a6"
+    },
+    {
+      "source": "a5-experiments.command",
+      "destination": "a1a2-experiments.command",
+      "sha256": "ae0deb69f425e17bb70773ba33fb3536f2a7bc69a9b57ddf1481ec503c1dbdcd"
+    },
+    {
+      "source": "f5-sh-pilot/API.md",
+      "destination": "f5-sh-pilot/API.md",
+      "sha256": "c085cb547b1443086a6779fe812d3f73a1507bf7190fbfc389bf55e1738b3b43"
+    },
+    {
+      "source": "f5-sh-pilot/ARCHITECTURE.md",
+      "destination": "f5-sh-pilot/ARCHITECTURE.md",
+      "sha256": "729b29606b4960af2ec3da53feb518244038726e33c4f165595c6da4e0666a3c"
+    },
+    {
+      "source": "f5-sh-pilot/CONFIG.md",
+      "destination": "f5-sh-pilot/CONFIG.md",
+      "sha256": "6a73b2099e136d58b58d6554005bed93403f3e1031db10c97aa5444c30384ad6"
+    },
+    {
+      "source": "f5-sh-pilot/DECISIONS.md",
+      "destination": "f5-sh-pilot/DECISIONS.md",
+      "sha256": "cd9585d426d20ca69f788d458b0cb4c3b291aba0898275268d664ff0d461c1d4"
+    },
+    {
+      "source": "f5-sh-pilot/FRONTEND.md",
+      "destination": "f5-sh-pilot/FRONTEND.md",
+      "sha256": "3266adfb13cd3f195cccf7652d77ea2d24a4fa22726de11066ce3fcb0d1458b8"
+    },
+    {
+      "source": "f5-sh-pilot/RAYNEO.md",
+      "destination": "f5-sh-pilot/RAYNEO.md",
+      "sha256": "d75702c12168c850a0e89131498ed1da226ee826df7c1d07adf2e13db852cb74"
+    },
+    {
+      "source": "f5-sh-pilot/README.md",
+      "destination": "f5-sh-pilot/README.md",
+      "sha256": "5b66627d5796edfba615841f12487a81bf8f23a27556a42a25f07a5fba708f92"
+    },
+    {
+      "source": "f5-sh-pilot/TESTING.md",
+      "destination": "f5-sh-pilot/TESTING.md",
+      "sha256": "1ddc662ca9efb8991046d9d3a88c3f45e340fc11d5ec1aa0c13104ad3b8ae9a6"
+    },
+    {
+      "source": "f5-sh-pilot/config/notifications/000.confirm_until_ack.json",
+      "destination": "f5-sh-pilot/config/notifications/000.confirm_until_ack.json",
+      "sha256": "1d0dadd29884e4eecfd477b8b6354ab2219c6711e379b7407d79fac40fb2dd2d"
+    },
+    {
+      "source": "f5-sh-pilot/config/notifications/000.legacy_8500.json",
+      "destination": "f5-sh-pilot/config/notifications/000.legacy_8500.json",
+      "sha256": "e3bab644ee963995a5f55a8d86c141f655d2d17eadc720c3354ad40bcc530e17"
+    },
+    {
+      "source": "f5-sh-pilot/config/notifications/000.tone_8500.json",
+      "destination": "f5-sh-pilot/config/notifications/000.tone_8500.json",
+      "sha256": "553431af0764a9f812d9370b9ccf2d73868ead8283801d9a30574338539f8616"
+    },
+    {
+      "source": "f5-sh-pilot/config/notifications/20-participants.confirm_until_ack.json",
+      "destination": "f5-sh-pilot/config/notifications/20-participants.confirm_until_ack.json",
+      "sha256": "3bbe2a0ce958197a39333960ec1909cefbce6b4eeda350b1f07a24ec43e77be4"
+    },
+    {
+      "source": "f5-sh-pilot/config/notifications/20-participants.legacy_8500.json",
+      "destination": "f5-sh-pilot/config/notifications/20-participants.legacy_8500.json",
+      "sha256": "c7ef7702fa4a0fd89e9d3466706bbb2adc4e190d9734441f340768369cce6f76"
+    },
+    {
+      "source": "f5-sh-pilot/config/notifications/20-participants.tone_8500.json",
+      "destination": "f5-sh-pilot/config/notifications/20-participants.tone_8500.json",
+      "sha256": "4d955a9eacb2bf45d6b462bab3f0bba42edf9a726726e1026f3b292ac84ba6b7"
+    },
+    {
+      "source": "f5-sh-pilot/config/participants.notification-example.json",
+      "destination": "f5-sh-pilot/config/participants.notification-example.json",
+      "sha256": "90036aabfbe05f7f7e85956dc399158879798ebed75b52eedabb3f6d56f54602"
+    },
+    {
+      "source": "f5-sh-pilot/config/participants.pilot.json",
+      "destination": "f5-sh-pilot/config/participants.pilot.json",
+      "sha256": "b040213606d08565139143c90c56d5b735a960d2204bc5b9511afb25f992bd0d"
+    },
+    {
+      "source": "f5-sh-pilot/config/participants.source.json",
+      "destination": "f5-sh-pilot/config/participants.source.json",
+      "sha256": "9f0993f8daabf9cc915cad6da729bd3eec044070d856c30432f83cc5d8723f50"
+    },
+    {
+      "source": "f5-sh-pilot/content/revisions.json",
+      "destination": "f5-sh-pilot/content/revisions.json",
+      "sha256": "d7f148890e13e900f808964ec3121ddee99516dce1ae5dedd184c8c71dee9460"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/archive/sh-current-2026-10-19-v3/tasks.json",
+      "destination": "f5-sh-pilot/content/source/archive/sh-current-2026-10-19-v3/tasks.json",
+      "sha256": "304eb4ec9c6f0b0b26771cd9e9f4024bfa7bed43e2b98a0a833ef8372025d335"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/archive/sh-source-2026-10-18-v1/manifest.json",
+      "destination": "f5-sh-pilot/content/source/archive/sh-source-2026-10-18-v1/manifest.json",
+      "sha256": "64e4ea506aa9ad0a5b9e3ec73de385eaeddd302c86ac40e406c751c88746d986"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/archive/sh-source-2026-10-18-v1/participants.pilot.json",
+      "destination": "f5-sh-pilot/content/source/archive/sh-source-2026-10-18-v1/participants.pilot.json",
+      "sha256": "077e5f989a36ea9fc959fd8889b381051a6d082925a1f12e293e17ceff25ba42"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/archive/sh-source-2026-10-18-v1/participants.source.json",
+      "destination": "f5-sh-pilot/content/source/archive/sh-source-2026-10-18-v1/participants.source.json",
+      "sha256": "0bf68b2a2de8b47b832a0bb8da0993cffac01ec92ce3b903d8b0b7bbfa7e2efd"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/archive/sh-source-2026-10-18-v1/stimuli.json",
+      "destination": "f5-sh-pilot/content/source/archive/sh-source-2026-10-18-v1/stimuli.json",
+      "sha256": "56b9fe9c583cc6a42a4ca2981f450e3fdbdb83865a8fe82e061c110fdcf494b9"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/archive/sh-source-2026-10-18-v1/stimulus-workbook.json",
+      "destination": "f5-sh-pilot/content/source/archive/sh-source-2026-10-18-v1/stimulus-workbook.json",
+      "sha256": "8f5ba68373bf239274640bf4fdf32ccf873acb9db4b9609538b63e7c26168329"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/archive/sh-source-2026-10-18-v1/tasks.json",
+      "destination": "f5-sh-pilot/content/source/archive/sh-source-2026-10-18-v1/tasks.json",
+      "sha256": "16f56df13e08999194c0b3245a8c677d5022421187f5a9335000986672f12e65"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/assets/image1.png",
+      "destination": "f5-sh-pilot/content/source/assets/image1.png",
+      "sha256": "d1cfcdfc8fa1f72d4c0e4669a876e52f7633c0099f966eda5611fe2ae2714ae0"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/assets/image10.png",
+      "destination": "f5-sh-pilot/content/source/assets/image10.png",
+      "sha256": "b5489a6aa1c8af0227daed5edb50c141932a05573128cf5406f974cbc7b897e2"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/assets/image11.png",
+      "destination": "f5-sh-pilot/content/source/assets/image11.png",
+      "sha256": "a2585a16b484aaa6834f4bf1d46f5850a69defcb453d4f9cb1789d85b3302eaf"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/assets/image12.png",
+      "destination": "f5-sh-pilot/content/source/assets/image12.png",
+      "sha256": "3e97d6941cd5a34848943073d1db400b2bf632b6a64a431d60a17f49c0f36017"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/assets/image13.png",
+      "destination": "f5-sh-pilot/content/source/assets/image13.png",
+      "sha256": "58811db89ccb559c21ac78f53b429b6a11684b518d5f0ae0a8a2c5d04916532f"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/assets/image14.png",
+      "destination": "f5-sh-pilot/content/source/assets/image14.png",
+      "sha256": "6f669a23509adff6aae6af1ea401b068a9e051ca8a9e37c2b035660213b55d5d"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/assets/image15.png",
+      "destination": "f5-sh-pilot/content/source/assets/image15.png",
+      "sha256": "006bc555e5cb185559f124bfa0d4f95da68ce58bbbd7feb0de4e5d1517fc3217"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/assets/image16.png",
+      "destination": "f5-sh-pilot/content/source/assets/image16.png",
+      "sha256": "d94f0958031db27528f342645d752edb442e94c761f08440c191f8a86b1a1e02"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/assets/image17.png",
+      "destination": "f5-sh-pilot/content/source/assets/image17.png",
+      "sha256": "972b969ebc7749d040e8b4a76e0b7ffb6a9a733036b84ddbea64803287682686"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/assets/image18.png",
+      "destination": "f5-sh-pilot/content/source/assets/image18.png",
+      "sha256": "1efb63ada29547bc82cd234e9bb2678ce3add324829ec3b261fe68ad82e3045a"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/assets/image19.png",
+      "destination": "f5-sh-pilot/content/source/assets/image19.png",
+      "sha256": "11e5fdb8cdbac9df7bafd0b76404f590b176338d3f14adbd7f105d57e4bef11e"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/assets/image2.png",
+      "destination": "f5-sh-pilot/content/source/assets/image2.png",
+      "sha256": "57263661eb8486d83e74fc5305b200e97355ea1c109cff8810cc0ac96a66c478"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/assets/image3.png",
+      "destination": "f5-sh-pilot/content/source/assets/image3.png",
+      "sha256": "51907488d021c8c63c7aabd99c03447d0cf6104f7f45a58a02d1243f33e4069e"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/assets/image4.png",
+      "destination": "f5-sh-pilot/content/source/assets/image4.png",
+      "sha256": "90d737369549d8985fa8625398e6d15c361189b60a13863cad93e16f783fef35"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/assets/image5.png",
+      "destination": "f5-sh-pilot/content/source/assets/image5.png",
+      "sha256": "5c8b099f55f41df013a6ed0d4ae796e485573e1151d0ea2efc813bd6955bfdd6"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/assets/image6.png",
+      "destination": "f5-sh-pilot/content/source/assets/image6.png",
+      "sha256": "05217db1d298b96862b4e27160fd2e828b8ad7c3033ad7dbb881e50618cc4c60"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/assets/image7.png",
+      "destination": "f5-sh-pilot/content/source/assets/image7.png",
+      "sha256": "edce8d76786a78382872768560b9827c505b4f27648feb4f963926e69ae78d28"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/assets/image8.png",
+      "destination": "f5-sh-pilot/content/source/assets/image8.png",
+      "sha256": "c325f4381b0e115301a666e344fa383cf8c881d4ae0c35409c5881ca7de3db44"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/assets/image9.png",
+      "destination": "f5-sh-pilot/content/source/assets/image9.png",
+      "sha256": "86657ecc6a6a1668e71af480c0952b4e4dccde4a9bc7a419fb8023f24dd05ed5"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/embedded-workbooks.json",
+      "destination": "f5-sh-pilot/content/source/embedded-workbooks.json",
+      "sha256": "b8b562f7efa947747b6a3fb566713949d64bf37f6682448eaa12f8928378ebbd"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet1.xlsx",
+      "destination": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet1.xlsx",
+      "sha256": "04fd626179bbcec9ec0c1918a5af00923ccd6bfcfa3ac4dafe7829b7fc00554b"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet10.xlsx",
+      "destination": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet10.xlsx",
+      "sha256": "b1985c01deff4a2cd47c46e2751d76b0db9793b222670af20e0b0205eb9c5ccc"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet11.xlsx",
+      "destination": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet11.xlsx",
+      "sha256": "57958103ff8e99985993a958a0f2d13ec19fea7951414e863cdc5021187a532f"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet12.xlsx",
+      "destination": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet12.xlsx",
+      "sha256": "d5285dae485259f9699fc7f9ae4f41f771beecd297be00d03b23eb978beb3f52"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet13.xlsx",
+      "destination": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet13.xlsx",
+      "sha256": "9a262e944d816c65a89a0fd1b4f87d29cab2e464a304a5e0d52058653619211a"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet14.xlsx",
+      "destination": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet14.xlsx",
+      "sha256": "17e57dfafbf517a82b6a5260da97efd107f59c49ac08395e4f9f46fb87f7ff6e"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet15.xlsx",
+      "destination": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet15.xlsx",
+      "sha256": "e3af7a61892bc341b6f6e351621d1787660e4c330a2689e52eb5c0a87b719b30"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet16.xlsx",
+      "destination": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet16.xlsx",
+      "sha256": "ac2280be564f1821c8dedea9d1a2ff408551219f74617972baac8860d2d89455"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet17.xlsx",
+      "destination": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet17.xlsx",
+      "sha256": "678727e0197a8e273a922db001e6663712b842a05fc1b55829e6a1389cbaecc8"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet18.xlsx",
+      "destination": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet18.xlsx",
+      "sha256": "1f4c8773a896dc9d80e4f1eb5ed04d3f70077c8d4bda3127bc20c7a8a36d3014"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet2.xlsx",
+      "destination": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet2.xlsx",
+      "sha256": "4023b162d16a6ee49199842753accf0ec1abca009008cf7acf0845c63e56ddf6"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet3.xlsx",
+      "destination": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet3.xlsx",
+      "sha256": "4f06eebc801c072e18d48bfaed3593cb57271a364c83ba29c0dc504b0f5c64f2"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet4.xlsx",
+      "destination": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet4.xlsx",
+      "sha256": "de4b310a184f13c85d6aafc12a511f789c792cbafcdce72772daebfad3434339"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet5.xlsx",
+      "destination": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet5.xlsx",
+      "sha256": "0b143140ca0fc8cb717708465421fdda00b85b290076566a02eca666d2a9fceb"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet6.xlsx",
+      "destination": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet6.xlsx",
+      "sha256": "309fad23d703781b7f7ca475f75b5c7f53d62bd9a6b0f679958d5b4a9b6165da"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet7.xlsx",
+      "destination": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet7.xlsx",
+      "sha256": "91b615759387ca2a13205a66ca9d021407efd6a5e0ad6c39981eb8cd86e6466b"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet8.xlsx",
+      "destination": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet8.xlsx",
+      "sha256": "ec2e5a6f1b7c234d817f413b203d98c8279819224a2f7a6c4f34696414bfda5b"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet9.xlsx",
+      "destination": "f5-sh-pilot/content/source/embedded/Microsoft_Excel_Worksheet9.xlsx",
+      "sha256": "44ea28a4879eab43bae2def9758e647a08129c2c9ddcc232aff8bf252fd7524f"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/manifest.json",
+      "destination": "f5-sh-pilot/content/source/manifest.json",
+      "sha256": "c910dd98ae15b4f255d18849927489ba21d0198658533a93664e57651265b933"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/stimulus-workbook.json",
+      "destination": "f5-sh-pilot/content/source/stimulus-workbook.json",
+      "sha256": "df7b26eec40c6bbe8fea140eea6d2e08ca9f3d13501d1a941fac038e2bc88d05"
+    },
+    {
+      "source": "f5-sh-pilot/content/source/task-document.json",
+      "destination": "f5-sh-pilot/content/source/task-document.json",
+      "sha256": "016d880df4c712163afb9830538848adb0f8ea3d69336ebf16a3d96ab24b59bf"
+    },
+    {
+      "source": "f5-sh-pilot/content/stimuli.json",
+      "destination": "f5-sh-pilot/content/stimuli.json",
+      "sha256": "78903614caefb74c391611ea2adf6dcc7c6eb39a2b107f36ebfbe36231c5903b"
+    },
+    {
+      "source": "f5-sh-pilot/content/tasks.json",
+      "destination": "f5-sh-pilot/content/tasks.json",
+      "sha256": "74f9b82717f0f79bdee56553fd9217ad1e5ab96a69b992f7072b2942be293d71"
+    },
+    {
+      "source": "f5-sh-pilot/docs/A5 SH任务pilot.docx",
+      "destination": "f5-sh-pilot/docs/A5 SH任务pilot.docx",
+      "sha256": "f35125b9d7c9ce9de434004b4b869909fb79d29954901278b66f5a79cb615b47"
+    },
+    {
+      "source": "f5-sh-pilot/docs/PRD.md",
+      "destination": "f5-sh-pilot/docs/PRD.md",
+      "sha256": "55c1838b8d74b6a8b107c20421c2cee4842a40ce11af5ee37cc352e95b24f579"
+    },
+    {
+      "source": "f5-sh-pilot/docs/刺激材料的属性判断.xlsx",
+      "destination": "f5-sh-pilot/docs/刺激材料的属性判断.xlsx",
+      "sha256": "02b7631f1639d387d10fb881224936bb46da5dd18aa15e542966ea371f217c64"
+    },
+    {
+      "source": "f5-sh-pilot/examples/README.md",
+      "destination": "f5-sh-pilot/examples/README.md",
+      "sha256": "094041f1409450a03638b82f8ab86343fd7f5ee034ad48d5aa820b3167e03b2b"
+    },
+    {
+      "source": "f5-sh-pilot/examples/mock-complete.zip",
+      "destination": "f5-sh-pilot/examples/mock-complete.zip",
+      "sha256": "16083f50292b97c142da546014c9d5ef2ff2d9aa8e4b8369cb1949e46b572de3"
+    },
+    {
+      "source": "f5-sh-pilot/exports/.gitkeep",
+      "destination": "f5-sh-pilot/exports/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "f5-sh-pilot/package.json",
+      "destination": "f5-sh-pilot/package.json",
+      "sha256": "63a177252eaaa21e548ec142093851a2f6d8a8e3ff45c035a7aab34bc0a256e4"
+    },
+    {
+      "source": "f5-sh-pilot/public/admin.html",
+      "destination": "f5-sh-pilot/public/admin.html",
+      "sha256": "befd76d5cc3b3899e9ace07cdc236bd7f7bbbcbe544a1fc1868f5f33b6144f4c"
+    },
+    {
+      "source": "f5-sh-pilot/public/admin.js",
+      "destination": "f5-sh-pilot/public/admin.js",
+      "sha256": "c53cd4070a99a81b987d75b65baf1b21a6f4ce890cd6524c9120ce243ae90175"
+    },
+    {
+      "source": "f5-sh-pilot/public/app.css",
+      "destination": "f5-sh-pilot/public/app.css",
+      "sha256": "a2780fcdb9c3d9a4259acf52adba4ac07e41a7b0cf9c80dc511f9e073d9b0838"
+    },
+    {
+      "source": "f5-sh-pilot/public/desktop.css",
+      "destination": "f5-sh-pilot/public/desktop.css",
+      "sha256": "e0afd8df7a637b9f83cc3468c1efd51e6c327e1d16b716857b72ef7a29fa9763"
+    },
+    {
+      "source": "f5-sh-pilot/public/experiment.html",
+      "destination": "f5-sh-pilot/public/experiment.html",
+      "sha256": "e6ce27dc33ef117f4e01a9066587a412db4b598deda4cc86c5c5183e070a04a3"
+    },
+    {
+      "source": "f5-sh-pilot/public/experiment.js",
+      "destination": "f5-sh-pilot/public/experiment.js",
+      "sha256": "ccadbebaaf8b74b9dc446b8416d72ed0af2327b2d7f559600f4752f492950e70"
+    },
+    {
+      "source": "f5-sh-pilot/public/favicon-admin.svg",
+      "destination": "f5-sh-pilot/public/favicon-admin.svg",
+      "sha256": "338c98e3ef1f9c9bb10fc960c65e97c2eefdc14ff7de9c092796e739a86936ef"
+    },
+    {
+      "source": "f5-sh-pilot/public/favicon.svg",
+      "destination": "f5-sh-pilot/public/favicon.svg",
+      "sha256": "92bc374c295eaca2b391fc9247e1ea7fd00ad1483d146f03194d11947ca15211"
+    },
+    {
+      "source": "f5-sh-pilot/qa/admin-current-state.png",
+      "destination": "f5-sh-pilot/qa/admin-current-state.png",
+      "sha256": "2e476b9fa728bea9e6d3dc64ae3d762355d0f804e4826dee235829dd6d0b366f"
+    },
+    {
+      "source": "f5-sh-pilot/qa/admin-overview.png",
+      "destination": "f5-sh-pilot/qa/admin-overview.png",
+      "sha256": "f8ffc838f4bf172d8f011749107c50ea4bd5edf9463ed32250ccf600be1dae2b"
+    },
+    {
+      "source": "f5-sh-pilot/qa/admin-session-narrow.png",
+      "destination": "f5-sh-pilot/qa/admin-session-narrow.png",
+      "sha256": "2058c20d48a79802700764d298bba86c1cd4b88f28fe8c895d13c6b53463ba54"
+    },
+    {
+      "source": "f5-sh-pilot/qa/admin-session.png",
+      "destination": "f5-sh-pilot/qa/admin-session.png",
+      "sha256": "6babd3201aa8a01712fd14ded2fbdbd1198db72a0965a0c8271d34d3f11b9e29"
+    },
+    {
+      "source": "f5-sh-pilot/qa/admin-v2-desktop-409.png",
+      "destination": "f5-sh-pilot/qa/admin-v2-desktop-409.png",
+      "sha256": "76f269a0588668a93eece1d613348d88cef3487377433fadd74d8df5913264c5"
+    },
+    {
+      "source": "f5-sh-pilot/qa/admin-v2-desktop-break.png",
+      "destination": "f5-sh-pilot/qa/admin-v2-desktop-break.png",
+      "sha256": "b9eb7b22ac65ccc5302f198bb8b6298321923ffd0ffe784896df64071c314ef5"
+    },
+    {
+      "source": "f5-sh-pilot/qa/admin-v2-desktop-confirm-stop.png",
+      "destination": "f5-sh-pilot/qa/admin-v2-desktop-confirm-stop.png",
+      "sha256": "79dd1bc4152053494a54c87056d17a52f03fd9745f80a00de250707aa2de70c4"
+    },
+    {
+      "source": "f5-sh-pilot/qa/admin-v2-desktop-deleted.png",
+      "destination": "f5-sh-pilot/qa/admin-v2-desktop-deleted.png",
+      "sha256": "2c896cdb9f387d2d456cfb1a6c466899655d37c90bb38cff9afad2223f2dfa0e"
+    },
+    {
+      "source": "f5-sh-pilot/qa/admin-v2-desktop-empty.png",
+      "destination": "f5-sh-pilot/qa/admin-v2-desktop-empty.png",
+      "sha256": "70ff7443b80dd48d65a7599a9aa44e525562d44f817abced8cb1f90c6d420870"
+    },
+    {
+      "source": "f5-sh-pilot/qa/admin-v2-desktop-ended.png",
+      "destination": "f5-sh-pilot/qa/admin-v2-desktop-ended.png",
+      "sha256": "09e73dbf4f5235fdc68527c25f30af12d6723cf49c09789eb917b3a9f3f9aed7"
+    },
+    {
+      "source": "f5-sh-pilot/qa/admin-v2-desktop-overview.png",
+      "destination": "f5-sh-pilot/qa/admin-v2-desktop-overview.png",
+      "sha256": "ec87946638802997dafd3498533ca2a35541ab0be6185aa4f655f86133ee2813"
+    },
+    {
+      "source": "f5-sh-pilot/qa/admin-v2-desktop-paused.png",
+      "destination": "f5-sh-pilot/qa/admin-v2-desktop-paused.png",
+      "sha256": "0664eb414e87265bfdc8a6b0b6b011cef939c8c34a65274749d8856b911b6be4"
+    },
+    {
+      "source": "f5-sh-pilot/qa/admin-v2-desktop-session-active.png",
+      "destination": "f5-sh-pilot/qa/admin-v2-desktop-session-active.png",
+      "sha256": "182b6b88a8db979071b34e069105f3941742328cc0fdcf21695baff9a3fb0ac1"
+    },
+    {
+      "source": "f5-sh-pilot/qa/admin-v2-desktop-setup.png",
+      "destination": "f5-sh-pilot/qa/admin-v2-desktop-setup.png",
+      "sha256": "708e2c344ac5a24bf3e0d2ff2aefd49b3b1156a9c931ee0fbdc30a35f3c51364"
+    },
+    {
+      "source": "f5-sh-pilot/qa/admin-v2-mobile-create-hint.png",
+      "destination": "f5-sh-pilot/qa/admin-v2-mobile-create-hint.png",
+      "sha256": "f799974bb00931dcbcd4cbf6dbec5ab4508288001dd685a079172b9354c9ac62"
+    },
+    {
+      "source": "f5-sh-pilot/qa/admin-v2-mobile-detail-full.png",
+      "destination": "f5-sh-pilot/qa/admin-v2-mobile-detail-full.png",
+      "sha256": "52f0b62c049ffc2da6a1d316845ead41e93e64e0c2ba1704571b1cb1be69e774"
+    },
+    {
+      "source": "f5-sh-pilot/qa/admin-v2-mobile-detail.png",
+      "destination": "f5-sh-pilot/qa/admin-v2-mobile-detail.png",
+      "sha256": "0f274b6948e19154936278e2dbc207f7b48b70a053f48552c4b82ea55aabaa92"
+    },
+    {
+      "source": "f5-sh-pilot/qa/admin-v2-mobile-list.png",
+      "destination": "f5-sh-pilot/qa/admin-v2-mobile-list.png",
+      "sha256": "f99aa398fa351b310a065dc7e95f203aceab39e7a66276a6f5db2704bef8271e"
+    },
+    {
+      "source": "f5-sh-pilot/qa/admin-v2-mobile-setup.png",
+      "destination": "f5-sh-pilot/qa/admin-v2-mobile-setup.png",
+      "sha256": "9d71254d721a42a7d866bd1b0ee8a2782ac1775e603e7c334d82614c377751d8"
+    },
+    {
+      "source": "f5-sh-pilot/qa/basic-html.png",
+      "destination": "f5-sh-pilot/qa/basic-html.png",
+      "sha256": "8b96f6d0ae2a0788e6888dbcf9bfece38c4950e907ba0899690cdc48a5bb215f"
+    },
+    {
+      "source": "f5-sh-pilot/qa/browser/README.md",
+      "destination": "f5-sh-pilot/qa/browser/README.md",
+      "sha256": "b75ee9186c8c711e19299bd62bd79c8f63664c7997914a124e8e35beda2bc364"
+    },
+    {
+      "source": "f5-sh-pilot/qa/browser/admin-import.mjs",
+      "destination": "f5-sh-pilot/qa/browser/admin-import.mjs",
+      "sha256": "37672cac4a3ae12dc078a3078bc6126c8404ffcaf03020fea4e6fbc381b46cfa"
+    },
+    {
+      "source": "f5-sh-pilot/qa/browser/admin.mjs",
+      "destination": "f5-sh-pilot/qa/browser/admin.mjs",
+      "sha256": "393fc3455379a645e9450bf751ad07c04a9d56055c4440898b974c556bd081e2"
+    },
+    {
+      "source": "f5-sh-pilot/qa/browser/attachment.mjs",
+      "destination": "f5-sh-pilot/qa/browser/attachment.mjs",
+      "sha256": "5d86574f42f600900bcc3b0b68ab34b90a40d9d287d671ce3a012e2c63b26994"
+    },
+    {
+      "source": "f5-sh-pilot/qa/browser/flow.mjs",
+      "destination": "f5-sh-pilot/qa/browser/flow.mjs",
+      "sha256": "6c6fef35a606ad414a8d8097ca7b5aadd34094c1527c784282e743c53fa15f0f"
+    },
+    {
+      "source": "f5-sh-pilot/qa/browser/participant-checks.mjs",
+      "destination": "f5-sh-pilot/qa/browser/participant-checks.mjs",
+      "sha256": "57f8f90730359e291434d774c716908cbf2e016be040eae48c270ed0b1fb8dee"
+    },
+    {
+      "source": "f5-sh-pilot/qa/browser/scene-clock-flash.mjs",
+      "destination": "f5-sh-pilot/qa/browser/scene-clock-flash.mjs",
+      "sha256": "ab353c99e07228f2a878afe7c6cc2cc68b57524e78b2e65b894a8741c04e0543"
+    },
+    {
+      "source": "f5-sh-pilot/qa/browser/scene-clock.mjs",
+      "destination": "f5-sh-pilot/qa/browser/scene-clock.mjs",
+      "sha256": "1b308034ab5cece2aa817e7d62b8b16dd94ad963d0c0b7caa85826550549d7b8"
+    },
+    {
+      "source": "f5-sh-pilot/qa/browser/stop-active.mjs",
+      "destination": "f5-sh-pilot/qa/browser/stop-active.mjs",
+      "sha256": "955538bcae99582889bead99a429d45c145f81b0b6c730091e75ce6bc16895d6"
+    },
+    {
+      "source": "f5-sh-pilot/qa/browser/timestamps.mjs",
+      "destination": "f5-sh-pilot/qa/browser/timestamps.mjs",
+      "sha256": "a65e48dc9ccfa484877ac1ed77f88cb0a517fd3ad1ac5bc160dc48f4b354b941"
+    },
+    {
+      "source": "f5-sh-pilot/qa/desktop-1280-attachment-notepad.png",
+      "destination": "f5-sh-pilot/qa/desktop-1280-attachment-notepad.png",
+      "sha256": "6326f114c367bcd008a9f605f3df7dea389ca22b9aae8a1445943cf0cda78536"
+    },
+    {
+      "source": "f5-sh-pilot/qa/desktop-1366-completed.png",
+      "destination": "f5-sh-pilot/qa/desktop-1366-completed.png",
+      "sha256": "c00c4969812ae718cb3a543478837c326cffdf56dbcda2e8aab01379c1a7bd0b"
+    },
+    {
+      "source": "f5-sh-pilot/qa/desktop-1366-intro.png",
+      "destination": "f5-sh-pilot/qa/desktop-1366-intro.png",
+      "sha256": "b182c36d7a9d13fe30dbe9d965a94488439518f53ab59439e6fceea6caf26433"
+    },
+    {
+      "source": "f5-sh-pilot/qa/desktop-1366-paused.png",
+      "destination": "f5-sh-pilot/qa/desktop-1366-paused.png",
+      "sha256": "15893a843776f3f3bca6ef94f72c8a448f60dc724704d33cb000c0f3ddfe6c27"
+    },
+    {
+      "source": "f5-sh-pilot/qa/desktop-1536-break.png",
+      "destination": "f5-sh-pilot/qa/desktop-1536-break.png",
+      "sha256": "afb5c2464e8f2978fa75cd2ad6ebf16bda66de028ae2a890c02468c7547d9056"
+    },
+    {
+      "source": "f5-sh-pilot/qa/desktop-1536-card.png",
+      "destination": "f5-sh-pilot/qa/desktop-1536-card.png",
+      "sha256": "a46ccf68b37f74fc70c6a5239bce2539d1fcc8e131754c2edcb65facf2f7ef28"
+    },
+    {
+      "source": "f5-sh-pilot/qa/desktop-1536-comprehension.png",
+      "destination": "f5-sh-pilot/qa/desktop-1536-comprehension.png",
+      "sha256": "bd629df34f1675cffe202e18d141f4bc18d9fb127794f44a6f844bc78f192303"
+    },
+    {
+      "source": "f5-sh-pilot/qa/desktop-1536-debug-clock.png",
+      "destination": "f5-sh-pilot/qa/desktop-1536-debug-clock.png",
+      "sha256": "314885266324ab543a1deaa5f5d8f95ed522c753d7b5825f6d97a32b23ad978b"
+    },
+    {
+      "source": "f5-sh-pilot/qa/desktop-1536-ratings.png",
+      "destination": "f5-sh-pilot/qa/desktop-1536-ratings.png",
+      "sha256": "eb7a50d3f04a7c9d55160738414b84606797cd743ab6992d5c84955bf929561a"
+    },
+    {
+      "source": "f5-sh-pilot/qa/desktop-1536-required.png",
+      "destination": "f5-sh-pilot/qa/desktop-1536-required.png",
+      "sha256": "be8b1031135d1db3cd60462c66446d10d0dd476215ed498269e57481edc94e19"
+    },
+    {
+      "source": "f5-sh-pilot/qa/desktop-1536-sh02-attachment.png",
+      "destination": "f5-sh-pilot/qa/desktop-1536-sh02-attachment.png",
+      "sha256": "40f094ba3a7b4d55c7fbcf341a5ec2e37649274249ba98bd5473306b8ab76b93"
+    },
+    {
+      "source": "f5-sh-pilot/qa/desktop-1536-sh04-staffing.png",
+      "destination": "f5-sh-pilot/qa/desktop-1536-sh04-staffing.png",
+      "sha256": "09b1f31b0b7385f4875e7b4916514db62f0849d5c2d9765b9a1bc75ef99f02af"
+    },
+    {
+      "source": "f5-sh-pilot/qa/desktop-1536-sh05-u1.png",
+      "destination": "f5-sh-pilot/qa/desktop-1536-sh05-u1.png",
+      "sha256": "c08c0bf0883f7511550e716362fd3a77d5975ae82f0264194bcd92a113650a8f"
+    },
+    {
+      "source": "f5-sh-pilot/qa/desktop-1536-u1-reveal-notepad.png",
+      "destination": "f5-sh-pilot/qa/desktop-1536-u1-reveal-notepad.png",
+      "sha256": "89e32d9d738c6189f4e8d1e774f035258fb755a2a9556d2fd2ffa1d4e5ff2ed0"
+    },
+    {
+      "source": "f5-sh-pilot/qa/desktop-700-narrow.png",
+      "destination": "f5-sh-pilot/qa/desktop-700-narrow.png",
+      "sha256": "c28cc64c6ad8e5dc088801ee643ec402fa5875d4cbe2d0247aad11fd85a4103e"
+    },
+    {
+      "source": "f5-sh-pilot/qa/rayneo-build.json",
+      "destination": "f5-sh-pilot/qa/rayneo-build.json",
+      "sha256": "97ad95bf2a4bf729dd202ed506ed806e311f645a55e54192ec8889d22a8fb07e"
+    },
+    {
+      "source": "f5-sh-pilot/qa/text-table-scratchpad.png",
+      "destination": "f5-sh-pilot/qa/text-table-scratchpad.png",
+      "sha256": "9ec84af9e44b3e676c3e499186bcf3fc60f12ce618ec1dca686098b8705e582d"
+    },
+    {
+      "source": "f5-sh-pilot/qa/time-input-scratchpad.png",
+      "destination": "f5-sh-pilot/qa/time-input-scratchpad.png",
+      "sha256": "e72e3f45ce19e58f8be13710f35502271016b0f5c81387fc57cd32eabf53b9ac"
+    },
+    {
+      "source": "f5-sh-pilot/rayneo-display/BUILDING.md",
+      "destination": "f5-sh-pilot/rayneo-display/BUILDING.md",
+      "sha256": "226cc26c0442f4d2ca71f106d85c6764c9fe27692585a01ed3129670963b042a"
+    },
+    {
+      "source": "f5-sh-pilot/rayneo-display/app/build.gradle.kts",
+      "destination": "f5-sh-pilot/rayneo-display/app/build.gradle.kts",
+      "sha256": "c0e3197f59045052ef087aa4245330b2b9a99d3f5d5a4013ab404e4a0f1cb9be"
+    },
+    {
+      "source": "f5-sh-pilot/rayneo-display/app/libs/MercuryAndroidSDK-v0.2.6.aar",
+      "destination": "f5-sh-pilot/rayneo-display/app/libs/MercuryAndroidSDK-v0.2.6.aar",
+      "sha256": "5d408e2c5d80e8ae746c42abbda50012b50617005adfeb397661bec9c9be2676"
+    },
+    {
+      "source": "f5-sh-pilot/rayneo-display/app/src/main/AndroidManifest.xml",
+      "destination": "f5-sh-pilot/rayneo-display/app/src/main/AndroidManifest.xml",
+      "sha256": "997a1decc7feeb49083658fd9747ca18959d80ff6a7254e2f3bc821f3858de1a"
+    },
+    {
+      "source": "f5-sh-pilot/rayneo-display/app/src/main/java/link/ironip/a5/rayneo/BridgeServer.java",
+      "destination": "f5-sh-pilot/rayneo-display/app/src/main/java/link/ironip/a5/rayneo/BridgeServer.java",
+      "sha256": "c7347773a089f46f4d898313a44b9350b3146a0eb52a8c025f59e3c45503c964"
+    },
+    {
+      "source": "f5-sh-pilot/rayneo-display/app/src/main/java/link/ironip/a5/rayneo/DisplayApplication.java",
+      "destination": "f5-sh-pilot/rayneo-display/app/src/main/java/link/ironip/a5/rayneo/DisplayApplication.java",
+      "sha256": "2900891fa67b94bd27f363b3f0944e3a0925d4699415d511efacd0c3e700d76c"
+    },
+    {
+      "source": "f5-sh-pilot/rayneo-display/app/src/main/java/link/ironip/a5/rayneo/Ledger.java",
+      "destination": "f5-sh-pilot/rayneo-display/app/src/main/java/link/ironip/a5/rayneo/Ledger.java",
+      "sha256": "ded7aba8c3abac24e9ba0d92376d9a241fe490effd6c8f7969aea730e19f5f44"
+    },
+    {
+      "source": "f5-sh-pilot/rayneo-display/app/src/main/java/link/ironip/a5/rayneo/MainActivity.java",
+      "destination": "f5-sh-pilot/rayneo-display/app/src/main/java/link/ironip/a5/rayneo/MainActivity.java",
+      "sha256": "61930d7cac99d667865a396f4c912de332c68402c7fdf9ac1a65f1e935258d76"
+    },
+    {
+      "source": "f5-sh-pilot/rayneo-display/app/src/main/java/link/ironip/a5/rayneo/MessageView.java",
+      "destination": "f5-sh-pilot/rayneo-display/app/src/main/java/link/ironip/a5/rayneo/MessageView.java",
+      "sha256": "469542d37430c8216c5aea1c9c7e813d2781b08b644f5552eed390a19555acca"
+    },
+    {
+      "source": "f5-sh-pilot/rayneo-display/app/src/main/res/layout/activity_main.xml",
+      "destination": "f5-sh-pilot/rayneo-display/app/src/main/res/layout/activity_main.xml",
+      "sha256": "0f4f55661a42854d872b2564fa7b58362d74e9da2be48d15c8727df57c250a72"
+    },
+    {
+      "source": "f5-sh-pilot/rayneo-display/app/src/main/res/raw/notification.wav",
+      "destination": "f5-sh-pilot/rayneo-display/app/src/main/res/raw/notification.wav",
+      "sha256": "b94efd73c5f0813120e97cf2727e5261c19a718398bc96f6232dff9b58655d0e"
+    },
+    {
+      "source": "f5-sh-pilot/rayneo-display/app/src/main/res/values/themes.xml",
+      "destination": "f5-sh-pilot/rayneo-display/app/src/main/res/values/themes.xml",
+      "sha256": "004fe9ffe96e95d4e07e7529bdcd9f9a783e5512ecdba1216b200947059d4c64"
+    },
+    {
+      "source": "f5-sh-pilot/rayneo-display/build.gradle.kts",
+      "destination": "f5-sh-pilot/rayneo-display/build.gradle.kts",
+      "sha256": "b11b0be429a9ff683d5e2aac1745699780786dcb9394707325073c6094ced036"
+    },
+    {
+      "source": "f5-sh-pilot/rayneo-display/gradle.properties",
+      "destination": "f5-sh-pilot/rayneo-display/gradle.properties",
+      "sha256": "67eefa02d084d8fd6e2698683ca4d007a344395ca89eed9012a79bac373ba359"
+    },
+    {
+      "source": "f5-sh-pilot/rayneo-display/gradle/wrapper/gradle-wrapper.jar",
+      "destination": "f5-sh-pilot/rayneo-display/gradle/wrapper/gradle-wrapper.jar",
+      "sha256": "76805e32c009c0cf0dd5d206bddc9fb22ea42e84db904b764f3047de095493f3"
+    },
+    {
+      "source": "f5-sh-pilot/rayneo-display/gradle/wrapper/gradle-wrapper.properties",
+      "destination": "f5-sh-pilot/rayneo-display/gradle/wrapper/gradle-wrapper.properties",
+      "sha256": "5c1865257314af51c3347829f38be4e4bc619e1f0108fbe4b0b3c2b4ceb1c5cf"
+    },
+    {
+      "source": "f5-sh-pilot/rayneo-display/gradlew",
+      "destination": "f5-sh-pilot/rayneo-display/gradlew",
+      "sha256": "3238afb2aed5cb16eb7d6718077e7138059108f007b54179e9cc157c5a6e0e89"
+    },
+    {
+      "source": "f5-sh-pilot/rayneo-display/gradlew.bat",
+      "destination": "f5-sh-pilot/rayneo-display/gradlew.bat",
+      "sha256": "1d297e00bd21de3ace22b4d7f2de1f9dfa858883d66bbf7c1ccbecccec8f4f3b"
+    },
+    {
+      "source": "f5-sh-pilot/rayneo-display/qa/StyleRenderCheck.java",
+      "destination": "f5-sh-pilot/rayneo-display/qa/StyleRenderCheck.java",
+      "sha256": "ac2ca43c08b19b55421603db7878a9818ca1cc193b3c087a89089bf07eedcb3e"
+    },
+    {
+      "source": "f5-sh-pilot/rayneo-display/scripts/verify-apk-runtime.mjs",
+      "destination": "f5-sh-pilot/rayneo-display/scripts/verify-apk-runtime.mjs",
+      "sha256": "3c37232eac52b77bee9962558804b43c6631bbb70adcd70c505f1884db825c9c"
+    },
+    {
+      "source": "f5-sh-pilot/rayneo-display/settings.gradle.kts",
+      "destination": "f5-sh-pilot/rayneo-display/settings.gradle.kts",
+      "sha256": "e82335ed289057393134ec5573f74c92ae05394e44edbb5877592c20af3633a4"
+    },
+    {
+      "source": "f5-sh-pilot/rayneo.env.example",
+      "destination": "f5-sh-pilot/rayneo.env.example",
+      "sha256": "1560246ab1a98487e483034e1931d5330b670b4d3c3139d0efa3a266f9a4dafb"
+    },
+    {
+      "source": "f5-sh-pilot/runtime/.gitkeep",
+      "destination": "f5-sh-pilot/runtime/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "f5-sh-pilot/scripts/build_task_content.py",
+      "destination": "f5-sh-pilot/scripts/build_task_content.py",
+      "sha256": "51b2a2b233b2ce144890a3fb6548c99b5cedbb3c892572f87c23644e4de92b00"
+    },
+    {
+      "source": "f5-sh-pilot/scripts/extract_materials.py",
+      "destination": "f5-sh-pilot/scripts/extract_materials.py",
+      "sha256": "b9f579c78eb51c1a83ca6f041d78b73d96ea1240534c8f4582797de4585443ad"
+    },
+    {
+      "source": "f5-sh-pilot/src/adapters/mock-glasses.ts",
+      "destination": "f5-sh-pilot/src/adapters/mock-glasses.ts",
+      "sha256": "ce2fb9709257343c7ed90a2a42c84822396d5b458e2d5f9cc1674650bcee98fc"
+    },
+    {
+      "source": "f5-sh-pilot/src/adapters/rayneo-glasses.ts",
+      "destination": "f5-sh-pilot/src/adapters/rayneo-glasses.ts",
+      "sha256": "e3e2be5e97c19e33a81c23daecfaf6b896de9d272d2da8d61f7af52c470482e9"
+    },
+    {
+      "source": "f5-sh-pilot/src/app.ts",
+      "destination": "f5-sh-pilot/src/app.ts",
+      "sha256": "992ea5c77a08f0c0ed345d65eb88924c40d947036abd9139730a903f572e6517"
+    },
+    {
+      "source": "f5-sh-pilot/src/config-files.ts",
+      "destination": "f5-sh-pilot/src/config-files.ts",
+      "sha256": "921855b1ec7959538551cd0d02131f89b5a7866fd447666f477ae5bf80782b00"
+    },
+    {
+      "source": "f5-sh-pilot/src/config.ts",
+      "destination": "f5-sh-pilot/src/config.ts",
+      "sha256": "39d987a5e8dd61adb694eb88a787434e119505a5cdc7481340f9c19b0ce1479d"
+    },
+    {
+      "source": "f5-sh-pilot/src/contracts.ts",
+      "destination": "f5-sh-pilot/src/contracts.ts",
+      "sha256": "22ba4c1bfe7cfc6a65ed8212ce67a2566ff82eb2f36128c1ac4cd5bf888c22b7"
+    },
+    {
+      "source": "f5-sh-pilot/src/device-control.ts",
+      "destination": "f5-sh-pilot/src/device-control.ts",
+      "sha256": "daf666b48076fe9728edb5dddcf1308a6bc9e3068810ccf2c0efcc4e2c1f7194"
+    },
+    {
+      "source": "f5-sh-pilot/src/doctor.ts",
+      "destination": "f5-sh-pilot/src/doctor.ts",
+      "sha256": "1eadb64ffb17d5c8fea10f556e18b13f5348c1dd6d703874c14fe1b953122661"
+    },
+    {
+      "source": "f5-sh-pilot/src/engine.ts",
+      "destination": "f5-sh-pilot/src/engine.ts",
+      "sha256": "dbfc595b965d0f865865ace1ad9a5f761a24bec5d71abcb517d5b16d3a7b6c3f"
+    },
+    {
+      "source": "f5-sh-pilot/src/export.ts",
+      "destination": "f5-sh-pilot/src/export.ts",
+      "sha256": "de2f9944e867a0d1d024ac7af8e5bc0a0a76c7a074be5685f80a5898c40bb6c3"
+    },
+    {
+      "source": "f5-sh-pilot/src/preflight.ts",
+      "destination": "f5-sh-pilot/src/preflight.ts",
+      "sha256": "d8a0c0f74ede1475852757e59cef2b2063bfc8ecf53ed7dc3471c4bb45bb6568"
+    },
+    {
+      "source": "f5-sh-pilot/src/server.ts",
+      "destination": "f5-sh-pilot/src/server.ts",
+      "sha256": "ef8c355a2117d2dd9cd80cb24d9cb849491157a47d8b7e13f7590ddbf6148cde"
+    },
+    {
+      "source": "f5-sh-pilot/src/store.ts",
+      "destination": "f5-sh-pilot/src/store.ts",
+      "sha256": "72d5c6d000390cb71201dcc922d70812627c0bc0d1029219f495c9a2ffb918fc"
+    },
+    {
+      "source": "f5-sh-pilot/src/tasks.ts",
+      "destination": "f5-sh-pilot/src/tasks.ts",
+      "sha256": "c9717f19447899c7199128b918761eb950b198c778904991766a9d0564067e18"
+    },
+    {
+      "source": "f5-sh-pilot/src/voice-overlay-guard.ts",
+      "destination": "f5-sh-pilot/src/voice-overlay-guard.ts",
+      "sha256": "a49ebb28eb633b7db77f528bbc54daad21eb6931c960c0bf5b5d6e5ca1271611"
+    },
+    {
+      "source": "f5-sh-pilot/tests/bootstrap.test.ts",
+      "destination": "f5-sh-pilot/tests/bootstrap.test.ts",
+      "sha256": "270c34f26f80fc0131676a66217a6f3d04818dbe2cac5a02867a0a630b529cd6"
+    },
+    {
+      "source": "f5-sh-pilot/tests/config-files.test.ts",
+      "destination": "f5-sh-pilot/tests/config-files.test.ts",
+      "sha256": "10c1de2eba70f7300d98e36a13a2272e22e653304bddbff2dc5a30c198e7d9be"
+    },
+    {
+      "source": "f5-sh-pilot/tests/core.test.ts",
+      "destination": "f5-sh-pilot/tests/core.test.ts",
+      "sha256": "74e67a393ea77db7667a58e8f003cd50b26c96765e1d4e78a63871ba539a35cd"
+    },
+    {
+      "source": "f5-sh-pilot/tests/device-control.test.ts",
+      "destination": "f5-sh-pilot/tests/device-control.test.ts",
+      "sha256": "f5e8cc1b1b1aaec8777a7f7de7db8b44f0a8bc3e742bfc3cba52ab6e9dfa6971"
+    },
+    {
+      "source": "f5-sh-pilot/tests/network.test.ts",
+      "destination": "f5-sh-pilot/tests/network.test.ts",
+      "sha256": "28ec0a37be63195eb7b75cffc8fa9ca0e999b6df2b0f5643a8c1b57ae71ac147"
+    },
+    {
+      "source": "f5-sh-pilot/tests/presentation.test.ts",
+      "destination": "f5-sh-pilot/tests/presentation.test.ts",
+      "sha256": "1bc107ab5672a3eeeb2ad7f2246e17911073045b70011a21adc459151ec41ec4"
+    },
+    {
+      "source": "f5-sh-pilot/tests/rayneo.test.ts",
+      "destination": "f5-sh-pilot/tests/rayneo.test.ts",
+      "sha256": "e4b8e242d5ea930fe13b670e510e38882635058b8d5b89f4076e74e4b34e4c64"
+    },
+    {
+      "source": "f5-sh-pilot/tests/records.test.ts",
+      "destination": "f5-sh-pilot/tests/records.test.ts",
+      "sha256": "7acbfd1bba7b8c32db36397539bcc0a7d538cdb7e06785bb0c5d53594315efb2"
+    },
+    {
+      "source": "f5-sh-pilot/tests/revision.test.ts",
+      "destination": "f5-sh-pilot/tests/revision.test.ts",
+      "sha256": "2af57bb3e30582ec4b54f2a83d07902d75a7243dbad1991196b2580ca3d77c37"
+    },
+    {
+      "source": "f5-sh-pilot/tsconfig.json",
+      "destination": "f5-sh-pilot/tsconfig.json",
+      "sha256": "4d1ebb1654d88c9e3a812f362e7d169e5a805c6339fd4c487d5193321c0988f8"
+    },
+    {
+      "source": "scripts/README.md",
+      "destination": "scripts/README.md",
+      "sha256": "cee899f0d02c44ec6f09e8b122587ca0db2801b55d15b1b8516fe0d17adaff50"
+    },
+    {
+      "source": "scripts/experiment-launcher.mjs",
+      "destination": "scripts/experiment-launcher.mjs",
+      "sha256": "6b15a513e4165f7ae3b3c6f1a3f42a1451365c654a8c1baf391ef219a28bb192"
+    },
+    {
+      "source": "scripts/experiment-manager.mjs",
+      "destination": "scripts/experiment-manager.mjs",
+      "sha256": "4a2da4de9da8cf9b373809b79f155ddb81c36af82130293683010aaeeff9a250"
+    },
+    {
+      "source": "scripts/local-device-launch.mjs",
+      "destination": "scripts/local-device-launch.mjs",
+      "sha256": "821ca67720ea54e36cbacf50a4c9bb8d27f7eac088859cfc0e418156ccb0caec"
+    },
+    {
+      "source": "scripts/network.d.mts",
+      "destination": "scripts/network.d.mts",
+      "sha256": "3c7eeb5486580967723ed3268346c9ab8855456e3abb04209b504b244dc34fa2"
+    },
+    {
+      "source": "scripts/network.mjs",
+      "destination": "scripts/network.mjs",
+      "sha256": "4aea89ac264b92536692849f67c7d8d2f7f1e17fc113cb1536092fcd73cabd4b"
+    },
+    {
+      "source": "scripts/rayneo-control.mjs",
+      "destination": "scripts/rayneo-control.mjs",
+      "sha256": "11d2ef7ba877e3e69dfa3d8f3da1856cc176c3daa6ba874751d4f46771207fbb"
+    },
+    {
+      "source": "scripts/tests/launcher.test.mjs",
+      "destination": "scripts/tests/launcher.test.mjs",
+      "sha256": "73d59bdb9b0073e878e560d929a27dc484fdb2e1e6fdd026ef26db92fef5b2a1"
+    },
+    {
+      "source": "tsconfig.base.json",
+      "destination": "tsconfig.base.json",
+      "sha256": "bd9fa2a8726952bd9ab9a8678e3262fe91acc3adc164e7ed25369a879691baea"
+    }
+  ],
+  "references": [
+    {
+      "original_path": "/Users/chronicen/Downloads/2-back 通知理解预实验标准操作流程（SOP）修正版.md",
+      "file": "docs/references/2-back 通知理解预实验标准操作流程（SOP）修正版.md",
+      "sha256": "1c33c9bc6d077ae7a2b53119d1e86b914eb259e4046c31fba2e5eba964ec139d"
+    },
+    {
+      "original_path": "/Users/chronicen/Downloads/A1通知实验程序设计需求说明.md",
+      "file": "docs/references/A1通知实验程序设计需求说明.md",
+      "sha256": "c59928eb95fa7b0a8da8176800f5d898b4d4f160d4cc78cce349de14efeae6ef"
+    },
+    {
+      "original_path": "/Users/chronicen/Downloads/A1%E9%80%9A%E7%9F%A5%E9%A2%84%E5%AE%9E%E9%AA%8C_%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E9%9C%80%E6%B1%82%E8%AF%B4%E6%98%8E_V0.9.docx",
+      "file": "docs/references/A1通知预实验_程序开发需求说明_V0.9.docx",
+      "sha256": "3f15eeb373c2cdb0d87672a04700df9acb46b1010ffb8a4e92ff3bbac427ac52"
+    }
+  ],
+  "notes": [
+    "仅复制受版本管理的文件；未复制 Git 历史、node_modules、运行数据、导出、凭据、设备本机配置、构建产物和旧 AGENTS 指令。",
+    "根 package 名称及启动入口名称调整为 a1a2-experiments；f5-sh-pilot 保留原结构，仅作为待迁移基线。",
+    "未实现 A1 或 A2 的新实验流程；旧验收报告仅证明旧程序当时的结果。"
+  ]
+}

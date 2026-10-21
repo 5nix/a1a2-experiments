@@ -1,0 +1,97 @@
+export const stageIds = ['SH01', 'SH02', 'SH03', 'SH04', 'SH05'] as const;
+export type StageId = typeof stageIds[number];
+export type Condition = 'N-T0' | 'N-T1' | 'A-T0' | 'A-T1' | 'NONE';
+export type DisplayMode = 'legacy_8500' | 'tone_8500' | 'confirm_until_ack';
+
+export interface Assignment {
+  stage_id: StageId;
+  condition: Condition;
+  message_id: string | null;
+  display_mode?: DisplayMode;
+}
+
+export interface Participant {
+  participant_id: string;
+  version_label?: string;
+  debug?: boolean;
+  copied_from?: string;
+  stages: Assignment[];
+}
+
+export interface ParticipantConfig {
+  experiment_id: string;
+  schema_version: string;
+  participants: Participant[];
+  debug_participant?: Participant;
+  config_name?: string;
+}
+
+export interface Stimulus {
+  stage_id: StageId;
+  message_id: string;
+  text: string;
+  duration_ms: number;
+  question: string;
+  options: { id: string; text: string }[];
+  correct_option: string;
+}
+
+export interface GlassesRequest {
+  request_id: string;
+  session_id: string;
+  participant_id: string;
+  stage_id: StageId;
+  message_id: string;
+  text: string;
+  duration_ms: 8500;
+  display_mode?: DisplayMode;
+  device_id?: string;
+}
+
+export interface GlassesReceipt {
+  request_id: string;
+  source: 'mock' | 'device';
+  status: 'accepted' | 'failed' | 'unacknowledged';
+  t_send: string;
+  t_ack: string | null;
+  t_display: string | null;
+  t_hide: string | null;
+  display_time_source: 'mock' | 'device_reported' | 'unavailable';
+  error: string | null;
+  device_id?: string;
+  evidence?: unknown;
+}
+
+/** 设备时钟原样保存；应用绘制证据不等于光学呈现实测。 */
+export interface GlassesEvent {
+  event_id: string;
+  request_id: string;
+  device_id: string;
+  kind: 'accepted' | 'drawn' | 'hidden' | 'failed' | 'confirmed' | 'cue_started' | 'cue_failed';
+  device_wall_ms: number;
+  device_monotonic_ms: number;
+  clock_id: string;
+  error: string | null;
+}
+export interface GlassesStatus {
+  source: 'mock' | 'device'; connected: boolean;
+  device_id?: string; ready?: boolean; busy?: boolean; error?: string | null;
+  protocol?: string; independent_duration?: boolean; persistent_deduplication?: boolean;
+  display_evidence?: string; device_info?: Record<string, string>;
+}
+export interface GlassesAdapter {
+  /** 读取连接与忙碌状态的快照，不触发设备操作。 */
+  getStatus(): GlassesStatus;
+  /** 探测显示端；调用方需读取状态确认是否连接成功。 */
+  probe?(): Promise<void>;
+  /** 设备空闲时重建传输连接；完成后仍需检查连接状态。 */
+  reconnect?(): Promise<void>;
+  /** 回收原请求的设备事件，不重发消息。 */
+  pollEvents?(receive: (event: GlassesEvent) => void): Promise<void>;
+  /** 释放设备传输资源，可异步完成。 */
+  close?(): void | Promise<void>;
+  /** 发送带永久去重编号的消息；接受回执不代表实际光学呈现。 */
+  send(request: GlassesRequest): Promise<GlassesReceipt>;
+  confirm?(request: { request_id: string; device_id?: string }): Promise<void>;
+  cancel?(request: { request_id: string; device_id?: string }): Promise<void>;
+}

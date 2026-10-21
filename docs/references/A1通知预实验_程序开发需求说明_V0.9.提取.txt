@@ -1,0 +1,126 @@
+A1通知预实验程序开发需求说明
+V0.9｜面向 Codex／工程开发｜静止听觉2-back端到端优先，移动状态通过同一事件协议接入
+版本属性：供开发实现与Pilot验收的候选需求，不代表现有程序已实现或正式方案冻结。所有秒数、响应规则、问卷频率可配置，实际默认值在Pilot后锁定。
+1. 目标、交付与优先级
+开发一套能够让主任务持续运行、按预定相位呈现1—2行OST通知、记录前/中/后主任务逐项表现、在恢复窗结束后提问并记录主观负荷的实验框架。主要交付的是可重放的事件日志，不仅是一份每轮汇总CSV。
+[表格]
+优先级 | 模块 | 验收可见结果
+P0 | 听觉2-back＋通知时序状态机 | 不因通知显示/隐藏而暂停声音、目标序列或计时。
+P0 | 材料读取与布局校验 | 支持真实材料表；一行/两行直接显示不拆开重排到错误行；溢出阻止正式运行。
+P0 | 事件级日志/导出/中断恢复 | 原始2-back声音/响应与通知时间戳完整关联；可人工重算所有统计。
+P0 | 理解问答与伪通知 | 有标准答案；无通知条件模拟同一时点且不出现通知和问题。
+P1 | 移动视觉主任务适配 | 遵循相同event/condition格式，由独立模块负责步行目标事件和安全记录。
+P1 | Raw NASA-TLX、简短主观题与后台质控 | 可按单轮/4轮切换频率，导出完整维度与时间。
+P2 | 自由复述录音/转写、实时趋势图 | 可在额外校准块使用，不影响正式事件定时。
+2. 三层架构与跨设备原则
+•  控制台（PC）：实验配置、匿名ID、随机种子、素材校验、试次编排、2-back音频与响应、问卷、日志；不在渲染循环内执行阻塞写盘。
+•  眼镜端：接收“显示/隐藏通知”事件，仅负责文字卡片的真实时间渲染，并回传actual_render_on / actual_render_off及错误；设备渲染规格使用既有F0基线参数或显式版本号。
+•  移动任务端（可选）：生成前方target/non-target事件、判定反应，按统一单调时钟/偏移写入日志；如尚无实现必须明确显示“未接入”，不能自动用2-back数据冒充。
+•  全部模块共享participant_id、session_id、block_id、trial_id、event_id、protocol_version、config_hash；每次启动记录软硬件版本。
+3. 固定的状态机与时间规则
+大Trial状态顺序：READY → PRE_TASK → NOTIF_VISIBLE（或SHAM_MARKER） → POST_TASK → PRIMARY_TASK_STOP → PROBE（通知组） → SHORT_RATING → COMMIT → BREAK/NEXT。任何阶段异常必须形成ERROR日志，不能静默跳过、删改既往数据。
+[表格]
+事件/状态 | 默认候选值 | 具体规则
+TASK_START | t=0 | 生成完整2-back刺激序列；固定SOA=2500 ms、voice≈500 ms。
+WARMUP_END | t=10 s | 前两刺激步标记unscored；0—10秒整体不作局部Pre主分析。
+OST_SCHEDULE | t=45/50/55 s候选 | 保证Pre有效窗口；通知锁相到最近满足规则的刺激后0.8s（保留实际偏移）。
+OST_ON → OST_OFF | 默认8 s | 以眼镜实际可见起止为准；同一试次最多出现一次；无声、不因2-back打断而重绘。
+POST_OBSERVATION | 实际OFF后50 s | 持续2-back声音与响应；结束前绝不提前显示问题。
+TASK_STOP | 下一完整声音步边界 | 边界跨越响应按预定义宽限完成/超时，再停止主任务。
+PROBE | TASK_STOP后 | 通知条件展示一题、记录题型、答案、RT；无通知对照跳过。
+SHORT_RATING / TLX | 每轮2题；每4轮Raw TLX | 所有问卷只在TASK_STOP后显示；不得污染Post窗。
+时钟规则：使用程序的monotonic高精度时间控制事件，不以setInterval累计次数推算应发生的绝对时刻。分别记录planned_time、dispatch_time、device_render_time、ack_time。导出CSV时仍保留原始单调毫秒时间和实验UTC起始映射。无法回执实际渲染时字段置空且标记QC，不得使用计划时间冒充真实曝光时间。
+4. 2-back刺激生成与响应
+•  支持auditory_2back mode；字母/数字音频预加载，序列一次性根据random_seed生成，正式开始后禁止动态改变SOA。
+•  对每个合法stimulus_index≥2，计算match=(当前项目==前两项目)，匹配占比候选25%—35%；分段Pre/During/Post尽量分布均衡，并记录1-back/3-back诱饵及相邻重复。
+•  默认建议每步“双选键”：匹配与不匹配均需明确按键；key_map可配，收到第一次有效键判分，重复键或跨事件晚到键记录但不改变答案。
+•  如果直接复用已有go/no-go 2-back，response_mode=target_only并采用命中/漏报/虚警/正确拒绝定义，决不把缺按键直接等同全部正确。
+•  正式通知可见时2-back始终继续；研究者不得通过“按已读键”让通知提前消失或阻断原主任务；否则变成自定阅读时长的另一套设计。
+•  原生2-back在每个大Trial重置前两步不评分，试次间序列和刺激类别受限随机。
+5. 通知材料结构与排版
+材料使用UTF-8 CSV/JSON读取；至少包含材料ID、业务类别、真实案例来源编号/改写溯源、line_count、通知实际文本、format_type、char_count、n_count、n_units_json、question_id、question_type、question_text、answer_key、equivalent_answers、render_profile_id。
+[表格]
+字段 | 类型及校验 | 使用说明
+material_id | string，唯一非空 | 同源改写带family_id，避免同一被试重复见到语义高度相似版本。
+line_count | int：1或2 | 实际眼镜render后的行数必须与输入一致；不得把双行自动拆为两张卡。
+text_lines | 1或2元素字符串数组 | 可以逐行精确控制行断点；如为自然换行方案另标wrap_mode。
+format_type | continuous / structured | 控制文案连续表述或标题字段排布，不与行数混用。
+n_count / n_units | int＋JSON数组 | 只用当前细粒度N编码V1.3.2，保留目标N及每项文本值。
+question_id / answer_key | 非空，唯一答案或接受答案列表 | 问答程序必须知道目标信息点、四选一选项/短答案及评分规则。
+visual_profile | 版本对象 | 记录设备坐标/字号/字体/行高/亮度/色彩/文字框，重现真实呈现。
+版面规则：仅文字是A1主要语义负荷；若有固定图标、来源标签或标题，必须记是否包含语义、是否恒定。使用雷鸟X3 Pro等真实渲染端时，以设备实际分辨率、项目现行视觉基线和有效显示窗口为准；所有文本不得截断。禁止程序按材料N大小自动缩放字号。
+6. 编排：12通知＋4对照，不允许隐性重复
+以两个状态Q2/Q4 × 两个行数等级 × 每格3条不同通知=12条；每种状态再加2条sham，对照无视觉通知。最终每位参与者16个大Trial。系统可让研究者选择只运行Q2（6通知＋2对照），用于第一轮联调。
+•  受限随机：同类通知不超过2条连续；sham不全放首末；连续同源family_id不得挨近；每格3条保持材料难度分布相近。
+•  平衡类别：日程、设备系统在各行数与状态的分布尽量均衡；无法完全平衡时导出分配矩阵并按预注册规则分析。
+•  试次块建议4个Trial一组；每块后主观Raw TLX、强制休息；如移动/静止设备切换需按状态分块，并在被试间平衡两状态块顺序。
+•  生成计划必须校验每trial只有一个material或sham，所有题/答案齐全、没有材料重复、随机种子可重现；开测前输出trial_plan.csv。
+7. 事件级日志——不可省略的字段
+[表格]
+导出文件 | 每行代表什么 | 关键字段
+trial_plan.csv | 设计计划 | participant_id,trial_id,condition,state,line_count,material_id,sham,seed,planned_ost_on,expected_duration,config_hash
+events.jsonl | 实际发生的所有事件（权威源） | event_id,event_type,trial_id,monotonic_ms,wallclock_iso,source_device,planned_ms,actual_ms,payload,qc_code
+primary_items.csv | 每一个2-back/移动主任务刺激步 | stimulus_id,index,onset_ms,content,is_target,actual_response,response_ms,rt_ms,correct,timeout,relative_to_ost_ms,window_label
+notifications.csv | 每条通知显示/隐藏记录 | material_id,planned_on,actual_on,planned_off,actual_off,visible_duration_ms,phase_in_2back_ms,render_qc
+probes.csv | 理解/复述记录 | question_id,type,shown_ms,answer_ms,answer_raw,answer_normalized,correct,score,n_target_ids,delay_from_ost_off_ms
+ratings.csv | 每轮短题与分组RTLX | trial_id,block_id,item_id,item_scale,rating,answer_ms,scope_start_trial,scope_end_trial
+session_qc.json | 会话质量摘要 | dropped_events,missed_audio,late_render,unscored_count,duplicate_materials,invalid_trials,resume_count,device_versions
+事件窗口划分由分析阶段根据“实际眼镜出现/消失”计算，不在采集时只留下一个pre_accuracy与post_accuracy。对声音已开始但应答窗口跨过OST边界的事件设window_label=boundary，单独记载并执行预设归类/剔除规则。
+8. 核心分析指标与公式
+[表格]
+指标 | 计算与边界 | 说明
+通知核验率 | correct_probe / valid_probe；分业务类别、行数、状态 | 一题≠整条信息全部掌握；抽测N须记录。
+2-back准确率 | 双键：各窗口correct/eligible；单键：命中率、虚警率、d′等 | 单窗口目标事件少，必须以跨trial/被试估计为主。
+响应时RT | 首次有效响应−声音刺激实际播放起点；仅有效项 | 未响应不记RT=0；排除错误/极值标准预先指定。
+通知增量代价 | (Post−Pre)通知−(Post−Pre)sham | 每一状态/时序窗口匹配，不把时间趋势归因给通知。
+恢复轨迹 | OST_OFF后0—10、10—25、25—50 s各段及整体 | 不能将低事件数的微小变化解释为确定恢复时间。
+通知延迟测量 | probe_shown_ms−actual_ost_off_ms | 必须写入报告；不同延迟不能叫完全等价的即时理解。
+RTLX | 六维原分值及其Raw平均；与简短2题单独保存 | 只在对应scope评估任务，不对秒级段内推断负荷。
+9. 研究者操作界面与问卷行为
+•  开测页：participant_id、设备、研究状态（Q2/Q4/all）、材料版本、视觉版本、random_seed、音量试播、显示联通检查。
+•  练习页：单通道2-back规则、双键反馈练习、理解题练习、结束后合格判定；正式阶段不反馈正误。
+•  运行页：仅研究者可见trial序号与音频/眼镜联机、锁定的下一事件；被试眼镜只见通知，不出现“几秒后提示”等预测线索。
+•  试次末：对通知试次问一个标准内容题，随后短题“刚才消息理解有多困难？0完全不困难—10极困难”和“刚才消息干扰主任务程度？0无—10极大”。
+•  每4轮：六维Raw NASA-TLX；支持按Trial启用完整版开关，但默认不重复96条量表条目；题目、量尺、语言全部固定版本。
+•  可选复述：单独启用RECALL_CALIBRATION，要求在任务停止后录音/键入，保存原始语音/文本与N盲评编码；不得与普通单题混入同一主数据指标。
+10. 异常和终止处理
+•  眼镜断联或渲染确认迟到：立刻打render_fail；如无法确认真实可见窗口，该trial标invalid_ost_timing并保留全部原始事件。
+•  声音掉帧、浏览器切后台、按键冲突、任务被意外暂停：标音频时序错误；不得把缺失反应算成被试失误。
+•  中途暂停只能发生在大Trial边界；进入Trial后如用户不适/移动安全风险，紧急终止并保留partial和安全标记，不自动续上假装连续数据。
+•  同一被试重开：只能从尚未完成的下一个Trial恢复；已完成trial保存不可覆盖；重跑则新trial_attempt_id。
+•  禁止导出真实姓名、消息隐私内容等识别字段；按匿名参与者ID记录，日志版本留存。
+11. 最低测试集与验收断言
+[表格]
+测试ID | 操作 | 必须通过的结果
+TC01 | 8秒通知覆盖多个2-back刺激步 | 期间声音不中断、不重启2-back；逐步RT完整。
+TC02 | 执行sham | 完全无文字出现、虚拟时点记录完整、无理解题。
+TC03 | 一行与两行材料分别渲染 | 行数/字符/实际文字包围盒一致，无裁切无缩放。
+TC04 | 注入100—300 ms显示回执延迟 | actual_on≠planned_on，偏移被日志检出，恢复窗口按实际时间计算。
+TC05 | 在通知显示中途重复按键 | 只按规定一次判定，冗余key事件不丢失。
+TC06 | 主任务有0个命中/多项漏答 | 正确计算所有有效项，d′需要校正/数据不足标识；无除零错误。
+TC07 | 试次跨越边界的声音与响应 | 标boundary，不强制填入Pre或Post。
+TC08 | 意外退出后重启 | 保留已采集数据并带trial_attempt_id，不悄悄重复同材料。
+TC09 | 运行同一种子两次编排 | 条件与材料序列一致；换种子可重新生成但仍满足配额。
+TC10 | 复算一名模拟被试所有日志 | 人工从原始事件重算的正确率、RT、时段和CSV一致。
+12. 建议配置文件（示例；需允许覆盖并记录实际值）
+protocol_version: A1-notification-pilot-0.9mode: auditory_2backprimary_response_mode: two_choice        # 或 target_only；正式采集不可混用stimulus_soa_ms: 2500stimulus_audio_ms: 500primary_warmup_ms: 10000ost_trigger_base_ms: 50000ost_trigger_jitter_levels_ms: [-5000, 0, 5000]ost_phase_after_audio_ms: 800ost_exposure_ms: 8000post_observation_ms: 50000question_timing: after_post_task        # 若测即时理解，请建立独立校准块rating_short_per_trial: trueraw_tlx_every_n_trials: 4trials_per_participant:  notification: 12  sham: 4  by_state: {Q2: 8, Q4: 8}line_levels: [1, 2]seed: 20261021material_coding_version: A1-NPER-V1.3.2
+13. 开发里程碑与冻结项
+M1：单机模拟2-back与数据日志；M2：眼镜实际显示确认＋12＋4编排；M3：完成Q2端到端模拟与2—3人工程Pilot；M4：Q4接入和移动安全测试；M5：与研究团队联审Pilot数据，最终冻结版本。每个节点提交运行文件、示例日志、问题清单和测试记录；不需要在M1阶段实现A2空间位置研究。
+待确认：通知究竟研究“1行内容 vs 2行内容”还是“同文不同换行”；8秒呈现是否符合产品策略；Q4主任务系统是否可用；2-back沿用旧单键还是改双键；理解题按何种题型以及采集频率；真实眼镜端实际渲染反馈接口如何获取。以上每项均作为config/版本和风险项标出，不要用隐式默认值代替研究决策。
+工程依据与主要参考链接
+[R05] Adamczyk & Bailey (2004). If not now, when? The effects of interruption at different moments within task execution. CHI.
+https://doi.org/10.1145/985692.985727
+[R06] Iqbal & Bailey (2008). Effects of intelligent notification management on users and their tasks. CHI.
+https://doi.org/10.1145/1357054.1357070
+[R07] Bailey & Iqbal (2008). Understanding changes in mental workload during execution of goal-directed tasks and its application for interruption management. ACM TOCHI.
+https://doi.org/10.1145/1314683.1314689
+[R08] Monk, Trafton & Boehm-Davis (2008). The effect of interruption duration and demand on resuming suspended goals. Journal of Experimental Psychology: Applied.
+https://doi.org/10.1037/a0014402
+[R09] McCrickard et al. (2003). A model for notification systems evaluation—assessing user goals for multitasking activity. ACM TOCHI.
+https://doi.org/10.1145/966930.966933
+[R10] McCrickard et al. (2003). Establishing tradeoffs that leverage attention for utility: empirically evaluating information display in notification systems. IJHCS. 文中含通知内容的多选/回忆问题。
+https://doi.org/10.1016/S1071-5819(03)00022-3
+[R11] Hart (2006). NASA-TLX; 20 Years Later. Human Factors and Ergonomics Society Annual Meeting.
+https://doi.org/10.1177/154193120605000909
+[R12] Eldridge et al. (2016). CONSORT extension to randomised pilot and feasibility trials. BMJ. 预实验重在可行性及进阶标准，不能按正式效应检验解释。
+https://doi.org/10.1136/bmj.i5239
