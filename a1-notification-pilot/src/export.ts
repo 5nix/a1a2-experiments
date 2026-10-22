@@ -12,6 +12,7 @@ export function analyze(store: Store, session: Session) {
   const attempts = store.db.prepare('SELECT * FROM attempts WHERE session_id=? ORDER BY rowid').all(session.id) as { id: string; block_index: number; status: string }[];
   for (const attempt of attempts) {
     const block = session.snapshot.blocks[attempt.block_index], events = all.filter(e => e.attempt_id === attempt.id);
+    const material = session.snapshot.materials.find(m => m.id === block.material_id);
     const onset = events.find(e => e.type === 'notification_onset' || e.type === 'sham_onset')?.at;
     const offset = events.find(e => e.type === 'notification_offset' || e.type === 'sham_offset')?.at;
     const disrupted = events.some(e => ['window_blur', 'visibility_hidden', 'timing_gap', 'local_storage_failed'].includes(e.type));
@@ -29,12 +30,15 @@ export function analyze(store: Store, session: Session) {
       const window = block.kind === 'practice' ? 'practice' : onset == null || offset == null ? 'unknown' : boundary ? 'boundary' : start.at < onset ? 'pre' : start.at < offset ? 'during' : 'post';
       attemptItems.push({ session_id: session.id, participant_id: session.participant_id, pilot_round: session.snapshot.pilot_round,
         attempt_id: attempt.id, block_id: block.id, block_type: block.kind, material_id: block.material_id,
+        n_count: material?.n_count ?? material?.iu_count ?? null, line_count: material?.line_count ?? material?.text_lines.length ?? null,
+        character_count: material?.character_count ?? null, domain: material?.domain ?? null, material_version: session.snapshot.material_version ?? 'synthetic-v1',
         index: i, stimulus: block.letters[i], is_target: target, response: !!response, input_source: response?.data.source ?? null,
         rt_ms: response?.at != null ? response.at - start.at : null, classification,
         correct: warmup || !end ? null : classification === 'hit' || classification === 'correct_rejection',
         valid: !warmup && !!end && attempt.status === 'completed' && !disrupted,
         onset_ms: start.at, planned_onset_ms: start.data.planned_at, end_ms: end?.at ?? null,
-        window, attempt_status: attempt.status, qc_disrupted: disrupted, clock: 'browser_performance', presentation: 'mock_browser' });
+        window, attempt_status: attempt.status, qc_disrupted: disrupted, clock: 'browser_performance', presentation: session.snapshot.delivery_mode === 'rayneo' ? 'rayneo_image' : 'mock_browser',
+        timing_qc: session.snapshot.delivery_mode === 'rayneo' && block.kind === 'notification' ? 'device_clock_mapping_pending' : null });
     }
     items.push(...attemptItems);
     for (const window of ['pre', 'during', 'post', 'boundary', 'practice']) {
@@ -70,9 +74,11 @@ export function bundle(store: Store, sessions: Session[]) {
     'answers.csv': csv(raw.filter(e => e.type === 'answer_saved').map(e => ({ session_id: e.session_id, participant_id: e.participant_id, attempt_id: e.attempt_id, received_at: e.received_at, ...e.data }))),
     'notifications.csv': csv(raw.filter(e => ['notification_onset', 'notification_offset', 'sham_onset', 'sham_offset'].includes(e.type)).map(e => ({ session_id: e.session_id, attempt_id: e.attempt_id, type: e.type, at_ms: e.at, ...e.data }))),
     'plan.json': JSON.stringify(data.map(d => ({ session_id: d.session.id, participant_id: d.session.participant_id, plan: d.session.snapshot })), null, 2),
-    'session_qc.json': JSON.stringify(data.map(d => ({ session_id: d.session.id, phase: d.session.phase, attempts: d.analysis.attempts, disruptions: d.analysis.events.filter(e => ['window_blur', 'visibility_hidden', 'timing_gap', 'attempt_interrupted'].includes(e.type)), synthetic: true, real_glasses: false })), null, 2),
-    'manifest.json': JSON.stringify({ schema_version: 'a1-0.1', created_at: new Date().toISOString(), presentation: 'mock_browser', synthetic: true, real_glasses: false,
-      timing: '客户端performance原值与time_origin保留于事件；通知为同浏览器模拟显示。服务器接收时间不能代替实际呈现时间；不代表真机或光学精度。',
+    'materials.json': JSON.stringify(data.map(d => ({ session_id: d.session.id, material_version: d.session.snapshot.material_version ?? 'synthetic-v1', materials: d.session.snapshot.materials })), null, 2),
+    'device_requests.json': JSON.stringify((store.db.prepare('SELECT data FROM device_requests ORDER BY rowid').all() as { data: string }[]).map(r => JSON.parse(r.data)).filter(r => sessions.some(s => s.id === r.session_id)), null, 2),
+    'session_qc.json': JSON.stringify(data.map(d => ({ session_id: d.session.id, phase: d.session.phase, attempts: d.analysis.attempts, disruptions: d.analysis.events.filter(e => ['window_blur', 'visibility_hidden', 'timing_gap', 'attempt_interrupted', 'device_send_failed'].includes(e.type)), synthetic: d.session.snapshot.synthetic, material_version: d.session.snapshot.material_version ?? 'synthetic-v1', real_glasses: d.session.snapshot.delivery_mode === 'rayneo', timing_qc: d.session.snapshot.delivery_mode === 'rayneo' ? 'device_clock_mapping_pending' : null })), null, 2),
+    'manifest.json': JSON.stringify({ schema_version: 'a1-0.3', created_at: new Date().toISOString(), presentation: [...new Set(sessions.map(s => s.snapshot.delivery_mode ?? 'mock'))], synthetic: data.every(d => d.session.snapshot.synthetic), real_glasses: sessions.some(s => s.snapshot.delivery_mode === 'rayneo'),
+      timing: '客户端performance原值与time_origin保留于事件。Mock使用同浏览器模拟时间。RayNeo独立保存设备uptime/clock_id与浏览器请求意图，尚未映射两者时钟，真机通知窗口标unknown，不用发送或接收时间冒充实际呈现；不代表光学精度。',
       scoring: 'target_only：鼠标左键/空格同为匹配；前两项不评分；额外输入不改变首响应；RT仅对实际按键记录，未响应为空。失焦/时序异常尝试排除；边界项单列。正式基线下降率用准确率差和明确分母派生。' }, null, 2),
   };
   return zipSync(Object.fromEntries(Object.entries(files).map(([name, value]) => [name, strToU8(value)])), { level: 1 });

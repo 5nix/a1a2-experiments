@@ -1,0 +1,234 @@
+[
+  {
+    "id": "SYN-1-1",
+    "domain": "日程",
+    "text_lines": [
+      "例会改到周四。"
+    ],
+    "iu_count": 1,
+    "character_count": 7,
+    "line_count": 1,
+    "question": "例会在哪一天举行？",
+    "options": [
+      "周一",
+      "周二",
+      "周三",
+      "周四"
+    ],
+    "correct": 3,
+    "synthetic": true
+  },
+  {
+    "id": "SYN-1-2",
+    "domain": "日程",
+    "text_lines": [
+      "例会改到周四。地点在二楼。"
+    ],
+    "iu_count": 2,
+    "character_count": 13,
+    "line_count": 1,
+    "question": "例会安排在哪层楼？",
+    "options": [
+      "一楼",
+      "二楼",
+      "三楼",
+      "四楼"
+    ],
+    "correct": 1,
+    "synthetic": true
+  },
+  {
+    "id": "SYN-1-3",
+    "domain": "日程",
+    "text_lines": [
+      "例会改到周四。",
+      "地点在二楼。请带项目清单。"
+    ],
+    "iu_count": 3,
+    "character_count": 20,
+    "line_count": 2,
+    "question": "参加例会需要携带什么？",
+    "options": [
+      "项目清单",
+      "个人简历",
+      "交通卡",
+      "设备说明书"
+    ],
+    "correct": 0,
+    "synthetic": true
+  },
+  {
+    "id": "SYN-2-1",
+    "domain": "设备",
+    "text_lines": [
+      "打印机已恢复。"
+    ],
+    "iu_count": 1,
+    "character_count": 7,
+    "line_count": 1,
+    "question": "打印机目前状态如何？",
+    "options": [
+      "待维修",
+      "已恢复",
+      "已停用",
+      "正在搬迁"
+    ],
+    "correct": 1,
+    "synthetic": true
+  },
+  {
+    "id": "SYN-2-2",
+    "domain": "设备",
+    "text_lines": [
+      "打印机已恢复。请使用三号机。"
+    ],
+    "iu_count": 2,
+    "character_count": 14,
+    "line_count": 1,
+    "question": "应该使用哪台打印机？",
+    "options": [
+      "一号",
+      "二号",
+      "三号",
+      "四号"
+    ],
+    "correct": 2,
+    "synthetic": true
+  },
+  {
+    "id": "SYN-2-3",
+    "domain": "设备",
+    "text_lines": [
+      "打印机已恢复。",
+      "请使用三号机。彩色文件需登记。"
+    ],
+    "iu_count": 3,
+    "character_count": 22,
+    "line_count": 2,
+    "question": "打印彩色文件前需要做什么？",
+    "options": [
+      "换纸",
+      "关机",
+      "充电",
+      "登记"
+    ],
+    "correct": 3,
+    "synthetic": true
+  },
+  {
+    "id": "SYN-3-1",
+    "domain": "出行",
+    "text_lines": [
+      "班车停靠南门。"
+    ],
+    "iu_count": 1,
+    "character_count": 7,
+    "line_count": 1,
+    "question": "应该去哪里等班车？",
+    "options": [
+      "东门",
+      "西门",
+      "南门",
+      "北门"
+    ],
+    "correct": 2,
+    "synthetic": true
+  },
+  {
+    "id": "SYN-3-2",
+    "domain": "出行",
+    "text_lines": [
+      "班车停靠南门。发车时间八点。"
+    ],
+    "iu_count": 2,
+    "character_count": 14,
+    "line_count": 1,
+    "question": "班车几点发车？",
+    "options": [
+      "七点",
+      "八点",
+      "九点",
+      "十点"
+    ],
+    "correct": 1,
+    "synthetic": true
+  },
+  {
+    "id": "SYN-3-3",
+    "domain": "出行",
+    "text_lines": [
+      "班车停靠南门。",
+      "发车时间八点。请提前五分钟到达。"
+    ],
+    "iu_count": 3,
+    "character_count": 23,
+    "line_count": 2,
+    "question": "应该几点到达候车点？",
+    "options": [
+      "七点五十五",
+      "八点整",
+      "八点零五",
+      "八点十分"
+    ],
+    "correct": 0,
+    "synthetic": true
+  },
+  {
+    "id": "SYN-4-1",
+    "domain": "活动",
+    "text_lines": [
+      "讲座今天取消。"
+    ],
+    "iu_count": 1,
+    "character_count": 7,
+    "line_count": 1,
+    "question": "讲座今天如何安排？",
+    "options": [
+      "提前",
+      "照常",
+      "延期半小时",
+      "取消"
+    ],
+    "correct": 3,
+    "synthetic": true
+  },
+  {
+    "id": "SYN-4-2",
+    "domain": "活动",
+    "text_lines": [
+      "讲座今天取消。资料发到邮箱。"
+    ],
+    "iu_count": 2,
+    "character_count": 14,
+    "line_count": 1,
+    "question": "在哪里查看讲座资料？",
+    "options": [
+      "邮箱",
+      "前台",
+      "公告栏",
+      "会议室"
+    ],
+    "correct": 0,
+    "synthetic": true
+  },
+  {
+    "id": "SYN-4-3",
+    "domain": "活动",
+    "text_lines": [
+      "讲座今天取消。",
+      "资料发到邮箱。报名者需回复确认。"
+    ],
+    "iu_count": 3,
+    "character_count": 23,
+    "line_count": 2,
+    "question": "报名者收到资料后需要做什么？",
+    "options": [
+      "重新报名",
+      "回复确认",
+      "打印证件",
+      "电话请假"
+    ],
+    "correct": 1,
+    "synthetic": true
+  }
+]

@@ -1,0 +1,32 @@
+{
+  "material_version": "a1-library-2026-10-22",
+  "material_count": 18,
+  "image_count": 18,
+  "sources": [
+    {
+      "file": "A1刺激材料池.zip",
+      "sha256": "bf3e276377fe0506f46b4b293bf7bf68856b56a8a0a983f4299de08a8a5a461d"
+    },
+    {
+      "file": "A1通知材料库.xlsx",
+      "sha256": "ca046a395e4b590a13c53fbb6d1005211f980aeeb2b13e3a0e1fdb6168eb002d"
+    }
+  ],
+  "issues": [
+    {
+      "id": "3N-2L-05",
+      "issue": "source_unit_labels_nonsequential",
+      "source_labels": [
+        "N1",
+        "N3",
+        "N4"
+      ],
+      "action": "原样保留，未重编码"
+    }
+  ],
+  "notes": [
+    "使用来源PNG作为模拟眼镜卡片，保留正文换行和来源标题；问题/答案来自XLSX。",
+    "N编码沿用材料库，不能自动视为原SOP的IU切分。",
+    "原XLSX工作表dimension为A1，但实际包含18行材料；提取直接读取sheetData。"
+  ]
+}

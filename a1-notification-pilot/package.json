@@ -6,6 +6,6 @@
   "description": "A1 大写字母视觉 2-back 与通知理解预实验",
   "engines": { "node": ">=24" },
   "a5": { "launcher": { "entry": "src/server.ts", "port": 5189, "health_path": "/api/health", "admin_path": "/admin" } },
-  "scripts": { "start": "node src/server.ts", "typecheck": "tsc --noEmit" },
+  "scripts": { "start": "node src/server.ts", "typecheck": "tsc --noEmit", "test": "cd .. && node --test a1-notification-pilot/tests/*.test.ts" },
   "dependencies": { "fflate": "^0.8.3", "qrcode-generator": "^2.0.4" }
 }

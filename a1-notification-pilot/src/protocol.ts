@@ -1,8 +1,11 @@
 import { createHash } from 'node:crypto';
 
 export interface Material {
-  id: string; domain: string; text_lines: string[]; iu_count: number;
+  id: string; domain: string; text_lines: string[]; iu_count?: number; n_count?: number;
   question: string; options: string[]; correct: number;
+  synthetic?: boolean; source_label?: string; line_count?: number; character_count?: number;
+  n_units?: string[]; render_image?: string; image_sha256?: string;
+  source_ref?: Record<string, unknown>; source_warnings?: string[];
 }
 export interface Block {
   id: string; kind: 'practice' | 'notification' | 'control'; round: number; material_id: string | null;
@@ -10,7 +13,9 @@ export interface Block {
   notification_ms: number; during_count: number; break_ms: number;
 }
 export interface Plan {
-  protocol_version: string; preset: string; synthetic: true; seed: number; pilot_round: string;
+  protocol_version: string; preset: string; synthetic: boolean; seed: number; pilot_round: string;
+  material_version?: string;
+  delivery_mode?: 'mock' | 'rayneo'; device_id?: string;
   response_mode: 'target_only'; input_sources: string[]; history_across_notification: 'carry';
   materials: Material[]; blocks: Block[]; hash: string;
 }
@@ -35,7 +40,7 @@ function letters(count: number, rand: () => number) {
   }
   return sequence;
 }
-export function buildPlan(materials: Material[], preset: string, seed: number, pilotRound: string): Plan {
+export function buildPlan(materials: Material[], preset: string, seed: number, pilotRound: string, deliveryMode: 'mock' | 'rayneo' = 'mock', deviceId?: string): Plan {
   const rand = random(seed), quick = preset === 'quick';
   const baseline = quick ? 6 : 22, recovery = quick ? 6 : 18;
   const blocks: Block[] = [];
@@ -48,10 +53,11 @@ export function buildPlan(materials: Material[], preset: string, seed: number, p
   append('practice', 0, null);
   if (quick) { append('notification', 1, materials[0]); append('control', 1, null); }
   else for (let round = 1; round <= 3; round++) {
-    for (const material of shuffle(materials.filter(m => m.iu_count === round), rand)) append('notification', round, material);
+    const candidates = shuffle(materials.filter(m => (m.n_count ?? m.iu_count) === round), rand);
+    for (const material of preset === 'pool' ? candidates : candidates.slice(0, 4)) append('notification', round, material);
     if (round < 3) append('control', round, null);
   }
-  const base = { protocol_version: 'a1-visual-2back-0.1', preset, synthetic: true as const, seed, pilot_round: pilotRound,
+  const base = { protocol_version: 'a1-visual-2back-0.3', preset, synthetic: materials.every(m => m.synthetic !== false), material_version: 'a1-library-2026-10-22', delivery_mode: deliveryMode, device_id: deviceId, seed, pilot_round: pilotRound,
     response_mode: 'target_only' as const, input_sources: ['mouse_left', 'space'], history_across_notification: 'carry' as const, materials, blocks };
   return { ...base, hash: hash(base) };
 }

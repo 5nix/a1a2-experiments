@@ -15,6 +15,9 @@ export class Store {
     this.db.exec(`PRAGMA journal_mode=WAL; PRAGMA synchronous=FULL; PRAGMA foreign_keys=ON;
       CREATE TABLE IF NOT EXISTS sessions (id TEXT PRIMARY KEY, data TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS session_entries (session_id TEXT PRIMARY KEY REFERENCES sessions(id), url TEXT NOT NULL);
+      CREATE TABLE IF NOT EXISTS settings(key TEXT PRIMARY KEY,value TEXT NOT NULL);
+      CREATE TABLE IF NOT EXISTS device_requests(id TEXT PRIMARY KEY, data TEXT NOT NULL);
+      CREATE TABLE IF NOT EXISTS device_audit(seq INTEGER PRIMARY KEY AUTOINCREMENT,data TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS attempts (id TEXT PRIMARY KEY, session_id TEXT NOT NULL REFERENCES sessions(id), block_index INTEGER NOT NULL, owner TEXT NOT NULL, status TEXT NOT NULL, started_at TEXT NOT NULL, ended_at TEXT);
       CREATE TABLE IF NOT EXISTS events (position INTEGER PRIMARY KEY AUTOINCREMENT, id TEXT UNIQUE NOT NULL, session_id TEXT NOT NULL REFERENCES sessions(id), attempt_id TEXT REFERENCES attempts(id), type TEXT NOT NULL, at REAL, seq INTEGER, data TEXT NOT NULL, fingerprint TEXT NOT NULL, received_at TEXT NOT NULL);
       CREATE UNIQUE INDEX IF NOT EXISTS event_sequence ON events(attempt_id,seq) WHERE seq IS NOT NULL;
@@ -30,10 +33,12 @@ export class Store {
     const token = randomBytes(32).toString('hex');
     const s: Session = { id: randomUUID(), participant_id: participant, token_hash: hash(token), snapshot: plan, index: 0, phase: 'READY', attempt_id: null, break_until: null, created_at: new Date().toISOString() };
     const participant_url = `/experiment#session=${s.id}&token=${token}`;
-    this.tx(() => { this.save(s); this.db.prepare('INSERT INTO session_entries VALUES (?,?)').run(s.id, participant_url); this.log(s.id, null, 'session_created', { config_hash: plan.hash, synthetic: true, mode: 'mock', response_mode: 'target_only', input_sources: plan.input_sources }); });
+    this.tx(() => { this.save(s); this.db.prepare('INSERT INTO session_entries VALUES (?,?)').run(s.id, participant_url); this.log(s.id, null, 'session_created', { config_hash: plan.hash, synthetic: plan.synthetic, material_version: plan.material_version ?? 'synthetic-v1', mode: plan.delivery_mode ?? 'mock', device_id: plan.device_id, response_mode: 'target_only', input_sources: plan.input_sources }); });
     return { session_id: s.id, participant_url };
   }
   entry(id: string) { return (this.db.prepare('SELECT url FROM session_entries WHERE session_id=?').get(id) as { url: string } | undefined)?.url ?? null; }
+  setting<T>(key: string): T | undefined { const row = this.db.prepare('SELECT value FROM settings WHERE key=?').get(key) as { value: string } | undefined; return row ? JSON.parse(row.value) as T : undefined; }
+  setSetting(key: string, value: unknown) { this.db.prepare('INSERT INTO settings VALUES (?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value').run(key, JSON.stringify(value)); }
   auth(id: string, token: string) {
     const s = this.get(id), a = Buffer.from(hash(token)), b = Buffer.from(s.token_hash);
     if (!token || !timingSafeEqual(a, b)) throw new HttpError(401, '会话入口无效，请从后台重新打开。'); return s;

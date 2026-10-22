@@ -1,234 +1,640 @@
 [
   {
-    "id": "SYN-1-1",
-    "domain": "日程",
+    "id": "1N-1L-01",
+    "domain": "设备与系统",
+    "source_label": "系统提醒",
     "text_lines": [
-      "例会改到周四。"
+      "剩余电量20%"
     ],
-    "iu_count": 1,
-    "character_count": 7,
+    "n_count": 1,
     "line_count": 1,
-    "question": "例会在哪一天举行？",
-    "options": [
-      "周一",
-      "周二",
-      "周三",
-      "周四"
+    "character_count": 7,
+    "character_count_computed": 7,
+    "n_units": [
+      "N1｜剩余电量为（设备；20%）"
     ],
-    "correct": 3,
-    "synthetic": true
+    "question": "通知中的20%是什么意思？",
+    "options": [
+      "还剩20%的电量",
+      "已用掉20%的电量",
+      "已充入20%的电量",
+      "电量低于20%"
+    ],
+    "correct": 0,
+    "answer_key": "A",
+    "synthetic": false,
+    "render_image": "1N-1L-01.png",
+    "image_sha256": "3d166a7a52e0e2516282b7a7d953af9f533352d93d047d3b12becbf068bc6bfa",
+    "source_ref": {
+      "file": "content/source/2026-10-22/A1通知材料库.xlsx",
+      "sheet": "Sheet1（副本）（副本2）（副本）（副本）",
+      "row": 3,
+      "range": "A3:P3"
+    },
+    "source_warnings": []
   },
   {
-    "id": "SYN-1-2",
-    "domain": "日程",
+    "id": "1N-1L-02",
+    "domain": "设备与系统",
+    "source_label": "系统提醒",
     "text_lines": [
-      "例会改到周四。地点在二楼。"
+      "请检查手机网络"
     ],
-    "iu_count": 2,
+    "n_count": 1,
+    "line_count": 1,
+    "character_count": 7,
+    "character_count_computed": 7,
+    "n_units": [
+      "N1｜请检查（手机网络）"
+    ],
+    "question": "收到提醒后，该检查什么？",
+    "options": [
+      "手机电量",
+      "手机网络",
+      "存储空间",
+      "屏幕亮度"
+    ],
+    "correct": 1,
+    "answer_key": "B",
+    "synthetic": false,
+    "render_image": "1N-1L-02.png",
+    "image_sha256": "e8fe20354ba3ccd5d8f4679a39e7e4b4de65d5708ad3c22851a996e8c38f79dc",
+    "source_ref": {
+      "file": "content/source/2026-10-22/A1通知材料库.xlsx",
+      "sheet": "Sheet1（副本）（副本2）（副本）（副本）",
+      "row": 4,
+      "range": "A4:P4"
+    },
+    "source_warnings": []
+  },
+  {
+    "id": "1N-1L-03",
+    "domain": "日程与任务管理",
+    "source_label": "日程提醒",
+    "text_lines": [
+      "项目复盘会即将开始"
+    ],
+    "n_count": 1,
+    "line_count": 1,
+    "character_count": 9,
+    "character_count_computed": 9,
+    "n_units": [
+      "N1｜即将开始（项目复盘会）"
+    ],
+    "question": "这场复盘会现在是什么情况？",
+    "options": [
+      "已经结束了",
+      "已经取消了",
+      "快开始了",
+      "已经推迟了"
+    ],
+    "correct": 2,
+    "answer_key": "C",
+    "synthetic": false,
+    "render_image": "1N-1L-03.png",
+    "image_sha256": "b3dc19892a442b8a88fe98a4ed931ef95fab36da89e5be9ed6a900b7e555956b",
+    "source_ref": {
+      "file": "content/source/2026-10-22/A1通知材料库.xlsx",
+      "sheet": "Sheet1（副本）（副本2）（副本）（副本）",
+      "row": 5,
+      "range": "A5:P5"
+    },
+    "source_warnings": []
+  },
+  {
+    "id": "1N-1L-04",
+    "domain": "生活与消费服务",
+    "source_label": "快递服务",
+    "text_lines": [
+      "您的快递已签收"
+    ],
+    "n_count": 1,
+    "line_count": 1,
+    "character_count": 7,
+    "character_count_computed": 7,
+    "n_units": [
+      "N1｜已签收（快递）"
+    ],
+    "question": "你还没拿到快递，这条消息说明什么？",
+    "options": [
+      "快递还在派送",
+      "快递已经退回",
+      "快递还没发出",
+      "物流显示已签收"
+    ],
+    "correct": 3,
+    "answer_key": "D",
+    "synthetic": false,
+    "render_image": "1N-1L-04.png",
+    "image_sha256": "d457b13c296e9f1005c1e9c77ac9b5120b5ec3aec0da469a08d3e0fa2c379e61",
+    "source_ref": {
+      "file": "content/source/2026-10-22/A1通知材料库.xlsx",
+      "sheet": "Sheet1（副本）（副本2）（副本）（副本）",
+      "row": 6,
+      "range": "A6:P6"
+    },
+    "source_warnings": []
+  },
+  {
+    "id": "1N-1L-05",
+    "domain": "日程与任务管理",
+    "source_label": "日程提醒",
+    "text_lines": [
+      "周报提交已截止"
+    ],
+    "n_count": 1,
+    "line_count": 1,
+    "character_count": 7,
+    "character_count_computed": 7,
+    "n_units": [
+      "N1｜已截止（周报提交）"
+    ],
+    "question": "你打算晚点交周报，现在是什么情况？",
+    "options": [
+      "已过截止时间",
+      "还没到截止时间",
+      "截止时间延后了",
+      "周报不用交了"
+    ],
+    "correct": 0,
+    "answer_key": "A",
+    "synthetic": false,
+    "render_image": "1N-1L-05.png",
+    "image_sha256": "4a86f60c3c94e01d329cb5aee0ef022ee009fd38c254557fd28f5b141d0e8b7a",
+    "source_ref": {
+      "file": "content/source/2026-10-22/A1通知材料库.xlsx",
+      "sheet": "Sheet1（副本）（副本2）（副本）（副本）",
+      "row": 7,
+      "range": "A7:P7"
+    },
+    "source_warnings": []
+  },
+  {
+    "id": "1N-1L-06",
+    "domain": "通信与社交",
+    "source_label": "小周",
+    "text_lines": [
+      "待会一起吃个饭？"
+    ],
+    "n_count": 1,
+    "line_count": 1,
+    "character_count": 8,
+    "character_count_computed": 8,
+    "n_units": [
+      "N1｜邀请共同吃饭（对方；你）"
+    ],
+    "question": "小周想约你什么时候吃饭？",
+    "options": [
+      "现在马上",
+      "明天",
+      "下周",
+      "待会"
+    ],
+    "correct": 3,
+    "answer_key": "D",
+    "synthetic": false,
+    "render_image": "1N-1L-06.png",
+    "image_sha256": "ed89706ea2b7e03f54c1ef409375574680e69905ad46f40ddc23113a5e902743",
+    "source_ref": {
+      "file": "content/source/2026-10-22/A1通知材料库.xlsx",
+      "sheet": "Sheet1（副本）（副本2）（副本）（副本）",
+      "row": 8,
+      "range": "A8:P8"
+    },
+    "source_warnings": []
+  },
+  {
+    "id": "2N-1L-01",
+    "domain": "设备与系统",
+    "source_label": "系统提醒",
+    "text_lines": [
+      "手机连接已断开，请重新连接"
+    ],
+    "n_count": 2,
+    "line_count": 1,
     "character_count": 13,
-    "line_count": 1,
-    "question": "例会安排在哪层楼？",
-    "options": [
-      "一楼",
-      "二楼",
-      "三楼",
-      "四楼"
+    "character_count_computed": 13,
+    "n_units": [
+      "N1｜已断开（手机连接）",
+      "N2｜请重新连接（手机）"
     ],
-    "correct": 1,
-    "synthetic": true
+    "question": "手机还能用，收到这条提醒后该怎么做？",
+    "options": [
+      "重新连接手机",
+      "继续保持断开",
+      "清理手机文件",
+      "调高眼镜亮度"
+    ],
+    "correct": 0,
+    "answer_key": "A",
+    "synthetic": false,
+    "render_image": "2N-1L-01.png",
+    "image_sha256": "cad60481c6434704e56de2d91cf3514791919d246216672656e1bfd86c810027",
+    "source_ref": {
+      "file": "content/source/2026-10-22/A1通知材料库.xlsx",
+      "sheet": "Sheet1（副本）（副本2）（副本）（副本）",
+      "row": 9,
+      "range": "A9:P9"
+    },
+    "source_warnings": []
   },
   {
-    "id": "SYN-1-3",
-    "domain": "日程",
+    "id": "2N-1L-02",
+    "domain": "日程与任务管理",
+    "source_label": "日程提醒",
     "text_lines": [
-      "例会改到周四。",
-      "地点在二楼。请带项目清单。"
+      "文件提交今日17:30截止"
     ],
-    "iu_count": 3,
+    "n_count": 2,
+    "line_count": 1,
+    "character_count": 13,
+    "character_count_computed": 13,
+    "n_units": [
+      "N1｜截止（文件提交）",
+      "N2｜截止时间为（文件提交；今日17:30）"
+    ],
+    "question": "今天17:20和17:40，哪个时间交文件还来得及？",
+    "options": [
+      "17:40",
+      "17:20",
+      "两个时间都可以",
+      "两个时间都不行"
+    ],
+    "correct": 1,
+    "answer_key": "B",
+    "synthetic": false,
+    "render_image": "2N-1L-02.png",
+    "image_sha256": "e717cda0ff3c406473e663dc27c333d69cbb37b2b87448e61f6ba91cfd2b5b78",
+    "source_ref": {
+      "file": "content/source/2026-10-22/A1通知材料库.xlsx",
+      "sheet": "Sheet1（副本）（副本2）（副本）（副本）",
+      "row": 10,
+      "range": "A10:P10"
+    },
+    "source_warnings": []
+  },
+  {
+    "id": "2N-1L-03",
+    "domain": "日程与任务管理",
+    "source_label": "日程提醒",
+    "text_lines": [
+      "访谈预约今日10:00—10:30"
+    ],
+    "n_count": 2,
+    "line_count": 1,
+    "character_count": 17,
+    "character_count_computed": 17,
+    "n_units": [
+      "N1｜已安排（访谈）",
+      "N2｜预约时段为（访谈；今日10:00—10:30）"
+    ],
+    "question": "今天10:15，访谈处于哪个阶段？",
+    "options": [
+      "还没开始",
+      "已经结束",
+      "已开始，还没结束",
+      "预约是在明天"
+    ],
+    "correct": 2,
+    "answer_key": "C",
+    "synthetic": false,
+    "render_image": "2N-1L-03.png",
+    "image_sha256": "70d259ede344afff8a2010b199c01358f6d0dd2efd0bc5f2b8e501b6cb1ae514",
+    "source_ref": {
+      "file": "content/source/2026-10-22/A1通知材料库.xlsx",
+      "sheet": "Sheet1（副本）（副本2）（副本）（副本）",
+      "row": 11,
+      "range": "A11:P11"
+    },
+    "source_warnings": []
+  },
+  {
+    "id": "2N-1L-04",
+    "domain": "生活与消费服务",
+    "source_label": "餐饮服务",
+    "text_lines": [
+      "您的餐品已备好，请凭码取餐"
+    ],
+    "n_count": 2,
+    "line_count": 1,
+    "character_count": 13,
+    "character_count_computed": 13,
+    "n_units": [
+      "N1｜已备好（餐品）",
+      "N2｜请凭码领取（餐品）"
+    ],
+    "question": "你到店取餐时，该出示什么？",
+    "options": [
+      "付款码",
+      "排队号",
+      "预约码",
+      "取餐码"
+    ],
+    "correct": 3,
+    "answer_key": "D",
+    "synthetic": false,
+    "render_image": "2N-1L-04.png",
+    "image_sha256": "a8f09b3c40b8b99a214b71d90c1c927aa3b77c37ebc465ab49d85eabca6eb970",
+    "source_ref": {
+      "file": "content/source/2026-10-22/A1通知材料库.xlsx",
+      "sheet": "Sheet1（副本）（副本2）（副本）（副本）",
+      "row": 12,
+      "range": "A12:P12"
+    },
+    "source_warnings": []
+  },
+  {
+    "id": "2N-1L-05",
+    "domain": "交通与出行",
+    "source_label": "网约车",
+    "text_lines": [
+      "司机取消订单，已为您重新呼叫"
+    ],
+    "n_count": 2,
+    "line_count": 1,
+    "character_count": 14,
+    "character_count_computed": 14,
+    "n_units": [
+      "N1｜取消（司机；订单）",
+      "N2｜已重新呼叫（车辆）"
+    ],
+    "question": "收到消息后，现在叫车是什么进展？",
+    "options": [
+      "只取消了原订单",
+      "车辆已经到达",
+      "已经重新叫车",
+      "这次行程已结束"
+    ],
+    "correct": 2,
+    "answer_key": "C",
+    "synthetic": false,
+    "render_image": "2N-1L-05.png",
+    "image_sha256": "64050379fb148bcc7f312f745c399dd6a2ffe68a089ecdc325b72d9f83fccb79",
+    "source_ref": {
+      "file": "content/source/2026-10-22/A1通知材料库.xlsx",
+      "sheet": "Sheet1（副本）（副本2）（副本）（副本）",
+      "row": 13,
+      "range": "A13:P13"
+    },
+    "source_warnings": []
+  },
+  {
+    "id": "2N-1L-06",
+    "domain": "交通与出行",
+    "source_label": "航空服务",
+    "text_lines": [
+      "登机口已变更为B06"
+    ],
+    "n_count": 2,
+    "line_count": 1,
+    "character_count": 10,
+    "character_count_computed": 10,
+    "n_units": [
+      "N1｜已变更（登机口）",
+      "N2｜新登机口为（本次航班；B06）"
+    ],
+    "question": "登机牌上写着A12，现在该去哪登机？",
+    "options": [
+      "A12",
+      "B16",
+      "A06",
+      "B06"
+    ],
+    "correct": 3,
+    "answer_key": "D",
+    "synthetic": false,
+    "render_image": "2N-1L-06.png",
+    "image_sha256": "76e8b17a7113a2efcdf034602175c3220a22a918890c580ff972082c4abc8d55",
+    "source_ref": {
+      "file": "content/source/2026-10-22/A1通知材料库.xlsx",
+      "sheet": "Sheet1（副本）（副本2）（副本）（副本）",
+      "row": 14,
+      "range": "A14:P14"
+    },
+    "source_warnings": []
+  },
+  {
+    "id": "3N-2L-01",
+    "domain": "设备与系统",
+    "source_label": "系统提醒",
+    "text_lines": [
+      "网络连接失败，更新已暂停，",
+      "请重新连接"
+    ],
+    "n_count": 3,
+    "line_count": 2,
+    "character_count": 18,
+    "character_count_computed": 18,
+    "n_units": [
+      "N1｜连接失败（网络）",
+      "N2｜已暂停（更新）",
+      "N3｜请重新连接（网络）"
+    ],
+    "question": "你还在等更新完成，现在该怎么做？",
+    "options": [
+      "重新连接网络",
+      "继续等待更新",
+      "关闭更新提醒",
+      "清理存储文件"
+    ],
+    "correct": 0,
+    "answer_key": "A",
+    "synthetic": false,
+    "render_image": "3N-2L-01.png",
+    "image_sha256": "6217b1c16ac708ae637bf532af582f2b9b380d95ff732603011c2a1f93ba8582",
+    "source_ref": {
+      "file": "content/source/2026-10-22/A1通知材料库.xlsx",
+      "sheet": "Sheet1（副本）（副本2）（副本）（副本）",
+      "row": 15,
+      "range": "A15:P15"
+    },
+    "source_warnings": []
+  },
+  {
+    "id": "3N-2L-02",
+    "domain": "生活与消费服务",
+    "source_label": "快递服务",
+    "text_lines": [
+      "您的快递已到南门驿站，",
+      "请凭取件码5826领取。"
+    ],
+    "n_count": 3,
+    "line_count": 2,
+    "character_count": 23,
+    "character_count_computed": 23,
+    "n_units": [
+      "N1｜已到达（快递）",
+      "N3｜请凭码领取（快递；取件码5826）",
+      "N2｜到达地点为（快递；南门驿站）"
+    ],
+    "question": "你准备去北门取快递，应该改去哪、用哪个码？",
+    "options": [
+      "北门驿站，5826",
+      "南门驿站，8526",
+      "北门驿站，8526",
+      "南门驿站，5826"
+    ],
+    "correct": 3,
+    "answer_key": "D",
+    "synthetic": false,
+    "render_image": "3N-2L-02.png",
+    "image_sha256": "78b2e75195369687b492de4d76dbd74b26346e2dda7e09ee5dee793cd8ac1ada",
+    "source_ref": {
+      "file": "content/source/2026-10-22/A1通知材料库.xlsx",
+      "sheet": "Sheet1（副本）（副本2）（副本）（副本）",
+      "row": 16,
+      "range": "A16:P16"
+    },
+    "source_warnings": []
+  },
+  {
+    "id": "3N-2L-03",
+    "domain": "日程与任务管理",
+    "source_label": "日程提醒",
+    "text_lines": [
+      "项目例会今日09:00开始，",
+      "地点为508会议室"
+    ],
+    "n_count": 3,
+    "line_count": 2,
+    "character_count": 23,
+    "character_count_computed": 23,
+    "n_units": [
+      "N1｜开始（项目例会）",
+      "N2｜开始时间为（项目例会；今日09:00）",
+      "N3｜举行地点为（项目例会；508会议室）"
+    ],
+    "question": "今天09:30到508开会，时间和地点对吗？",
+    "options": [
+      "地点对，刚好开始",
+      "地点对，但去晚了",
+      "地点对，但去早了",
+      "时间对，但地点错了"
+    ],
+    "correct": 1,
+    "answer_key": "B",
+    "synthetic": false,
+    "render_image": "3N-2L-03.png",
+    "image_sha256": "7597d72efe7b5c7093b430c83e870b1ff23cfbbfa555b3b15668cf5d73e2f0c8",
+    "source_ref": {
+      "file": "content/source/2026-10-22/A1通知材料库.xlsx",
+      "sheet": "Sheet1（副本）（副本2）（副本）（副本）",
+      "row": 17,
+      "range": "A17:P17"
+    },
+    "source_warnings": []
+  },
+  {
+    "id": "3N-2L-04",
+    "domain": "交通与出行",
+    "source_label": "铁路服务",
+    "text_lines": [
+      "列车已开始检票，检票口B08，",
+      "请前往检票"
+    ],
+    "n_count": 3,
+    "line_count": 2,
     "character_count": 20,
-    "line_count": 2,
-    "question": "参加例会需要携带什么？",
+    "character_count_computed": 20,
+    "n_units": [
+      "N1｜已开始检票（列车）",
+      "N3｜请前往检票（B08检票口）",
+      "N2｜检票口为（本次列车；B08）"
+    ],
+    "question": "你还在B06候车，现在该去哪检票？",
     "options": [
-      "项目清单",
-      "个人简历",
-      "交通卡",
-      "设备说明书"
-    ],
-    "correct": 0,
-    "synthetic": true
-  },
-  {
-    "id": "SYN-2-1",
-    "domain": "设备",
-    "text_lines": [
-      "打印机已恢复。"
-    ],
-    "iu_count": 1,
-    "character_count": 7,
-    "line_count": 1,
-    "question": "打印机目前状态如何？",
-    "options": [
-      "待维修",
-      "已恢复",
-      "已停用",
-      "正在搬迁"
-    ],
-    "correct": 1,
-    "synthetic": true
-  },
-  {
-    "id": "SYN-2-2",
-    "domain": "设备",
-    "text_lines": [
-      "打印机已恢复。请使用三号机。"
-    ],
-    "iu_count": 2,
-    "character_count": 14,
-    "line_count": 1,
-    "question": "应该使用哪台打印机？",
-    "options": [
-      "一号",
-      "二号",
-      "三号",
-      "四号"
+      "B06检票口",
+      "B18检票口",
+      "B08检票口",
+      "B09检票口"
     ],
     "correct": 2,
-    "synthetic": true
+    "answer_key": "C",
+    "synthetic": false,
+    "render_image": "3N-2L-04.png",
+    "image_sha256": "8336374249dcac873b5379a6f610712fd0c771222bccc118031b3a031a03ca9e",
+    "source_ref": {
+      "file": "content/source/2026-10-22/A1通知材料库.xlsx",
+      "sheet": "Sheet1（副本）（副本2）（副本）（副本）",
+      "row": 18,
+      "range": "A18:P18"
+    },
+    "source_warnings": []
   },
   {
-    "id": "SYN-2-3",
-    "domain": "设备",
+    "id": "3N-2L-05",
+    "domain": "交通与出行",
+    "source_label": "网约车",
     "text_lines": [
-      "打印机已恢复。",
-      "请使用三号机。彩色文件需登记。"
+      "司机已到达西门停车区，",
+      "车牌尾号为6281，请尽快前往"
     ],
-    "iu_count": 3,
-    "character_count": 22,
+    "n_count": 3,
     "line_count": 2,
-    "question": "打印彩色文件前需要做什么？",
-    "options": [
-      "换纸",
-      "关机",
-      "充电",
-      "登记"
+    "character_count": 26,
+    "character_count_computed": 26,
+    "n_units": [
+      "N1｜已到达（司机；西门停车场）",
+      "N3｜车牌尾号为（车辆；6281）",
+      "N4｜请尽快前往（西门停车区）"
     ],
-    "correct": 3,
-    "synthetic": true
-  },
-  {
-    "id": "SYN-3-1",
-    "domain": "出行",
-    "text_lines": [
-      "班车停靠南门。"
-    ],
-    "iu_count": 1,
-    "character_count": 7,
-    "line_count": 1,
-    "question": "应该去哪里等班车？",
+    "question": "西门有几辆车，你该怎么找？",
     "options": [
-      "东门",
-      "西门",
-      "南门",
-      "北门"
+      "车身颜色",
+      "车辆品牌",
+      "车牌号",
+      "司机姓名"
     ],
     "correct": 2,
-    "synthetic": true
+    "answer_key": "C",
+    "synthetic": false,
+    "render_image": "3N-2L-05.png",
+    "image_sha256": "8cf1504d1dde23a82d46ad4645844b7fb9c19bea5a77133b618b3f9b79d0db70",
+    "source_ref": {
+      "file": "content/source/2026-10-22/A1通知材料库.xlsx",
+      "sheet": "Sheet1（副本）（副本2）（副本）（副本）",
+      "row": 19,
+      "range": "A19:P19"
+    },
+    "source_warnings": [
+      "source_unit_labels_nonsequential"
+    ]
   },
   {
-    "id": "SYN-3-2",
-    "domain": "出行",
+    "id": "3N-2L-06",
+    "domain": "通信与社交",
+    "source_label": "小陈",
     "text_lines": [
-      "班车停靠南门。发车时间八点。"
+      "会议资料已整理好发至群里，",
+      "请在今晚八点前查收。"
     ],
-    "iu_count": 2,
-    "character_count": 14,
-    "line_count": 1,
-    "question": "班车几点发车？",
-    "options": [
-      "七点",
-      "八点",
-      "九点",
-      "十点"
-    ],
-    "correct": 1,
-    "synthetic": true
-  },
-  {
-    "id": "SYN-3-3",
-    "domain": "出行",
-    "text_lines": [
-      "班车停靠南门。",
-      "发车时间八点。请提前五分钟到达。"
-    ],
-    "iu_count": 3,
-    "character_count": 23,
+    "n_count": 3,
     "line_count": 2,
-    "question": "应该几点到达候车点？",
+    "character_count": 23,
+    "character_count_computed": 23,
+    "n_units": [
+      "N1｜已整理好（会议资料）",
+      "N2｜已发送（会议资料；群聊）",
+      "N3｜请查收（会议资料；今晚20:00前）"
+    ],
+    "question": "你打算今晚九点查收，符合时间要求吗？",
     "options": [
-      "七点五十五",
-      "八点整",
-      "八点零五",
-      "八点十分"
+      "不符合，要今晚八点前",
+      "符合，今晚九点前即可",
+      "符合，今晚查收即可",
+      "不符合，要明晚八点前"
     ],
     "correct": 0,
-    "synthetic": true
-  },
-  {
-    "id": "SYN-4-1",
-    "domain": "活动",
-    "text_lines": [
-      "讲座今天取消。"
-    ],
-    "iu_count": 1,
-    "character_count": 7,
-    "line_count": 1,
-    "question": "讲座今天如何安排？",
-    "options": [
-      "提前",
-      "照常",
-      "延期半小时",
-      "取消"
-    ],
-    "correct": 3,
-    "synthetic": true
-  },
-  {
-    "id": "SYN-4-2",
-    "domain": "活动",
-    "text_lines": [
-      "讲座今天取消。资料发到邮箱。"
-    ],
-    "iu_count": 2,
-    "character_count": 14,
-    "line_count": 1,
-    "question": "在哪里查看讲座资料？",
-    "options": [
-      "邮箱",
-      "前台",
-      "公告栏",
-      "会议室"
-    ],
-    "correct": 0,
-    "synthetic": true
-  },
-  {
-    "id": "SYN-4-3",
-    "domain": "活动",
-    "text_lines": [
-      "讲座今天取消。",
-      "资料发到邮箱。报名者需回复确认。"
-    ],
-    "iu_count": 3,
-    "character_count": 23,
-    "line_count": 2,
-    "question": "报名者收到资料后需要做什么？",
-    "options": [
-      "重新报名",
-      "回复确认",
-      "打印证件",
-      "电话请假"
-    ],
-    "correct": 1,
-    "synthetic": true
+    "answer_key": "A",
+    "synthetic": false,
+    "render_image": "3N-2L-06.png",
+    "image_sha256": "7f804410030da7a084defa61e593bc134afb8a8a69542ba8f8a71c4b6bee75f0",
+    "source_ref": {
+      "file": "content/source/2026-10-22/A1通知材料库.xlsx",
+      "sheet": "Sheet1（副本）（副本2）（副本）（副本）",
+      "row": 20,
+      "range": "A20:P20"
+    },
+    "source_warnings": []
   }
 ]

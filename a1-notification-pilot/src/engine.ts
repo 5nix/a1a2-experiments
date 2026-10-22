@@ -8,9 +8,9 @@ export class Engine {
     const block = s.snapshot.blocks[s.index], material = s.snapshot.materials.find(m => m.id === block?.material_id);
     const { token_hash, snapshot, ...publicSession } = s;
     const question = s.phase === 'PROBE' && material ? { text: material.question, options: material.options } : null;
-    return { ...publicSession, total_blocks: snapshot.blocks.length, preset: snapshot.preset, synthetic: snapshot.synthetic, pilot_round: snapshot.pilot_round,
+    return { ...publicSession, total_blocks: snapshot.blocks.length, preset: snapshot.preset, synthetic: snapshot.synthetic, pilot_round: snapshot.pilot_round, material_version: snapshot.material_version ?? 'synthetic-v1',
       block: block ? { id: block.id, kind: block.kind, round: block.round, count: block.letters.length, stimulus_ms: block.stimulus_ms, soa_ms: block.soa_ms } : null,
-      question, break_remaining_ms: Math.max(0, (s.break_until ?? 0) - Date.now()), mode: 'mock' };
+      question, break_remaining_ms: Math.max(0, (s.break_until ?? 0) - Date.now()), mode: snapshot.delivery_mode ?? 'mock' };
   }
   start(s: Session, owner: unknown) {
     if (typeof owner !== 'string' || owner.length < 20 || owner.length > 80) throw new HttpError(422, '页面控制标识无效。');
@@ -26,7 +26,7 @@ export class Engine {
   }
   running(s: Session) {
     const block = s.snapshot.blocks[s.index], material = s.snapshot.materials.find(m => m.id === block.material_id);
-    return { attempt_id: s.attempt_id, block, notification: material ? { id: material.id, text_lines: material.text_lines } : null };
+    return { attempt_id: s.attempt_id, block, mode: s.snapshot.delivery_mode ?? 'mock', notification: material ? { id: material.id, text_lines: material.text_lines, render_image: material.render_image ?? null, source_label: material.source_label ?? null, n_count: material.n_count ?? material.iu_count, line_count: material.line_count ?? material.text_lines.length } : null };
   }
   finish(s: Session, owner: unknown) {
     this.store.requireOwner(s, owner);
