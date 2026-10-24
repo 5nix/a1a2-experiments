@@ -1,32 +1,174 @@
 {
-  "material_version": "a1-library-2026-10-22",
+  "material_version": "a1-library-2026-10-24",
   "material_count": 18,
   "image_count": 18,
   "sources": [
     {
-      "file": "A1刺激材料池.zip",
-      "sha256": "bf3e276377fe0506f46b4b293bf7bf68856b56a8a0a983f4299de08a8a5a461d"
+      "file": "content/source/2026-10-24/A1通知材料库 - A1通知材料库.csv",
+      "sha256": "2021969550163ae645365d149036c348423328fccd85d263ae072fb30e32f6e2"
     },
     {
-      "file": "A1通知材料库.xlsx",
-      "sha256": "ca046a395e4b590a13c53fbb6d1005211f980aeeb2b13e3a0e1fdb6168eb002d"
+      "file": "content/source/2026-10-24/A1刺激材料池(1).zip",
+      "sha256": "cba65ed7818199b7fa34a797b6396542292a48777c5849a0e8296aa284348222"
+    }
+  ],
+  "images": [
+    {
+      "file": "1N-1L-01.png",
+      "sha256": "3d166a7a52e0e2516282b7a7d953af9f533352d93d047d3b12becbf068bc6bfa",
+      "width": 1688,
+      "height": 412
+    },
+    {
+      "file": "1N-1L-02.png",
+      "sha256": "e8fe20354ba3ccd5d8f4679a39e7e4b4de65d5708ad3c22851a996e8c38f79dc",
+      "width": 1688,
+      "height": 412
+    },
+    {
+      "file": "1N-1L-03.png",
+      "sha256": "b3dc19892a442b8a88fe98a4ed931ef95fab36da89e5be9ed6a900b7e555956b",
+      "width": 1688,
+      "height": 412
+    },
+    {
+      "file": "1N-1L-04.png",
+      "sha256": "d457b13c296e9f1005c1e9c77ac9b5120b5ec3aec0da469a08d3e0fa2c379e61",
+      "width": 1688,
+      "height": 412
+    },
+    {
+      "file": "1N-1L-05.png",
+      "sha256": "4a86f60c3c94e01d329cb5aee0ef022ee009fd38c254557fd28f5b141d0e8b7a",
+      "width": 1688,
+      "height": 412
+    },
+    {
+      "file": "1N-1L-06.png",
+      "sha256": "0d7e8a113c052155bc26cfeadc3280715794cfe12ec8da3ea3229bbb70b2203f",
+      "width": 1688,
+      "height": 412
+    },
+    {
+      "file": "2N-1L-01.png",
+      "sha256": "cad60481c6434704e56de2d91cf3514791919d246216672656e1bfd86c810027",
+      "width": 1688,
+      "height": 412
+    },
+    {
+      "file": "2N-1L-02.png",
+      "sha256": "e717cda0ff3c406473e663dc27c333d69cbb37b2b87448e61f6ba91cfd2b5b78",
+      "width": 1688,
+      "height": 412
+    },
+    {
+      "file": "2N-1L-03.png",
+      "sha256": "70d259ede344afff8a2010b199c01358f6d0dd2efd0bc5f2b8e501b6cb1ae514",
+      "width": 1688,
+      "height": 412
+    },
+    {
+      "file": "2N-1L-04.png",
+      "sha256": "a8f09b3c40b8b99a214b71d90c1c927aa3b77c37ebc465ab49d85eabca6eb970",
+      "width": 1688,
+      "height": 412
+    },
+    {
+      "file": "2N-1L-05.png",
+      "sha256": "64050379fb148bcc7f312f745c399dd6a2ffe68a089ecdc325b72d9f83fccb79",
+      "width": 1688,
+      "height": 412
+    },
+    {
+      "file": "2N-1L-06.png",
+      "sha256": "76e8b17a7113a2efcdf034602175c3220a22a918890c580ff972082c4abc8d55",
+      "width": 1688,
+      "height": 412
+    },
+    {
+      "file": "3N-2L-01.png",
+      "sha256": "eb48556001337403e81347f28db8f975fc1a657fb132ed8ea82eca22db997fb0",
+      "width": 1688,
+      "height": 412
+    },
+    {
+      "file": "3N-2L-02.png",
+      "sha256": "e03926b922e5d2c1ea51b30c457932ff4943f4c88f8044f173907e89cf23132c",
+      "width": 1688,
+      "height": 548
+    },
+    {
+      "file": "3N-2L-03.png",
+      "sha256": "c92da8bf8eddbf00b002439b6dad7995fd71a8b20aa3ca98c992d4267f054b99",
+      "width": 1688,
+      "height": 412
+    },
+    {
+      "file": "3N-2L-04.png",
+      "sha256": "ce09c0f369deadbf217c1c46c7f81565a525ac64d646de45e1898bdd6e3b5407",
+      "width": 1688,
+      "height": 412
+    },
+    {
+      "file": "3N-2L-05.png",
+      "sha256": "4419b704496bea75b024a6a3f9f733a8a6c0bdfbd29bc6d358b863b22112b3bf",
+      "width": 1688,
+      "height": 548
+    },
+    {
+      "file": "3N-2L-06.png",
+      "sha256": "9ca1f0f831c7304f869fe4f058ccb88e5414691f2cc9cd65db0758f879da8bbf",
+      "width": 1688,
+      "height": 548
     }
   ],
   "issues": [
     {
+      "id": "3N-2L-01",
+      "issue": "character_count_difference",
+      "source": 18,
+      "computed": 13,
+      "action": "保留表格原值及独立计算值，不改写材料"
+    },
+    {
+      "id": "3N-2L-02",
+      "issue": "character_count_difference",
+      "source": 23,
+      "computed": 20,
+      "action": "保留表格原值及独立计算值，不改写材料"
+    },
+    {
+      "id": "3N-2L-03",
+      "issue": "character_count_difference",
+      "source": 23,
+      "computed": 15,
+      "action": "保留表格原值及独立计算值，不改写材料"
+    },
+    {
+      "id": "3N-2L-04",
+      "issue": "character_count_difference",
+      "source": 20,
+      "computed": 14,
+      "action": "保留表格原值及独立计算值，不改写材料"
+    },
+    {
       "id": "3N-2L-05",
-      "issue": "source_unit_labels_nonsequential",
-      "source_labels": [
-        "N1",
-        "N3",
-        "N4"
-      ],
-      "action": "原样保留，未重编码"
+      "issue": "character_count_difference",
+      "source": 26,
+      "computed": 20,
+      "action": "保留表格原值及独立计算值，不改写材料"
+    },
+    {
+      "id": "3N-2L-06",
+      "issue": "character_count_difference",
+      "source": 23,
+      "computed": 19,
+      "action": "保留表格原值及独立计算值，不改写材料"
     }
   ],
   "notes": [
-    "使用来源PNG作为模拟眼镜卡片，保留正文换行和来源标题；问题/答案来自XLSX。",
-    "N编码沿用材料库，不能自动视为原SOP的IU切分。",
-    "原XLSX工作表dimension为A1，但实际包含18行材料；提取直接读取sheetData。"
+    "题干、选项、答案、N单元、正文和声明行数均来自CSV原值。",
+    "卡片直接显示ZIP原始PNG，不根据CSV重新排版；CSV未保留图片折行。",
+    "字符数差异保留来源值和计算值；不自动修订来源。"
   ]
 }

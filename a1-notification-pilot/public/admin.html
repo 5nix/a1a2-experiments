@@ -1,9 +1,150 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>A1 实验后台</title><link rel="stylesheet" href="/app.css"></head>
-<body class="admin"><header class="appbar"><strong>A1 · 视觉 2-back</strong><span id="device-badge" class="badge">未连接眼镜</span><nav class="top-tabs"><button id="tab-sessions" aria-pressed="true">会话</button><button id="tab-check" aria-pressed="false">准备与检查</button></nav></header>
-<main id="session-panel" class="admin-layout"><section class="card network"><div><h2>手机扫码进入主试后台</h2><p>手机与电脑连接同一网络。电脑从会话中手动打开被试页面。</p><label>网卡地址<select id="address"></select></label><input id="admin-url" readonly aria-label="主试地址"><button id="copy-address">复制地址</button></div><img id="qr" alt="主试后台二维码" width="150" height="150"></section>
-<aside><section class="card"><h2>新建会话</h2><form id="create"><label>匿名被试编号<input name="participant_id" value="000" required pattern="[A-Za-z0-9_-]{1,40}"></label><label>通知呈现<select name="delivery_mode"><option value="mock">电脑模拟（Mock）</option><option value="rayneo">雷鸟眼镜（A1图片APK）</option></select></label><label>运行预设<select name="preset"><option value="pool">全部材料 · 18通知＋2对照</option><option value="quick">快速预演 · 练习＋通知＋对照</option><option value="sop">抽取子集 · 每个N水平4条＋2对照</option></select></label><p id="materials-info" class="muted"></p><label>预实验轮次<select name="pilot_round"><option value="round1">第一轮</option><option value="round2">第二轮</option></select></label><label>随机种子<input name="seed" value="20261022" type="number" min="0" max="4294967295" required></label><button class="primary">创建会话</button></form><p class="muted">当前使用导入的通知库和原始卡片图，通知呈现方式在创建时固定。字母连续呈现，通知期间不停顿；鼠标左键和空格均表示匹配。</p></section><section class="card"><h2>会话</h2><div id="sessions"></div><a class="button" href="/api/admin/export">导出全部 ZIP</a></section></aside>
-<section class="card detail"><div id="empty"><h2>选择一个会话</h2><p>查看进度、被试入口和前／中／后表现。</p></div><div id="selected" hidden><h2 id="title"></h2><p id="state"></p><a id="open" class="button primary" target="_blank" rel="noopener">在本机打开被试页面</a><div class="actions"><a id="export" class="button">导出当前 ZIP</a><button id="interrupt">中断本段并允许重跑</button><button id="stop" class="danger">结束会话</button></div><p class="muted">重跑保留原始尝试并创建新尝试。当前任务内的失焦或时序异常会标记质控，不算作被试错误。</p><h3>任务窗口表现</h3><p class="muted">前两项不评分；跨通知边界单列。仅完整、无失焦和时序异常的尝试进入摘要。正确率差以百分点报告。</p><div class="table-scroll"><table><thead><tr><th>任务</th><th>窗口</th><th>有效项</th><th>正确率</th><th>命中 RT</th><th>较前窗变化</th></tr></thead><tbody id="summary"></tbody></table></div><form id="note"><label>观察／异常备注<textarea id="note-text" rows="3" maxlength="4000"></textarea></label><button>保存备注</button></form><details><summary>最近原始事件</summary><pre id="events"></pre></details></div></section></main><section id="check-panel" class="check-layout" hidden>
-<section class="card"><h2>眼镜与显示端</h2><p id="device-status">正在读取设备状态…</p><p id="device-diagnostic" class="error"></p><div class="actions"><button id="scan-devices">扫描ADB设备</button><select id="device-serial" aria-label="选择ADB设备"><option value="">请先扫描设备</option></select><button id="bind-device">连接所选眼镜</button></div><div class="actions"><button data-device-action="probe">刷新连接状态</button><button data-device-action="open" class="primary">唤醒并打开显示端</button><button data-device-action="reconnect">重连USB通道</button><button data-device-action="scrcpy">打开scrcpy左眼画面</button><button id="host-toggle">开启上位机守护</button></div><p id="host-state" class="muted"></p><p class="muted">A1图片显示端独立安装，与A5文字端分开。扫描后连接并打开显示端；图片能力通过后才可发送。任务和图片展示期间不切换设备、不拉前台、不手动插入通知。</p><a class="button" href="/api/admin/device/apk">下载A1图片显示APK</a></section>
-<section class="card"><h2>手动发送通知图片</h2><form id="image-notify"><label>通知材料<select id="image-material" required></select></label><div class="image-preview"><img id="image-preview" alt="所选通知原图"></div><label>展示时长（毫秒）<input id="image-duration" type="number" min="1000" max="15000" step="100" value="4000" required></label><button id="send-image" class="primary" disabled>发送到眼镜</button><p class="muted">图片预先缓存、双端哈希核对；双眼绘制后眼镜独立计时。只显示接受回执不能证明实际显示；请核对drawn → hidden。独立调试不会混入被试成绩。</p></form><h3>图片请求与显示证据</h3><div id="device-records"></div></section>
-<section class="card"><h2>控制记录</h2><pre id="device-audit"></pre></section>
-</section><p id="feedback" role="status" class="feedback" hidden></p><script type="module" src="/admin.js"></script></body></html>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>A1 · 主试</title><link rel="stylesheet" href="/app.css"></head>
+<body class="admin">
+<header class="bar">
+  <span class="mark">A1<small>主试</small></span>
+  <nav class="tabs"><button id="tab-sessions" aria-pressed="true">会话</button><button id="tab-check" aria-pressed="false">设备</button></nav>
+  <div class="bar-right">
+    <button id="device-pill" class="status-pill" title="设备"><i id="device-dot" class="dot"></i><span id="device-badge">读取中</span></button>
+    <button id="qr-toggle" class="icon-btn" aria-expanded="false" aria-controls="qr-pop" title="手机扫码"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 20h4v-3"/></svg></button>
+    <button id="shutdown-system" class="icon-btn danger" title="退出并关闭系统"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v8M6.3 6.3a8 8 0 1 0 11.4 0"/></svg></button>
+  </div>
+  <div id="qr-pop" class="pop" hidden>
+    <img id="qr" alt="主试后台二维码" width="180" height="180">
+    <label><span class="k">网卡</span><select id="address"></select></label>
+    <div class="row"><input id="admin-url" readonly aria-label="主试地址"><button id="copy-address">复制</button></div>
+  </div>
+</header>
+
+<main id="session-panel" class="console">
+  <aside class="rail">
+    <button id="new-session" class="new" aria-pressed="false">＋ 新建会话</button>
+    <div id="sessions" class="list"></div>
+    <div class="rail-foot">
+      <details id="deleted-section" hidden><summary>已删除</summary><div id="deleted-sessions"></div></details>
+      <a class="button" href="/api/admin/export">导出全部 ZIP</a>
+    </div>
+  </aside>
+
+  <section class="stage">
+    <section id="create-panel" class="create" hidden>
+      <form id="create">
+        <h1>新会话</h1>
+        <div class="group">
+          <div class="grid-3">
+            <label class="pid"><span class="k">被试编号</span><input name="participant_id" value="000" required pattern="[A-Za-z0-9_\-]{1,40}" autocomplete="off"></label>
+            <div><span class="k">轮次</span><span class="seg"><label><input type="radio" name="pilot_round" value="round1" checked><span>第一轮</span></label><label><input type="radio" name="pilot_round" value="round2"><span>第二轮</span></label></span></div>
+            <label><span class="k">随机种子</span><input name="seed" value="20261022" type="number" min="0" max="4294967295" required></label>
+          </div>
+          <label class="switch"><input type="checkbox" name="debug"><i aria-hidden="true"></i><span>调试被试</span><small>任务外可自由选择关卡</small></label>
+        </div>
+        <div class="group">
+          <div class="seg-row">
+            <div><span class="k">通知呈现</span><span class="seg"><label><input type="radio" name="delivery_mode" value="rayneo" checked><span>雷鸟眼镜</span></label><label><input type="radio" name="delivery_mode" value="mock"><span>电脑模拟</span></label></span></div>
+            <div><span class="k">预设</span><span class="seg"><label><input type="radio" name="preset" value="sop" checked><span>正式 · 9通知＋1对照</span></label><label><input type="radio" name="preset" value="quick"><span>快速预演</span></label></span></div>
+          </div>
+          <p id="materials-info" class="muted"></p>
+        </div>
+        <div class="group">
+          <span class="group-k">时序 · ms</span>
+          <div id="timebar" class="timebar" aria-hidden="true"><i class="pre">PRE</i><i class="note">通知</i><i class="early">早窗</i><i class="post">POST</i></div>
+          <div class="grid-4">
+            <label><span class="k">PRE</span><input name="pre_ms" type="number" min="4000" max="300000" step="100" value="20000" required></label>
+            <label><span class="k">通知</span><input name="notification_ms" type="number" min="1000" max="15000" step="100" value="8500" required></label>
+            <label><span class="k">POST</span><input name="post_ms" type="number" min="1000" max="300000" step="100" value="15000" required></label>
+            <label><span class="k">恢复早窗</span><input name="post_early_ms" type="number" min="0" max="300000" step="100" value="10000" required></label>
+          </div>
+        </div>
+        <div class="group">
+          <span class="group-k">追踪 · 半宽归一化单位</span>
+          <div class="grid-3">
+            <label><span class="k">扰动 RMS</span><input name="disturbance_rms" type="number" min="0.01" max="0.5" step="any" value="0.16" required></label>
+            <label><span class="k">扰动 Hz</span><input name="disturbance_hz" type="number" min="0.03" max="1" step="any" value="0.22" required></label>
+            <label><span class="k">鼠标增益</span><input name="input_gain" type="number" min="0.1" max="3" step="any" value="1" required></label>
+            <label><span class="k">目标半径</span><input name="target_radius" type="number" min="0.02" max="0.3" step="any" value="0.08" required></label>
+            <label><span class="k">圆点半径</span><input name="cursor_radius" type="number" min="0.005" max="0.1" step="any" value="0.02" required></label>
+            <label><span class="k">显示放大 ×</span><input name="display_scale" type="number" min="1" max="2.5" step="0.05" value="1.5" required></label>
+          </div>
+        </div>
+        <div class="create-actions"><button class="primary">创建会话</button><button type="button" id="preview-plan">预览计划</button></div>
+      </form>
+      <aside class="side">
+        <figure class="scope" aria-label="目标与圆点实际比例">
+          <svg id="scope" viewBox="0 0 200 200" aria-hidden="true">
+            <path class="corner" d="M2 14V2h12M186 2h12v12M198 186v12h-12M14 198H2v-12"/>
+            <circle id="scope-rms" class="rms" cx="100" cy="100" r="16"/>
+            <circle id="scope-ring" class="ring" cx="100" cy="100" r="8"/>
+            <circle class="center" cx="100" cy="100" r="1"/>
+            <circle id="scope-cursor" class="cursor" cx="100" cy="100" r="2"/>
+          </svg>
+          <figcaption id="scope-caption"></figcaption>
+        </figure>
+        <section id="plan-preview" hidden><p id="preview-meta" class="muted"></p><div id="preview-content"></div></section>
+      </aside>
+    </section>
+
+    <div id="empty" class="empty"><b>A1</b><span>选择左侧会话，或新建</span></div>
+
+    <div id="selected" hidden>
+      <header class="subject">
+        <div><h1 id="title"></h1><div id="state" class="chips"></div></div>
+        <div class="subject-actions">
+          <button id="interrupt">中断本段</button>
+          <a id="open" class="button primary" target="_blank" rel="noopener">打开被试页面</a>
+          <details class="more"><summary aria-label="更多操作"></summary>
+            <div class="more-menu"><a id="export" class="button">导出本会话 ZIP</a><button id="stop" class="danger">结束会话</button><button id="delete-session" class="danger">删除会话</button></div>
+          </details>
+        </div>
+      </header>
+      <ol id="timeline" class="timeline"></ol>
+      <p id="timing-qc" class="qc"></p>
+
+      <section id="tracking-results" hidden>
+        <div class="section-k">通知后恢复 · RMSE</div>
+        <div id="trial-grid" class="trials"></div>
+        <details class="fold"><summary>阶段数据</summary><div id="tracking-summary"></div></details>
+        <details class="fold"><summary>恢复窗口数据</summary><div id="tracking-recovery"></div></details>
+      </section>
+
+      <section id="nback-results" hidden>
+        <h3>被试 × N 水平 × 阶段</h3><div class="table-scroll"><table><thead><tr><th>N 水平</th><th>阶段</th><th>有效/目标/非目标</th><th>正确率</th><th>命中率</th><th>误报率</th><th>平衡正确率</th><th>命中 RT 均值/中位数/n</th></tr></thead><tbody id="pooled-summary"></tbody></table></div>
+        <h3>单次尝试窗口</h3><div class="table-scroll"><table><thead><tr><th>任务</th><th>窗口</th><th>有效项</th><th>正确率</th><th>命中 RT</th><th>较前窗变化</th></tr></thead><tbody id="summary"></tbody></table></div>
+      </section>
+
+      <details class="fold"><summary>冻结计划与材料</summary><div id="session-plan"></div></details>
+      <details class="fold"><summary>最近原始事件</summary><pre id="events"></pre></details>
+      <form id="note"><label><span class="k">观察备注</span><textarea id="note-text" rows="2" maxlength="4000"></textarea></label><button>保存</button></form>
+    </div>
+  </section>
+</main>
+
+<section id="check-panel" class="device" hidden>
+  <div>
+    <h2>眼镜</h2>
+    <ol class="checklist">
+      <li id="step-select"><span class="t">选择设备</span><span id="step-select-s" class="s"></span>
+        <div class="a"><button id="scan-devices">扫描</button><select id="device-serial" aria-label="选择ADB设备"><option value="">请先扫描</option></select><button id="bind-device">连接</button></div></li>
+      <li id="step-usb"><span class="t">USB 通道</span><span id="step-usb-s" class="s"></span>
+        <div class="a"><button data-device-action="probe">刷新</button><button data-device-action="reconnect">重连</button></div></li>
+      <li id="step-display"><span class="t">显示端</span><span id="step-display-s" class="s"></span>
+        <div class="a"><button data-device-action="open" class="primary">唤醒并打开</button><a class="button ghost" href="/api/admin/device/apk">下载 APK</a></div></li>
+      <li id="step-image"><span class="t">图片协议</span><span id="step-image-s" class="s"></span></li>
+    </ol>
+    <p id="device-status" hidden></p>
+    <p id="device-diagnostic"></p>
+    <div class="tools"><button data-device-action="scrcpy">scrcpy 左眼画面</button><button id="host-toggle">开启上位机守护</button></div>
+    <p id="host-state" class="muted"></p>
+  </div>
+  <div>
+    <h2>试发</h2>
+    <form id="image-notify">
+      <div class="image-preview"><img id="image-preview" alt="所选通知原图"></div>
+      <div class="send-row"><label><span class="k">材料</span><select id="image-material" required></select></label><label><span class="k">时长 ms</span><input id="image-duration" type="number" min="1000" max="15000" step="100" value="8500" required></label><button id="send-image" class="primary" disabled>发送</button></div>
+    </form>
+    <div class="section-k">显示证据</div>
+    <div id="device-records"></div>
+  </div>
+  <details class="fold wide"><summary>控制记录</summary><pre id="device-audit"></pre></details>
+</section>
+<p id="feedback" role="status" class="feedback" hidden></p>
+<script type="module" src="/admin.js"></script>
+</body></html>

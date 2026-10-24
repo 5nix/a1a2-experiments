@@ -65,14 +65,20 @@ public final class MainActivity extends BaseMirrorActivity<ActivityMainBinding> 
                 .put("firmware", android.os.Build.DISPLAY).put("android_api", Integer.toString(android.os.Build.VERSION.SDK_INT))
                 .put("mercury_sdk", "0.2.6-20260310143142_94a01a90").put("app_package", getPackageName())
                 .put("display_modes", "legacy_8500,tone_8500,confirm_until_ack")
-                .put("app_version", "a1-0.1.0").put("frame_evidence", "android_dual_eye_onDraw")
+                .put("app_version", "a1-0.2.0").put("frame_evidence", "android_dual_eye_onDraw")
                 .put("interactive", Boolean.toString(((PowerManager)getSystemService(POWER_SERVICE)).isInteractive())));
+        if (command.equals("clock")) return new JSONObject().put("device_monotonic_ms", SystemClock.uptimeMillis()).put("clock_id", ledger.clockId);
         if (command.equals("events")) return new JSONObject().put("ledger_id", ledger.id).put("events", ledger.events(payload.getLong("after")));
+        if (command.equals("image_storage")) {
+            java.io.File directory = new java.io.File(getExternalFilesDir(null), "a1-cards-v2");
+            if (!directory.isDirectory() && !directory.mkdirs()) throw new IllegalStateException("image_storage_unavailable");
+            return new JSONObject().put("storage_ready", true);
+        }
         if (command.equals("prepare_image")) {
             String sha = payload.getString("image_sha256");
             if (!sha.matches("[a-f0-9]{64}")) throw new IllegalArgumentException("invalid_image_sha256");
             if (active != null) throw new IllegalStateException("device_busy_no_prepare");
-            byte[] bytes = java.nio.file.Files.readAllBytes(new java.io.File(getExternalFilesDir(null), "a1-cards/"+sha+".png").toPath());
+            byte[] bytes = java.nio.file.Files.readAllBytes(new java.io.File(getExternalFilesDir(null), "a1-cards-v2/"+sha+".png").toPath());
             if (bytes.length > 2097152) throw new IllegalArgumentException("image_too_large");
             StringBuilder digest = new StringBuilder();
             for (byte part : java.security.MessageDigest.getInstance("SHA-256").digest(bytes)) digest.append(String.format("%02x", part & 255));

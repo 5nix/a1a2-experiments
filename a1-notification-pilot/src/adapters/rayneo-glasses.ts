@@ -14,6 +14,7 @@ class DeviceRejection extends Error {
   constructor(message: string, evidence: unknown) { super(message); this.evidence = evidence; }
 }
 interface Reply {
+  device_monotonic_ms?: number; clock_id?: string; storage_ready?: boolean;
   request_id?: string; text_sha256?: string; ledger_id?: string; image_sha256?: string;
   ready?: boolean; busy?: boolean; device_info?: Record<string, string>; image_protocol?: boolean;
   events?: { seq: number; event: GlassesEvent }[];
@@ -35,7 +36,7 @@ export class RayNeoGlassesAdapter implements GlassesAdapter {
   private closed = false;
   private polling = false;
   constructor(serial: string, options: { adb?: string; run?: AdbRunner } = {}) {
-    if (serial && !/^[A-Za-z0-9_.:-]{1,128}$/.test(serial)) throw new Error('必须配置明确且有效的 A5_RAYNEO_SERIAL。');
+    if (serial && !/^[A-Za-z0-9_.:-]{1,128}$/.test(serial)) throw new Error('必须配置明确且有效的 A1_RAYNEO_SERIAL。');
     this.serial = serial; this.adb = options.adb ?? 'adb'; this.run = options.run ?? runAdb;
     this.state = { source: 'device', connected: false, ready: false, device_id: serial ? `adb:${serial}` : undefined, error: serial ? 'device_not_probed' : 'device_serial_missing', protocol: rayneoProtocol,
       independent_duration: true, persistent_deduplication: true, display_evidence: 'android_dual_eye_onDraw; optical_validation_pending' };
@@ -135,6 +136,11 @@ export class RayNeoGlassesAdapter implements GlassesAdapter {
         t_ack: null, t_display: null, t_hide: null, display_time_source: 'unavailable', error: reason, evidence: error instanceof DeviceRejection ? error.evidence : evidence };
     }
   }
+  async clockSample() {
+    const value = await this.call('clock', {});
+    if (!Number.isFinite(value.device_monotonic_ms) || typeof value.clock_id !== 'string') throw new Error('device_invalid_clock');
+    return { device_monotonic_ms: value.device_monotonic_ms!, clock_id: value.clock_id };
+  }
   async confirm(request: { request_id: string; device_id?: string }) {
     if (request.device_id !== this.state.device_id) throw new Error('device_binding_mismatch');
     const reply = await this.call('confirm', request);
@@ -145,8 +151,10 @@ export class RayNeoGlassesAdapter implements GlassesAdapter {
     if (!/^[a-f0-9]{64}$/.test(sha) || !/^link\.ironip\.a1\.rayneo$/.test(packageName)) throw new Error('image_destination_invalid');
     const bytes = await readFile(path);
     if (bytes.length > 2 * 1024 * 1024 || createHash('sha256').update(bytes).digest('hex') !== sha) throw new Error('image_hash_mismatch');
-    const directory = `/sdcard/Android/data/${packageName}/files/a1-cards`;
-    await this.run(this.adb, ['-s', this.serial, 'shell', 'mkdir', '-p', directory]);
+    const directory = `/sdcard/Android/data/${packageName}/files/a1-cards-v2`;
+    // 目录由应用创建，避免Android 12外部存储FUSE把shell创建目录隔离于应用。
+    const storage = await this.call('image_storage', {});
+    if (storage.storage_ready !== true) throw new Error('device_image_storage_unavailable');
     await this.run(this.adb, ['-s', this.serial, 'push', path, `${directory}/${sha}.png`]);
     const result = await this.call('prepare_image', { image_sha256: sha });
     if (result.image_sha256 !== sha) throw new Error('device_image_hash_mismatch');

@@ -16,7 +16,7 @@ import java.util.UUID;
 
 /** 已接受请求永久去重。清应用数据或卸载会丢失账本，不能用作恢复方法。 */
 final class Ledger extends SQLiteOpenHelper {
-    private final String clockId;
+    final String clockId;
     final String id;
     Ledger(Context context) throws Exception {
         super(context, "display.sqlite", null, 1);

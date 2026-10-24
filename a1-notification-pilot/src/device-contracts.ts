@@ -7,6 +7,7 @@ export interface GlassesReceipt { request_id: string; device_id?: string; source
 export interface GlassesEvent { event_id: string; request_id: string; device_id: string; kind: string; device_wall_ms: number; device_monotonic_ms: number; clock_id: string; error: string | null }
 export interface GlassesStatus { source: 'device'; connected: boolean; ready?: boolean; busy?: boolean; device_id?: string; error?: string | null; protocol?: string; independent_duration?: boolean; persistent_deduplication?: boolean; display_evidence?: string; device_info?: Record<string, string>; image_protocol?: boolean }
 export interface ImageAdapter {
+  clockSample?(): Promise<{ device_monotonic_ms: number; clock_id: string }>;
   getStatus(): GlassesStatus;
   probe(): Promise<void>; reconnect(): Promise<void>; close(): Promise<void>;
   prepareImage(path: string, sha: string, packageName: string): Promise<void>;

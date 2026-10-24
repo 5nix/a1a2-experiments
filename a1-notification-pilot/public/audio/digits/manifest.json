@@ -1,0 +1,310 @@
+{
+  "version": "a1-mandarin-digits-v1",
+  "alphabet": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9"
+  ],
+  "clips": [
+    {
+      "symbol": "1",
+      "spoken_text": "一",
+      "digit": 1,
+      "url": "/audio/digits/1.wav",
+      "sha256": "564c0a836dd01cebf6a956e8f3a4dc9e40f057c7ebc38b32f08fe19201db075e",
+      "duration_ms": 500,
+      "sample_rate_hz": 24000,
+      "channels": 1,
+      "pcm_bits": 16,
+      "frames": 12000,
+      "format": "WAV PCM signed 16-bit little-endian",
+      "say_rate": 180,
+      "source_duration_ms": 257.7083333333333,
+      "speech_detected_duration_ms": 235.83333333333334,
+      "speech_start_ms": 25,
+      "speech_end_ms": 260.8333333333333,
+      "trailing_margin_ms": 239.16666666666666,
+      "peak_amplitude": 0.8000122074037904,
+      "gain": 2.283051733147535,
+      "source_pcm_sha256": "ad9f0c9d1d1d682b1e42fd936dbfcaaa6367ed66c7fec3653d80ee389939a1f3",
+      "generation_attempts": [
+        {
+          "say_rate": 180,
+          "active_duration_ms": 235.83333333333334
+        }
+      ]
+    },
+    {
+      "symbol": "2",
+      "spoken_text": "二",
+      "digit": 2,
+      "url": "/audio/digits/2.wav",
+      "sha256": "31e90512fdd7c279cda6e5e7ae74a7e78a25fa989b9305fda2280ab896f06ace",
+      "duration_ms": 500,
+      "sample_rate_hz": 24000,
+      "channels": 1,
+      "pcm_bits": 16,
+      "frames": 12000,
+      "format": "WAV PCM signed 16-bit little-endian",
+      "say_rate": 180,
+      "source_duration_ms": 293.2083333333333,
+      "speech_detected_duration_ms": 266.5833333333333,
+      "speech_start_ms": 25,
+      "speech_end_ms": 291.5833333333333,
+      "trailing_margin_ms": 208.41666666666666,
+      "peak_amplitude": 0.8000122074037904,
+      "gain": 1.3875714588185475,
+      "source_pcm_sha256": "a5ab99539e5b3b5c254c48ab14977e08e00127fdf99b0a4ffad2e880a2a25abf",
+      "generation_attempts": [
+        {
+          "say_rate": 180,
+          "active_duration_ms": 266.5833333333333
+        }
+      ]
+    },
+    {
+      "symbol": "3",
+      "spoken_text": "三",
+      "digit": 3,
+      "url": "/audio/digits/3.wav",
+      "sha256": "254ceb523731e571a52e84e14ae4a3e8e1117324d9a33cf4155134f708fc8dfc",
+      "duration_ms": 500,
+      "sample_rate_hz": 24000,
+      "channels": 1,
+      "pcm_bits": 16,
+      "frames": 12000,
+      "format": "WAV PCM signed 16-bit little-endian",
+      "say_rate": 180,
+      "source_duration_ms": 396.625,
+      "speech_detected_duration_ms": 373.4583333333333,
+      "speech_start_ms": 25,
+      "speech_end_ms": 398.4583333333333,
+      "trailing_margin_ms": 101.54166666666667,
+      "peak_amplitude": 0.8000122074037904,
+      "gain": 1.4125444552214679,
+      "source_pcm_sha256": "971d0b3bef24f8cfc5ff500b5924385d4665f315c41969ec23f0463e7b274c0a",
+      "generation_attempts": [
+        {
+          "say_rate": 180,
+          "active_duration_ms": 373.4583333333333
+        }
+      ]
+    },
+    {
+      "symbol": "4",
+      "spoken_text": "四",
+      "digit": 4,
+      "url": "/audio/digits/4.wav",
+      "sha256": "51bc4aafcdebc2c6fa3ba5087a356ca5f022ebaa995ed70fa97a652f16205bd7",
+      "duration_ms": 500,
+      "sample_rate_hz": 24000,
+      "channels": 1,
+      "pcm_bits": 16,
+      "frames": 12000,
+      "format": "WAV PCM signed 16-bit little-endian",
+      "say_rate": 180,
+      "source_duration_ms": 303.75,
+      "speech_detected_duration_ms": 282.875,
+      "speech_start_ms": 25,
+      "speech_end_ms": 307.875,
+      "trailing_margin_ms": 192.125,
+      "peak_amplitude": 0.8000122074037904,
+      "gain": 2.3374052608114133,
+      "source_pcm_sha256": "7522b402abc4b850ae2dcfa416558c3002b3fbbfa272d9473fc556b1d8f1ce1e",
+      "generation_attempts": [
+        {
+          "say_rate": 180,
+          "active_duration_ms": 282.875
+        }
+      ]
+    },
+    {
+      "symbol": "5",
+      "spoken_text": "五",
+      "digit": 5,
+      "url": "/audio/digits/5.wav",
+      "sha256": "2b47e1f4b177eadaf739103bdd5452d8a3cad5e4166334badeb1e0275a4ecd8a",
+      "duration_ms": 500,
+      "sample_rate_hz": 24000,
+      "channels": 1,
+      "pcm_bits": 16,
+      "frames": 12000,
+      "format": "WAV PCM signed 16-bit little-endian",
+      "say_rate": 180,
+      "source_duration_ms": 259.2916666666667,
+      "speech_detected_duration_ms": 246.125,
+      "speech_start_ms": 25,
+      "speech_end_ms": 271.125,
+      "trailing_margin_ms": 228.875,
+      "peak_amplitude": 0.8000122074037904,
+      "gain": 2.290232395596715,
+      "source_pcm_sha256": "56f3fadd9054afc88c9b4444e5ce4681a54da13f5b732eb2b6546487884f9011",
+      "generation_attempts": [
+        {
+          "say_rate": 180,
+          "active_duration_ms": 246.125
+        }
+      ]
+    },
+    {
+      "symbol": "6",
+      "spoken_text": "六",
+      "digit": 6,
+      "url": "/audio/digits/6.wav",
+      "sha256": "438c95f651ba48b04d51d8d0b4df5a72e243bd366d955d48038339444c9204d5",
+      "duration_ms": 500,
+      "sample_rate_hz": 24000,
+      "channels": 1,
+      "pcm_bits": 16,
+      "frames": 12000,
+      "format": "WAV PCM signed 16-bit little-endian",
+      "say_rate": 180,
+      "source_duration_ms": 352.3333333333333,
+      "speech_detected_duration_ms": 326.375,
+      "speech_start_ms": 25,
+      "speech_end_ms": 351.375,
+      "trailing_margin_ms": 148.625,
+      "peak_amplitude": 0.8000122074037904,
+      "gain": 1.5136851830465412,
+      "source_pcm_sha256": "5bbdf3d1759231cb8f90c1cb7834a3c89a623f92d3ecee133afd957a4b3d88ed",
+      "generation_attempts": [
+        {
+          "say_rate": 180,
+          "active_duration_ms": 326.375
+        }
+      ]
+    },
+    {
+      "symbol": "7",
+      "spoken_text": "七",
+      "digit": 7,
+      "url": "/audio/digits/7.wav",
+      "sha256": "c53756dea58c60dc895ded92879c9d48fa33ab830504add2d3519643dc73a8ec",
+      "duration_ms": 500,
+      "sample_rate_hz": 24000,
+      "channels": 1,
+      "pcm_bits": 16,
+      "frames": 12000,
+      "format": "WAV PCM signed 16-bit little-endian",
+      "say_rate": 180,
+      "source_duration_ms": 353.4583333333333,
+      "speech_detected_duration_ms": 328.9583333333333,
+      "speech_start_ms": 25,
+      "speech_end_ms": 353.9583333333333,
+      "trailing_margin_ms": 146.04166666666666,
+      "peak_amplitude": 0.8000122074037904,
+      "gain": 2.7139455430168753,
+      "source_pcm_sha256": "80fd50aeb38e5b4e4a391351e46e2a9caddcfd7bb127ac12161d46e4e86ef5e2",
+      "generation_attempts": [
+        {
+          "say_rate": 180,
+          "active_duration_ms": 328.9583333333333
+        }
+      ]
+    },
+    {
+      "symbol": "8",
+      "spoken_text": "八",
+      "digit": 8,
+      "url": "/audio/digits/8.wav",
+      "sha256": "dab8dcff87e959fe72d320e050860e434d3bca03e1ca50c89fb43ab5f2a5ebdc",
+      "duration_ms": 500,
+      "sample_rate_hz": 24000,
+      "channels": 1,
+      "pcm_bits": 16,
+      "frames": 12000,
+      "format": "WAV PCM signed 16-bit little-endian",
+      "say_rate": 180,
+      "source_duration_ms": 255.33333333333334,
+      "speech_detected_duration_ms": 227.08333333333334,
+      "speech_start_ms": 25,
+      "speech_end_ms": 252.08333333333334,
+      "trailing_margin_ms": 247.91666666666666,
+      "peak_amplitude": 0.8000122074037904,
+      "gain": 1.1411780070523703,
+      "source_pcm_sha256": "0ee34bcfc45a0c9fce04e59de68b3953471e962a34632be91558ff8b952f7abb",
+      "generation_attempts": [
+        {
+          "say_rate": 180,
+          "active_duration_ms": 227.08333333333334
+        }
+      ]
+    },
+    {
+      "symbol": "9",
+      "spoken_text": "九",
+      "digit": 9,
+      "url": "/audio/digits/9.wav",
+      "sha256": "1e2b79907b7fbf688ae8b43dd006f2bc4bb873cf01104e10b60450a136bb8427",
+      "duration_ms": 500,
+      "sample_rate_hz": 24000,
+      "channels": 1,
+      "pcm_bits": 16,
+      "frames": 12000,
+      "format": "WAV PCM signed 16-bit little-endian",
+      "say_rate": 180,
+      "source_duration_ms": 330.2083333333333,
+      "speech_detected_duration_ms": 313.5416666666667,
+      "speech_start_ms": 25,
+      "speech_end_ms": 338.5416666666667,
+      "trailing_margin_ms": 161.45833333333334,
+      "peak_amplitude": 0.8000122074037904,
+      "gain": 1.5953018500486855,
+      "source_pcm_sha256": "282eae8a0ef7ecf662bcd9be974417821f5d1d7d7fdb7c150a6ab93671937ec5",
+      "generation_attempts": [
+        {
+          "say_rate": 180,
+          "active_duration_ms": 313.5416666666667
+        }
+      ]
+    }
+  ],
+  "voice": {
+    "name": "Tingting",
+    "language": "zh-CN",
+    "spoken_one": "一",
+    "engine": "macOS say"
+  },
+  "generation": {
+    "created_at": "2026-10-23T05:48:38.254082+00:00",
+    "generator": "scripts/generate-digit-audio.py",
+    "generator_sha256": "13782c56cde1482b94dc04691abbc194a6240ddad2aafd04634cc218a659db68",
+    "macos_version": "26.3.1",
+    "macos_build": "25D771280a",
+    "python_version": "3.13.2",
+    "conversion": "afconvert -f WAVE -d LEI16@24000 -c 1",
+    "duration_ms": 500,
+    "padding_minimum_ms": 25,
+    "peak_target": 0.8,
+    "silence_threshold_relative_to_peak": 0.001,
+    "say_rate_candidates": [
+      180,
+      190,
+      200,
+      210,
+      220,
+      230,
+      240,
+      250,
+      260,
+      270,
+      280,
+      290,
+      300,
+      310,
+      320,
+      330,
+      340,
+      350
+    ],
+    "fit_rule": "Resynthesize at increasing rate until active speech + 25 ms on each side fits; never truncate or time stretch speech",
+    "rebuild": "python3 scripts/generate-digit-audio.py",
+    "playback_performed": false
+  }
+}

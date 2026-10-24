@@ -5,7 +5,7 @@ import { dirname } from 'node:path';
 import { hash, type Plan } from './protocol.ts';
 
 export type Phase = 'READY' | 'RUNNING' | 'RECALL' | 'PROBE' | 'EFFORT_GENERAL' | 'EFFORT_RECOVERY' | 'BREAK' | 'COMPLETED' | 'ABORTED';
-export interface Session { id: string; participant_id: string; token_hash: string; snapshot: Plan; index: number; phase: Phase; attempt_id: string | null; break_until: number | null; created_at: string }
+export interface Session { id: string; participant_id: string; token_hash: string; snapshot: Plan; index: number; phase: Phase; attempt_id: string | null; break_until: number | null; created_at: string; deleted_at?: string }
 export interface ClientEvent { id: string; type: string; at: number; seq: number; data: Record<string, unknown> }
 export class HttpError extends Error { status: number; constructor(status: number, message: string) { super(message); this.status = status; } }
 export class Store {
@@ -25,15 +25,31 @@ export class Store {
       CREATE TRIGGER IF NOT EXISTS events_no_delete BEFORE DELETE ON events BEGIN SELECT RAISE(ABORT,'append-only'); END;`);
   }
   tx<T>(work: () => T): T { this.db.exec('BEGIN IMMEDIATE'); try { const value = work(); this.db.exec('COMMIT'); return value; } catch (error) { this.db.exec('ROLLBACK'); throw error; } }
-  all() { return (this.db.prepare('SELECT data FROM sessions ORDER BY rowid DESC').all() as { data: string }[]).map(r => JSON.parse(r.data) as Session); }
-  get(id: string) { const row = this.db.prepare('SELECT data FROM sessions WHERE id=?').get(id) as { data: string } | undefined; if (!row) throw new HttpError(404, '会话不存在。'); return JSON.parse(row.data) as Session; }
+  all(includeDeleted = false) { return (this.db.prepare('SELECT data FROM sessions ORDER BY rowid DESC').all() as { data: string }[]).map(r => JSON.parse(r.data) as Session).filter(s => includeDeleted || !s.deleted_at); }
+  get(id: string, includeDeleted = false) { const row = this.db.prepare('SELECT data FROM sessions WHERE id=?').get(id) as { data: string } | undefined; if (!row) throw new HttpError(404, '会话不存在。'); const s = JSON.parse(row.data) as Session; if (s.deleted_at && !includeDeleted) throw new HttpError(404, '会话已删除。'); return s; }
+  deleteSession(id: string) {
+    this.tx(() => {
+      const s = this.get(id, true);
+      if (s.deleted_at) return;
+      if (!['COMPLETED', 'ABORTED'].includes(s.phase)) throw new HttpError(409, '请先结束会话，再删除。');
+      s.deleted_at = new Date().toISOString(); this.save(s);
+      this.log(s.id, s.attempt_id, 'session_deleted', { deleted_at: s.deleted_at });
+    });
+  }
+  restoreSession(id: string) {
+    this.tx(() => {
+      const s = this.get(id, true);
+      if (!s.deleted_at) return;
+      delete s.deleted_at; this.save(s); this.log(s.id, s.attempt_id, 'session_restored', {});
+    });
+  }
   save(s: Session) { this.db.prepare('INSERT INTO sessions VALUES (?,?) ON CONFLICT(id) DO UPDATE SET data=excluded.data').run(s.id, JSON.stringify(s)); }
   create(participant: string, plan: Plan) {
     if (this.all().some(s => s.participant_id === participant && !['COMPLETED', 'ABORTED'].includes(s.phase))) throw new HttpError(409, '此编号已有进行中的会话，请选择已有会话。');
     const token = randomBytes(32).toString('hex');
     const s: Session = { id: randomUUID(), participant_id: participant, token_hash: hash(token), snapshot: plan, index: 0, phase: 'READY', attempt_id: null, break_until: null, created_at: new Date().toISOString() };
     const participant_url = `/experiment#session=${s.id}&token=${token}`;
-    this.tx(() => { this.save(s); this.db.prepare('INSERT INTO session_entries VALUES (?,?)').run(s.id, participant_url); this.log(s.id, null, 'session_created', { config_hash: plan.hash, synthetic: plan.synthetic, material_version: plan.material_version ?? 'synthetic-v1', mode: plan.delivery_mode ?? 'mock', device_id: plan.device_id, response_mode: 'target_only', input_sources: plan.input_sources }); });
+    this.tx(() => { this.save(s); this.db.prepare('INSERT INTO session_entries VALUES (?,?)').run(s.id, participant_url); this.log(s.id, null, 'session_created', { config_hash: plan.hash, synthetic: plan.synthetic, material_version: plan.material_version ?? 'synthetic-v1', mode: plan.delivery_mode ?? 'mock', device_id: plan.device_id, response_mode: plan.response_mode, primary_modality: plan.primary_modality, input_sources: plan.input_sources }); });
     return { session_id: s.id, participant_url };
   }
   entry(id: string) { return (this.db.prepare('SELECT url FROM session_entries WHERE session_id=?').get(id) as { url: string } | undefined)?.url ?? null; }

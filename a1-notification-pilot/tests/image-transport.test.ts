@@ -17,6 +17,7 @@ test('真实TCP模拟：图片哈希回执、持久连接、设备事件回收�
         const input = JSON.parse(buffer.slice(0, end)); buffer = buffer.slice(end + 1); commands.push(input.command);
         const response: Record<string, unknown> = { protocol: 'a1-rayneo/1', id: input.id, ok: true };
         if (input.command === 'status') Object.assign(response, { ready: true, busy: false, ledger_id: 'fixture-ledger', image_protocol: true, device_info: { app_package: 'link.ironip.a1.rayneo' } });
+        if (input.command === 'image_storage') response.storage_ready = true;
         if (input.command === 'prepare_image') response.image_sha256 = input.payload.image_sha256;
         if (input.command === 'show_image') { showCount++; requestId = input.payload.request_id; Object.assign(response, { request_id: requestId, image_sha256: input.payload.image_sha256 }); }
         if (input.command === 'events') Object.assign(response, { ledger_id: 'fixture-ledger', events: [{ seq: 1, event: { event_id: 'event-1', request_id: requestId, device_id: 'adb:fixture', kind: 'drawn', device_wall_ms: 10, device_monotonic_ms: 20, clock_id: 'fixture-clock', error: null } }] });

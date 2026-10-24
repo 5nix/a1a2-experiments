@@ -136,8 +136,9 @@ test('SH实际服务使用IPC正常关闭SQLite，不写入正式运行数据', 
 });
 
 test('双入口格式正确，交互菜单能选择实验并返回退出', async () => {
-  if (process.platform !== 'win32') assert.ok((await stat(join(repositoryRoot, 'a5-experiments.command'))).mode & 0o100);
-  const bat = await readFile(join(repositoryRoot, 'a5-experiments.bat'), 'utf8'); assert.ok(bat.includes('\r\n')); assert.ok(bat.includes('chcp 65001')); assert.ok(bat.includes('%~dp0'));
+  if (process.platform !== 'win32') assert.ok((await stat(join(repositoryRoot, 'a1a2-experiments.command'))).mode & 0o100);
+  if (process.platform !== 'win32') assert.ok((await stat(join(repositoryRoot, '开启实验.command'))).mode & 0o100);
+  const bat = await readFile(join(repositoryRoot, 'a1a2-experiments.bat'), 'utf8'); assert.ok(bat.includes('\r\n')); assert.ok(bat.includes('chcp 65001')); assert.ok(bat.includes('%~dp0'));
   const result = await new Promise((resolveExit, reject) => {
     import('node:child_process').then(({ spawn }) => {
       const child = spawn(process.execPath, [join(repositoryRoot, 'scripts/experiment-launcher.mjs')], { cwd: repositoryRoot, stdio: ['pipe', 'pipe', 'pipe'] }); let stdout = '', stderr = '';

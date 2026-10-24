@@ -115,7 +115,14 @@ export class DeviceControl {
     const focus = windows.split(/\r?\n/).find(l => l.includes('mCurrentFocus=')) ?? '';
     const app = windows.split(/\r?\n/).find(l => l.includes('mFocusedApp=')) ?? '';
     if (app.includes(this.packageName) && focus.includes('com.ffalconxr.mercury.launcher')) await this.run(this.adb, ['-s', this.serial, 'shell', 'am', 'broadcast', '-a', 'android.intent.action.CLOSE_SYSTEM_DIALOGS']);
-    if (this.closed) return; await this.adapter.probe(); this.requireConnected();
+    if (this.closed) return;
+    // 首次冷启动需要创建窗口与USB监听；仅重试状态探测，不补发刺激。
+    for (let i = 0; i < 10 && !this.closed; i++) {
+      await this.adapter.probe();
+      if (this.adapter.getStatus().connected && this.adapter.getStatus().ready) break;
+      await delay(150);
+    }
+    this.requireConnected();
   }
   private async openMirror() {
     if (this.mirror && this.mirror.exitCode === null) return;
@@ -153,7 +160,7 @@ export class DeviceControl {
       try { record.receipt = await this.adapter.sendImage(request); record.status = record.receipt.status; record.error = record.receipt.error; }
       catch (error) { record.status = 'unknown'; record.error = error instanceof Error ? error.message : String(error); }
       const events = this.record(requestId)?.events ?? []; record.events = events;
-      if (events.some(e => e.kind === 'failed')) record.status = 'failed'; else if (events.some(e => e.kind === 'hidden')) record.status = 'hidden';
+      if (events.some(e => e.kind === 'failed')) record.status = 'failed'; else if (events.some(e => e.kind === 'hidden')) record.status = 'hidden'; else if (events.some(e => e.kind === 'drawn')) record.status = 'drawn';
       this.save(record);
       if (sessionId) this.store.log(sessionId, attemptId, 'device_image_sent', { request_id: requestId, status: record.status, image_sha256: record.image_sha256 });
       return record;
@@ -194,5 +201,6 @@ export class DeviceControl {
     for (let waited = 0; this.protected() && waited < 15000; waited += 250) { if (this.serial) await this.adapter.pollEvents(e => this.receive(e)).catch(() => {}); await delay(250); }
     if (!this.protected()) await this.guard.sync(false); else this.audit('restore_deferred', { reason: 'display_busy', backup_preserved: true });
     await this.adapter.close();
+    if (this.serial && !this.protected()) await this.run(this.adb, ['-s', this.serial, 'shell', 'am', 'force-stop', 'link.ironip.a1.rayneo']).catch(error => this.audit('display_close_failed', { error: String(error) }));
   }
 }

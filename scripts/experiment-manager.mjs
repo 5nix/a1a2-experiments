@@ -185,7 +185,12 @@ async function runWorker(name, root, port) {
     service.once('error', error => resolveExit({ code: null, error }));
   });
   void exitPromise.then(async result => {
-    if (state.status !== 'stopping') { state.status = 'failed'; state.error = result.error?.message ?? `服务退出（退出码${result.code ?? '无'}，信号${result.signal ?? '无'}）`; await persist(); control.close(); }
+    if (state.status !== 'stopping') {
+      state.status = result.code === 0 && !result.error ? 'stopped' : 'failed';
+      state.error = state.status === 'stopped' ? null : result.error?.message ?? `服务退出（退出码${result.code ?? '无'}，信号${result.signal ?? '无'}）`;
+      if (state.status === 'stopped') state.stopped_at = new Date().toISOString();
+      await persist(); control.close();
+    }
   });
   await persist();
   const deadline = Date.now() + 13000;

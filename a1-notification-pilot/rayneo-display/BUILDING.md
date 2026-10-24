@@ -9,7 +9,7 @@
 node scripts/verify-apk-runtime.mjs app/build/outputs/apk/debug/app-debug.apk
 ```
 
-产物为`app/build/outputs/apk/debug/app-debug.apk`，版本0.1.0 / 1。包名`link.ironip.a1.rayneo`，名称“A1 雷鸟图片显示”。Java命名空间仍为`link.ironip.a5.rayneo`。没有A5修复版包名切换功能。
+产物为`app/build/outputs/apk/debug/app-debug.apk`，版本0.2.0 / 2。包名`link.ironip.a1.rayneo`，名称“A1 雷鸟图片显示”。Java命名空间仍为`link.ironip.a5.rayneo`。没有A5修复版包名切换功能。
 
 ```sh
 adb devices -l
@@ -21,4 +21,4 @@ adb -s <序列号> shell am start -n link.ironip.a1.rayneo/link.ironip.a5.rayneo
 
 继续使用本地MercuryAndroidSDK-v0.2.6.aar和显式Lifecycle KTX依赖；verify-apk-runtime检查实际DEX类定义，防止镜腿触控时缺少运行类。源码保留原文字模式及音频资源，但A1后台图片路径使用无提示音的固定时长显示。旧qa/StyleRenderCheck.java只针对继承的文字布局，不是A1图片验收。
 
-2026-10-22在当前Mac完成assembleDebug、lintDebug、运行类检查、apksigner验证；没有连接物理设备，不能据此确认真机稳定性。控制页操作、图片参数和时间分析限制见[设备说明](../DEVICE.md)。
+2026-10-22在当前Mac完成assembleDebug、lintDebug、运行类检查、apksigner验证；已连接当前RayNeo X3 Pro并完成V0.2短流程联调；不代表长时间或光学验收，见[验收记录](../../docs/QA-V0.2.md)。控制页操作、图片参数和时间分析限制见[设备说明](../DEVICE.md)。

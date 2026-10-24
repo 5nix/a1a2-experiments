@@ -1,5 +1,4 @@
 plugins { id("com.android.application") }
-val localRepair = providers.gradleProperty("a5LocalRepair").map(String::toBoolean).getOrElse(false)
 android {
     namespace = "link.ironip.a5.rayneo"
     compileSdk = 37
@@ -7,8 +6,8 @@ android {
         applicationId = "link.ironip.a1.rayneo"
         minSdk = 31
         targetSdk = 37
-        versionCode = 1
-        versionName = "0.1.0"
+        versionCode = 2
+        versionName = "0.2.0"
         resValue("string", "app_name", "A1 雷鸟图片显示")
     }
     buildFeatures { viewBinding = true; resValues = true }
