@@ -54,7 +54,11 @@ export function analyzeTrackingAttempt(session: Session, block: Block, attempt: 
   const firstAt = raw[0]?.at, lastAt = raw[raw.length - 1]?.at;
   const leadingGap = finite(firstAt) && finite(began?.at) ? firstAt - began.at : null;
   const trailingGap = finite(lastAt) && finite(ended?.at) ? ended.at - lastAt : null;
-  const qc = [...new Set(events.filter(e => DISRUPTIONS.includes(e.type)).map(e => e.type))];
+  // 只有记录期内的干扰才作废追踪：倒计时里的视口跳变、追踪结束后才发生的主试中止（partial=false）都不影响已记录的样本。
+  // 没有页面时间戳的服务端事件按 partial 判断；记录起止缺失时全部计入。
+  const disrupts = (e: TrackingEvent) => !finite(e.at) ? e.data.partial !== false
+    : !finite(began?.at) || !finite(ended?.at) || e.at >= began!.at! && e.at <= ended!.at!;
+  const qc = [...new Set(events.filter(e => DISRUPTIONS.includes(e.type) && disrupts(e)).map(e => e.type))];
   if (attempt.status !== 'completed') qc.push(`attempt_${attempt.status}`);
   if (!validRecording) qc.push('tracking_recording_incomplete');
   if (raw.length < 2) qc.push('tracking_samples_incomplete');

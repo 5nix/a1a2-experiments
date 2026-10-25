@@ -307,7 +307,7 @@ body.running .topbar { opacity: 0; pointer-events: none; transition: opacity .6s
 .err { min-height: 20px; font-size: 13px; color: var(--signal); text-align: center; }
 
 /* ---------- 开始前 ---------- */
-.intro { min-height: 100dvh; display: grid; place-content: center; justify-items: center; gap: 44px; padding: 96px 24px 64px; animation: fade .6s var(--ease) both; }
+.intro { min-height: 100dvh; display: grid; place-content: center; justify-items: center; gap: 44px; padding: 96px 24px 64px; animation: fade-in .6s var(--ease) both; }
 .intro h1 { font-size: 30px; font-weight: 600; letter-spacing: .02em; text-align: center; }
 .intro .demo-stage { display: flex; align-items: center; gap: 56px; }
 .demo-field { width: 260px; height: 260px; }
@@ -381,7 +381,7 @@ body.running .topbar { opacity: 0; pointer-events: none; transition: opacity .6s
 .pips i.on { background: var(--ink); border-color: var(--ink); }
 
 /* ---------- 休息 / 保存 / 结束 ---------- */
-.rest { min-height: 100dvh; display: grid; place-content: center; justify-items: center; gap: 36px; padding: 96px 24px; animation: fade .6s var(--ease) both; }
+.rest { min-height: 100dvh; display: grid; place-content: center; justify-items: center; gap: 36px; padding: 96px 24px; animation: fade-in .6s var(--ease) both; }
 .rest .label { font-size: 14px; letter-spacing: .3em; color: var(--ink-2); padding-left: .3em; }
 .rest .big { font: 200 168px/.8 var(--num); letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
 .rest .line { width: 240px; height: 1px; background: var(--hair); }
@@ -392,6 +392,10 @@ body.running .topbar { opacity: 0; pointer-events: none; transition: opacity .6s
 .saving i { display: block; width: 40%; height: 100%; background: var(--ink); animation: slide 1.1s var(--ease) infinite; }
 @keyframes slide { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
 @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+/* 满屏页（.intro/.rest 高度正好 100dvh）只淡入不位移：下移 6px 会让页面超出视口、在切换时闪出滚动条。 */
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+/* 锁定鼠标到本段结束：视口可能因浏览器提示短暂变矮，禁止页面滚动。 */
+html.locking, html.locking body, body.running { overflow: hidden; }
 
 /* 模拟眼镜（仅工程预演）：一块黑色镜片 */
 .mock-notice { top: 96px; right: 40px; border-radius: 22px; background: #0b0b0b; box-shadow: 0 30px 60px -20px rgba(0,0,0,.45); padding: 14px 16px 16px; }

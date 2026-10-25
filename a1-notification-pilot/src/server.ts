@@ -173,7 +173,7 @@ const server = createServer(async (request, response) => {
             return { sample_id: sample.sample_id, browser_before_ms: before, browser_after_ms: after, device_monotonic_ms: sample.device_monotonic_ms, clock_id: sample.clock_id } as ClockSample;
           });
           let result;
-          try { result = calibration(input.phase as 'pre' | 'post', samples, Number(input.time_origin)); } catch { throw new HttpError(422, '时钟采样无效。'); }
+          try { result = calibration(input.phase as 'pre' | 'post', samples, Number(input.time_origin), typeof input.page_id === 'string' && input.page_id ? input.page_id.slice(0, 64) : null); } catch { throw new HttpError(422, '时钟采样无效。'); }
           const prior = store.events(s.id, s.attempt_id!).find(e => e.type === 'device_clock_calibration' && e.data.phase === input.phase);
           if (prior) { json(prior.data); return; }
           store.log(s.id, s.attempt_id, 'device_clock_calibration', result as unknown as Record<string, unknown>);

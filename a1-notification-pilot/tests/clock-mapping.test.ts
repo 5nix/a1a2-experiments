@@ -21,3 +21,13 @@ test('clock samples reject invalid intervals and require seven independent raw s
  assert.throws(()=>calibration('pre',[],123));
  assert.equal(sample('pre',1000,100,45).verified,false);
 });
+test('timeOrigin 上报值漂移 1ms 量级仍视为同一页面；页面 ID 不同或旧数据差距过大才判为时钟变化', () => {
+ const withOrigin = (phase: 'pre' | 'post', device: number, origin: number, page: string | null = null) =>
+   calibration(phase, Array.from({ length: 7 }, (_, i) => ({ sample_id: `${phase}${i}`, browser_before_ms: device + 98, browser_after_ms: device + 102, device_monotonic_ms: device, clock_id: 'boot1' })), origin, page);
+ const run = (pre: unknown, post: unknown) => resolveNotificationTiming([calEvent(pre), event('drawn', 2000), event('hidden', 6000), calEvent(post)]).timing_qc;
+ assert.equal(run(withOrigin('pre', 1000, 123456), withOrigin('post', 7000, 123455)), 'device_clock_mapping_verified_software');
+ assert.equal(run(withOrigin('pre', 1000, 123456), withOrigin('post', 7000, 123383)), 'device_clock_mapping_verified_software');
+ assert.equal(run(withOrigin('pre', 1000, 123456), withOrigin('post', 7000, 183456)), 'device_clock_changed');
+ assert.equal(run(withOrigin('pre', 1000, 123456, 'p1'), withOrigin('post', 7000, 123455, 'p1')), 'device_clock_mapping_verified_software');
+ assert.equal(run(withOrigin('pre', 1000, 123456, 'p1'), withOrigin('post', 7000, 123456, 'p2')), 'device_clock_changed');
+});

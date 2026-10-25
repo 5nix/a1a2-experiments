@@ -4,6 +4,7 @@ const $ = s => document.querySelector(s), main = $('#main');
 const params = new URLSearchParams(location.hash.slice(1)), session = params.get('session'), token = params.get('token');
 const endpoint = `/api/participant/sessions/${session}`;
 const uuid = () => crypto.randomUUID ? crypto.randomUUID() : '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, c => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
+const PAGE_ID = uuid(); // 页面实例：判断前后时钟校准是否来自同一页面（timeOrigin 上报值会轻微漂移，不可用于判等）
 let current, running = null, rendered = '', breakTimer, pollBusy = false, imageUrl = null;
 let audioConfirmed = false, rulesSeen = false, lastPractice = null, pageKeyHandler = null;
 const LEAD_IN_MS = 3000; // 开始前 3-2-1 倒计时；音频从倒计时结束时开始。
@@ -69,7 +70,7 @@ function render(view) {
   if (running) return;
   const signature = `${view.phase}:${view.index}:${view.attempt_id}`;
   if (signature === rendered) return;
-  rendered = signature; clearInterval(breakTimer); setPageKeys(null); hideNotice(); document.body.classList.remove('running');
+  rendered = signature; clearInterval(breakTimer); setPageKeys(null); hideNotice(); document.body.classList.remove('running'); document.documentElement.classList.remove('locking');
   main.className = 'task-shell'; main.replaceChildren();
   const auditory = isAuditory(view), label = isTracking(view) ? '动态补偿追踪' : auditory ? '听觉数字 2-back' : '视觉字母 2-back';
   document.title = 'A1 ' + label;
@@ -336,7 +337,7 @@ async function calibrateClock(r, phase) {
     const after = performance.now();
     samples.push({ sample_id: sample.sample_id, browser_before_ms: before, browser_after_ms: after });
   }
-  return api('clock-calibration', { owner: r.owner, attempt_id: r.attempt_id, phase, samples, time_origin: performance.timeOrigin });
+  return api('clock-calibration', { owner: r.owner, attempt_id: r.attempt_id, phase, samples, time_origin: performance.timeOrigin, page_id: PAGE_ID });
 }
 /* ---------- 追踪区尺寸 ---------- */
 // 参考边长沿用原规则（决定鼠标→归一化位置的映射）；显示边长 = 参考 × display_scale，只放大画面。
@@ -360,15 +361,28 @@ function acquirePointerLock() {
   });
 }
 function releasePointerLock() { if (document.pointerLockElement) document.exitPointerLock(); }
+// macOS 全屏下获得鼠标锁定时，浏览器会弹出"按 Esc 显示光标"提示并短暂放下工具栏，视口高度跳变约 60px（实测在锁定后 150ms 内）。
+// 等视口静止后再开始本段：跳变不进入本段记录，追踪区尺寸也按稳定后的视口计算。
+function settleViewport(quietMs = 300, maxMs = 1500) {
+  return new Promise(resolve => {
+    let quiet;
+    const done = () => { clearTimeout(quiet); clearTimeout(cap); removeEventListener('resize', bump); resolve(); };
+    const bump = () => { clearTimeout(quiet); quiet = setTimeout(done, quietMs); };
+    const cap = setTimeout(done, maxMs);
+    addEventListener('resize', bump); bump();
+  });
+}
 
 async function begin() {
   if (!isTracking(current)) return beginRun();
   if (innerWidth < 1000 || innerHeight < 600) throw new Error('请在电脑上打开并放大窗口至至少1000×600，满足任务显示区域要求。');
   if (!trackingGeometry(current.tracking).fits) throw new Error('窗口放不下放大后的追踪区，请将浏览器全屏（⌃⌘F 或 F11）后再开始。');
-  await acquirePointerLock();
+  document.documentElement.classList.add('locking');
+  try { await acquirePointerLock(); } catch (error) { document.documentElement.classList.remove('locking'); throw error; }
   const lockedAt = performance.now();
+  await settleViewport();
   try { await beginRun(lockedAt); }
-  catch (error) { if (!running) releasePointerLock(); throw error; }
+  catch (error) { if (!running) { releasePointerLock(); document.documentElement.classList.remove('locking'); } throw error; }
   // 准备期间（上传、校准）若已丢失锁定，按中断处理，保留已创建的尝试记录。
   if (running && document.pointerLockElement !== main && !running.cancelled) lockLost(running, 'lost_during_setup');
 }

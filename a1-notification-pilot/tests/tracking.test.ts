@@ -46,6 +46,37 @@ test('完整连续记录直接进入理解题，分析保留真实输入数量�
   } finally { store.db.close(); }
 });
 
+function recordedTrial(extra: (add: (type: string, at: number | null, data?: Record<string, unknown>) => void) => void, abortAfter = false) {
+  const store = new Store(':memory:');
+  const engine = new Engine(store), plan = buildPlan(materials, 'sop', 9, 'round1');
+  const { session_id } = store.create('QA_DISRUPT', plan), session = store.get(session_id);
+  session.index = plan.blocks.findIndex(b => b.kind === 'notification'); store.save(session);
+  const owner = randomUUID(), run = engine.start(session, owner), duration = run.block.duration_ms!;
+  const events: ClientEvent[] = [];
+  const add = (type: string, at: number | null, data = {}) => events.push({ id: randomUUID(), type, at: at as number, seq: events.length, data });
+  add('run_start', 0); extra(add);
+  add('tracking_started', 3000); add('notification_onset', 23000); add('notification_offset', 31500);
+  for (let elapsed = 0; elapsed <= duration; elapsed += 50) add('tracking_sample', 3000 + elapsed, { x: .1, y: 0 });
+  add('tracking_ended', 3000 + duration); add('run_end', 3000 + duration);
+  for (let i = 0; i < events.length; i += 100) store.append(session, run.attempt_id, owner, events.slice(i, i + 100));
+  engine.finish(session, owner);
+  if (abortAfter) engine.interrupt(store.get(session_id), '主试后台操作', true);
+  const during = analyze(store, store.get(session_id)).tracking_summary.find(r => r.window === 'during')!;
+  store.db.close(); return during;
+}
+
+test('倒计时内的视口跳变不作废追踪，记录期内的跳变仍作废', () => {
+  const before = recordedTrial(add => { add('viewport_changed', 10, { width: 1960, height: 1088 }); add('viewport_changed', 130, { width: 1960, height: 1025 }); });
+  assert.equal(before.valid, true); assert.deepEqual(before.qc_flags, []);
+  const inside = recordedTrial(add => add('viewport_changed', 20000, { width: 1960, height: 1088 }));
+  assert.equal(inside.valid, false); assert.deepEqual(inside.qc_flags, ['viewport_changed']);
+});
+
+test('追踪完成后才中止会话不作废已记录的追踪', () => {
+  const during = recordedTrial(() => {}, true);
+  assert.equal(during.valid, true); assert.deepEqual(during.qc_flags, []);
+});
+
 test('不完整追踪记录不得推进到问卷', () => {
   const store = new Store(':memory:');
   try {
