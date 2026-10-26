@@ -1,6 +1,9 @@
 import { randomUUID } from 'node:crypto';
-import { primaryModality } from './protocol.ts';
+import { primaryModality, PROBE_FALLBACKS, probeResponseType } from './protocol.ts';
 import { Store, HttpError, type Session } from './store.ts';
+
+/** 材料选项下标，或"不记得了 / 没看见"的固定编码。 */
+const validProbe = (answer: unknown, optionCount = 4) => Number.isInteger(answer) && (Number(answer) >= 0 && Number(answer) < optionCount || PROBE_FALLBACKS.some(f => f.code === answer));
 
 export class Engine {
   store: Store;
@@ -8,7 +11,7 @@ export class Engine {
   view(s: Session) {
     const block = s.snapshot.blocks[s.index], material = s.snapshot.materials.find(m => m.id === block?.material_id);
     const { token_hash, snapshot, ...publicSession } = s;
-    const question = s.phase === 'PROBE' && material ? { text: material.question, options: material.options } : null;
+    const question = s.phase === 'PROBE' && material ? { text: material.question, options: material.options, fallbacks: PROBE_FALLBACKS.map(({ code, text }) => ({ code, text })) } : null;
     return { ...publicSession, tracking: snapshot.tracking ?? null, questionnaire: snapshot.questionnaire ?? { recall: true }, primary_modality: primaryModality(snapshot), audio_manifest: snapshot.audio_manifest ?? null, total_blocks: snapshot.blocks.length, preset: snapshot.preset, synthetic: snapshot.synthetic, pilot_round: snapshot.pilot_round, material_version: snapshot.material_version ?? 'synthetic-v1',
       block: block ? { id: block.id, kind: block.kind, round: block.round, count: block.letters.length, duration_ms: block.duration_ms, tracking_seed: block.tracking_seed, stimulus_ms: block.stimulus_ms, soa_ms: block.soa_ms } : null,
       question, effort_recovery: Boolean(material), break_remaining_ms: Math.max(0, (s.break_until ?? 0) - Date.now()), mode: snapshot.delivery_mode ?? 'mock',
@@ -73,12 +76,12 @@ export class Engine {
     }
     if (phase !== s.phase) throw new HttpError(409, '页面已变化，请刷新。');
     if (s.phase === 'RECALL' && (typeof answer !== 'string' || answer.length > 10000)) throw new HttpError(422, '复述内容格式无效。');
-    if (s.phase === 'PROBE' && (!Number.isInteger(answer) || Number(answer) < 0 || Number(answer) > 3)) throw new HttpError(422, '请选择一个答案。');
+    if (s.phase === 'PROBE' && !validProbe(answer, s.snapshot.materials.find(m => m.id === s.snapshot.blocks[s.index]?.material_id)?.options.length)) throw new HttpError(422, '请选择一个答案。');
     if (['EFFORT_GENERAL', 'EFFORT_RECOVERY'].includes(s.phase) && (!Number.isInteger(answer) || Number(answer) < 1 || Number(answer) > 9)) throw new HttpError(422, '请选择1—9的评分。');
     if (!['RECALL', 'PROBE', 'EFFORT_GENERAL', 'EFFORT_RECOVERY'].includes(s.phase)) throw new HttpError(409, '当前不能提交答案。');
     const material = s.snapshot.materials.find(m => m.id === s.snapshot.blocks[s.index].material_id);
     this.store.tx(() => {
-      this.store.log(s.id, s.attempt_id, 'answer_saved', { phase: s.phase, answer, correct: s.phase === 'PROBE' ? answer === material?.correct : null, ...timing });
+      this.store.log(s.id, s.attempt_id, 'answer_saved', { phase: s.phase, answer, correct: s.phase === 'PROBE' ? answer === material?.correct : null, response_type: s.phase === 'PROBE' ? probeResponseType(answer) : null, ...timing });
       s.phase = s.phase === 'RECALL' ? 'PROBE' : s.phase === 'PROBE' ? 'EFFORT_GENERAL' : s.phase === 'EFFORT_GENERAL' && material ? 'EFFORT_RECOVERY' : 'BREAK';
       if (s.phase === 'BREAK') s.break_until = Date.now() + s.snapshot.blocks[s.index].break_ms;
       this.store.save(s);
@@ -93,7 +96,7 @@ export class Engine {
     const expected = order.slice(order.indexOf(items[0].phase)).filter(p => p !== 'EFFORT_RECOVERY' || material);
     if (items.length !== expected.length || items.some((item, i) => item?.phase !== expected[i])) throw new HttpError(422, '批量答案的页面顺序无效。');
     for (const item of items) {
-      if (item.phase === 'PROBE' && (!Number.isInteger(item.answer) || item.answer < 0 || item.answer > 3)) throw new HttpError(422, '请选择一个答案。');
+      if (item.phase === 'PROBE' && !validProbe(item.answer, material?.options.length)) throw new HttpError(422, '请选择一个答案。');
       if (item.phase !== 'PROBE' && (!Number.isInteger(item.answer) || item.answer < 1 || item.answer > 9)) throw new HttpError(422, '请选择1—9的评分。');
     }
     let view = this.view(s);

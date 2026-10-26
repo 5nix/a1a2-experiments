@@ -86,3 +86,17 @@ test('不完整追踪记录不得推进到问卷', () => {
     assert.equal(store.get(session_id).phase, 'RUNNING');
   } finally { store.db.close(); }
 });
+
+test('通知期内的空格确认可多次记录，分析给出次数、首次时间与相对实际/计划出现的延迟', () => {
+  const during = recordedTrial(add => {
+    add('notification_ack', 25000, { n: 1, key: 'Space', planned_onset: 23000, planned_offset: 31500, since_planned_onset_ms: 2000 });
+    add('notification_ack', 27500, { n: 2, key: 'Space', planned_onset: 23000, planned_offset: 31500, since_planned_onset_ms: 4500 });
+  });
+  assert.equal(during.notification_ack_n, 2);
+  assert.equal(during.notification_ack_first_ms, 25000);
+  assert.equal(during.notification_ack_latency_ms, 2000);
+  assert.equal(during.notification_ack_latency_planned_ms, 2000);
+  assert.deepEqual(during.notification_ack_times_ms, [25000, 27500]);
+  const none = recordedTrial(() => {});
+  assert.equal(none.notification_ack_n, 0); assert.equal(none.notification_ack_latency_ms, null);
+});

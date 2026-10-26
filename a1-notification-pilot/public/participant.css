@@ -414,4 +414,37 @@ html.locking, html.locking body, body.running { overflow: hidden; }
 .intro .cue { max-width: 560px; text-align: left; line-height: 1.6; }
 .intro .cue i { flex: none; }
 
+/* ---------- 读完通知：空格确认 ---------- */
+/* 空格键：一根墨线描出的宽键帽，底边一道"厚度"，按下时厚度收进去。 */
+.key { position: relative; display: block; width: 58px; height: 18px; border: 1.5px solid var(--ink); border-radius: 5px; background: var(--paper);
+  box-shadow: 0 3px 0 -1.5px var(--ink); }
+.key-fill { position: absolute; inset: 0; border-radius: inherit; background: var(--ink); opacity: 0; }
+.cues { display: grid; gap: 16px; }
+.cues .cue { display: grid; grid-template-columns: 58px 1fr; gap: 16px; }
+.cues .cue > :first-child { justify-self: center; }
+.key-demo { position: relative; display: block; }
+/* 一个 4.8s 的节拍：眼镜亮起（信号点）→ 读完 → 空格落下、一圈涟漪 → 点熄灭 */
+.cues .cue i::after { animation: notice-dot 4.8s var(--ease) infinite; }
+.key-demo .key { animation: key-press 4.8s var(--ease) infinite; }
+.key-demo::after { content: ""; position: absolute; inset: -3px; border: 1.5px solid var(--signal); border-radius: 8px; opacity: 0; animation: key-ripple 4.8s var(--ease) infinite; }
+@keyframes notice-dot { 0%, 8% { opacity: 0; transform: scale(.4); } 14%, 58% { opacity: 1; transform: none; } 66%, 100% { opacity: 0; transform: scale(.4); } }
+@keyframes key-press { 0%, 48% { transform: none; box-shadow: 0 3px 0 -1.5px var(--ink); } 52% { transform: translateY(2px); box-shadow: 0 0 0 -1.5px var(--ink); } 60%, 100% { transform: none; box-shadow: 0 3px 0 -1.5px var(--ink); } }
+.key-demo .key-fill { animation: key-fill 4.8s var(--ease) infinite; }
+@keyframes key-fill { 0%, 48% { opacity: 0; } 52% { opacity: 1; } 64%, 100% { opacity: 0; } }
+@keyframes key-ripple { 0%, 50% { opacity: 0; transform: scale(1); } 53% { opacity: .9; } 72%, 100% { opacity: 0; transform: scale(1.25, 1.6); } }
+
+/* 任务中：底部一行极简提示；按下时键帽落下、填墨、旁边一点信号色闪一下（由 ackFeedback 以合成器动画驱动）。
+   独立图层：按键反馈不触发追踪画布重绘。 */
+.ack-hint { position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 10px;
+  font-size: 12.5px; letter-spacing: .06em; color: var(--ink-3); pointer-events: none; will-change: transform; contain: layout paint; }
+.ack-hint .key { width: 34px; height: 12px; border-width: 1.25px; border-radius: 3.5px; border-color: var(--ink-3); box-shadow: 0 2px 0 -1px var(--ink-3); will-change: transform; }
+.ack-hint .key-fill, .ack-hint i { will-change: opacity; }
+.ack-hint i { width: 5px; height: 5px; border-radius: 50%; background: var(--signal); opacity: 0; }
+@media (prefers-reduced-motion: reduce) { .cues .cue i::after, .key-demo .key, .key-demo .key-fill, .key-demo::after { animation: none; } .key-demo::after { display: none; } }
+
+/* 理解题：两项"无内容"作答与内容选项隔开，字号与颜色降一级 */
+.choice.alt { font-size: 15px; color: var(--ink-3); padding: 12px 0; }
+.choice:not(.alt) + .choice.alt { margin-top: 10px; }
+.choice.alt input { width: 12px; height: 12px; }
+
 .cue-lines { display: flex; flex-direction: column; gap: 2px; }

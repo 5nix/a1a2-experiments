@@ -1,6 +1,6 @@
 import type { Session } from './store.ts';
 import type { Block } from './protocol.ts';
-import { hash } from './protocol.ts';
+import { hash, probeResponseType } from './protocol.ts';
 import { mapDeviceNotification } from './clock-mapping.ts';
 
 export type TrackingRow = Record<string, unknown>;
@@ -66,11 +66,19 @@ export function analyzeTrackingAttempt(session: Session, block: Block, attempt: 
   if (radius === null) qc.push('target_radius_missing_or_invalid');
   const attemptValid = attempt.status === 'completed' && validRecording && qc.length === 0;
   const answer = (phase: string) => events.find(e => e.type === 'answer_saved' && e.data.phase === phase)?.data;
+  // 读完通知的空格确认：页面只在通知计划展示期内记录，可多次；分析一般取第一次。
+  const acks = events.filter(e => e.type === 'notification_ack' && finite(e.at)), firstAck = acks[0];
+  const plannedOnset = firstAck && finite(firstAck.data.planned_onset) ? firstAck.data.planned_onset : null;
   const common: TrackingRow = { session_id: session.id, participant_id: session.participant_id, pilot_round: session.snapshot.pilot_round,
     primary_modality: 'compensatory_tracking', attempt_id: attempt.id, block_id: block.id, block_index: attempt.block_index, block_type: block.kind,
     material_id: block.material_id, material_version: session.snapshot.material_version ?? null, n_count: material?.n_count ?? material?.iu_count ?? null,
     domain: material?.domain ?? null, n_units: material?.n_units ?? null, question: material?.question ?? null, question_correct_answer: material?.correct ?? null,
     comprehension_answer: answer('PROBE')?.answer ?? null, comprehension_correct: answer('PROBE')?.correct ?? null,
+    comprehension_response_type: answer('PROBE') ? probeResponseType(answer('PROBE')!.answer) : null,
+    notification_ack_n: block.kind === 'notification' ? acks.length : null, notification_ack_first_ms: firstAck?.at ?? null,
+    notification_ack_latency_ms: firstAck && timingVerified ? firstAck.at! - onset! : null,
+    notification_ack_latency_planned_ms: firstAck && plannedOnset !== null ? firstAck.at! - plannedOnset : null,
+    notification_ack_times_ms: block.kind === 'notification' ? acks.map(e => e.at) : null,
     comprehension_timing: answer('PROBE') ?? null, effort_general: answer('EFFORT_GENERAL')?.answer ?? null, effort_recovery: answer('EFFORT_RECOVERY')?.answer ?? null,
     tracking_seed: block.tracking_seed ?? null, tracking_config: session.snapshot.tracking ?? null, plan_hash: session.snapshot.hash,
     analysis_condition: hash({ modality: 'compensatory_tracking', tracking: session.snapshot.tracking, pre_ms: block.pre_ms, notification_ms: block.notification_ms, post_ms: block.post_ms, mode: session.snapshot.delivery_mode }),

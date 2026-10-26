@@ -1,7 +1,7 @@
 import { strToU8, zipSync } from 'fflate';
 import type { Session, Store } from './store.ts';
 import { checkPlan } from './plan-check.ts';
-import { hash, primaryModality } from './protocol.ts';
+import { hash, primaryModality, probeResponseType } from './protocol.ts';
 import { mapDeviceNotification } from './clock-mapping.ts';
 import { analyzeTrackingAttempt } from './tracking-analysis.ts';
 import { analysisWindows, inWindow, performance, performanceChanges, phaseForInterval, poolItems } from './analysis.ts';
@@ -34,7 +34,7 @@ export function analyze(store: Store, session: Session) {
     const timingVerified = deviceNotification ? deviceTiming!.verified : onset !== null && offset !== null && offset >= onset;
     const earlyMs = block.post_early_ms ?? session.snapshot.timing?.post_early_ms ?? 10000;
     const answer = (phase: string) => events.find(e => e.type === 'answer_saved' && e.data.phase === phase)?.data;
-    const linked = { recall: answer('RECALL')?.answer ?? null, comprehension_answer: answer('PROBE')?.answer ?? null, comprehension_correct: answer('PROBE')?.correct ?? null,
+    const linked = { recall: answer('RECALL')?.answer ?? null, comprehension_answer: answer('PROBE')?.answer ?? null, comprehension_correct: answer('PROBE')?.correct ?? null, comprehension_response_type: answer('PROBE') ? probeResponseType(answer('PROBE')!.answer) : null,
       effort_general: answer('EFFORT_GENERAL')?.answer ?? null, effort_recovery: answer('EFFORT_RECOVERY')?.answer ?? null,
       n_units: material?.n_units ?? null, question: material?.question ?? null, question_correct_answer: material?.correct ?? null };
     const audioScheduleIncomplete = modality === 'auditory_digits' && block.letters.some((_, index) => !events.some(e => e.type === 'audio_scheduled' && e.data.index === index));

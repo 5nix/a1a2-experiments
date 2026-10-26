@@ -46,6 +46,14 @@ function freezeMetadata<T>(value: T): T {
   }
   return value;
 }
+/** 理解题的两个"无内容"选项：编码固定为负数，与材料选项下标（0起）互不冲突；计为未答对，另以 response_type 区分。 */
+export const PROBE_FALLBACKS = Object.freeze([
+  Object.freeze({ code: -1, type: 'dont_remember', text: '不记得了' }),
+  Object.freeze({ code: -2, type: 'not_seen', text: '没看见 / 没看清' }),
+]);
+export function probeResponseType(answer: unknown) {
+  return PROBE_FALLBACKS.find(f => f.code === answer)?.type ?? 'option';
+}
 export const hash = (value: unknown) => createHash('sha256').update(JSON.stringify(value)).digest('hex');
 function random(seed: number) {
   let state = seed >>> 0;

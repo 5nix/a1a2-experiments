@@ -106,6 +106,11 @@ const pad = n => String(n).padStart(2, '0');
 function noticeCue() {
   return box('div', 'cue', el('i', null, { ariaHidden: 'true' }), box('span', 'cue-lines', el('span', '通知出现时继续追踪'), el('span', '请阅读通知内容，以便后续回答问题')));
 }
+const spaceKey = () => box('span', 'key', el('span', null, { className: 'key-fill' }));
+// 两条提示共用一个节拍：眼镜亮起 → 读完 → 按下空格。
+function readingCues() {
+  return box('div', 'cues', noticeCue(), box('div', 'cue', box('span', 'key-demo', spaceKey()), box('span', 'cue-lines', el('span', '当阅读完通知内容时，按下空格键'), el('span', '按一下即可，不影响追踪'))));
+}
 // 调试被试：鼠标未锁定时（任务外）可直接选择关卡。正式被试不出现。
 function renderDebugPicker(view) {
   let picker = $('#debug-picker');
@@ -210,11 +215,11 @@ function renderTrackingReady(view) {
     intro.append(
       box('div', 'demo-stage', box('div', 'field demo-field', el('span', null, { className: 'ring' }), el('span', null, { className: 'dot' })), el('div', null, { className: 'mouse', ariaHidden: 'true' })),
       el('h1', '移动鼠标，让圆点留在圈内'),
-      noticeCue());
+      readingCues());
   } else {
     intro.append(
       box('div', 'trial-no', el('b', pad(view.index + 1)), el('span', `/ ${pad(view.total_blocks)}`)),
-      noticeCue());
+      readingCues());
   }
   const start = go(practice ? '开始练习' : '开始', begin, err);
   intro.append(box('div', null, start), err);
@@ -251,7 +256,9 @@ function renderQuestions(view) {
     let body;
     if (phase === 'PROBE') {
       title.textContent = view.question?.text ?? '通知理解';
-      body = box('div', 'choices', ...(view.question?.options ?? []).map((text, k) => box('label', 'choice', el('input', null, { type: 'radio', name: 'probe', value: String(k) }), el('span', text))));
+      const choice = (value, text, className = 'choice') => box('label', className, el('input', null, { type: 'radio', name: 'probe', value: String(value) }), el('span', text));
+      body = box('div', 'choices', ...(view.question?.options ?? []).map((text, k) => choice(k, text)),
+        ...(view.question?.fallbacks ?? []).map(f => choice(f.code, f.text, 'choice alt')));
     } else {
       title.textContent = phase === 'EFFORT_RECOVERY'
         ? `通知消失后，为了重新稳定${task}、克服通知带来的干扰，你额外投入了多少心理努力？`
@@ -522,8 +529,9 @@ function startTrackingRun(r) {
   field.style.width = field.style.height = `${geometry.display}px`;
   // 鼠标已锁定、光标隐藏：中断只能通过 Esc（锁定解除即中断），不再放置屏幕按钮。
   const cue = practice ? box('div', 'drag-cue', el('div', null, { className: 'mouse', ariaHidden: 'true' })) : null;
-  main.replaceChildren(...[field, cue].filter(Boolean));
-  r.canvas = canvas; r.field = field; r.cue = cue; r.letter = el('span', ''); r.countdown = countdown; r.pendingInputs = [];
+  const ackHint = box('div', 'ack-hint', spaceKey(), el('span', '读完通知 · 按空格'), el('i', null, { ariaHidden: 'true' }));
+  main.replaceChildren(...[field, cue, ackHint].filter(Boolean));
+  r.canvas = canvas; r.field = field; r.cue = cue; r.ackHint = ackHint; r.ackCount = 0; r.letter = el('span', ''); r.countdown = countdown; r.pendingInputs = [];
   // 表现层参数：画布底色与页面同色，使画布"消失"，只留角标定义边界。
   const look = { background: '#f4f3ef', target_color: '#8f8c83', cursor_color: '#121212', within_color: '#121212', highlight_within: practice, center_mark: true };
   // 画布有 1px 透明边框：参考可用宽度 = 参考边长 − 2，与旧版 clientWidth 完全一致。
@@ -614,7 +622,23 @@ function respond(source, repeat = false) {
   // 按键确认：与对错无关，只表示“收到了”。
   if (!before && !repeat && r.cues.ack_on_press) pulse(r.fixation, 'ack', 340);
 }
-document.addEventListener('keydown', e => { if (e.code !== 'Space' || !running || running.finishing || running.cancelled) return; e.preventDefault(); try { respond('space', e.repeat); } catch (error) { message(error.message); } });
+document.addEventListener('keydown', e => { if (e.code !== 'Space' || !running || running.finishing || running.cancelled) return; e.preventDefault(); try { if (isTracking(running)) ackPress(running, e); else respond('space', e.repeat); } catch (error) { message(error.message); } });
+// 按下的微反馈只动位移与透明度（合成器处理，不重绘追踪画面），避免按键时掉帧。
+function ackFeedback(hint) {
+  const [key, , dot] = hint.children, ease = 'cubic-bezier(.2, .7, .2, 1)';
+  key.animate([{ transform: 'translateY(1.5px)' }, { transform: 'none' }], { duration: 380, easing: ease });
+  key.firstChild.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 380, easing: ease });
+  dot.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 700, easing: ease });
+}
+// 读完通知的空格确认：任何时候按下都有微反馈；只有正式通知段的计划展示期内才记录，可多次，按住不放的自动重复不计。
+function ackPress(r, e) {
+  if (e.repeat || !r.ackHint) return;
+  ackFeedback(r.ackHint);
+  const b = r.block, at = e.timeStamp, onset = r.start + b.pre_ms, offset = onset + b.notification_ms;
+  if (b.kind !== 'notification' || !(at >= onset && at < offset)) return;
+  r.ackCount++;
+  event(r, 'notification_ack', { n: r.ackCount, key: e.code, planned_onset: onset, planned_offset: offset, since_planned_onset_ms: at - onset }, at);
+}
 document.addEventListener('pointerdown', e => { if (e.button !== 0 || e.pointerType !== 'mouse' || e.target.closest('[data-control]')) return; try { respond('mouse_left'); } catch (error) { message(error.message); } });
 addEventListener('blur', () => { if (running && !running.finishing && !running.cancelled) { try { event(running, 'window_blur'); } catch {} lockLost(running, 'window_blur'); } });
 document.addEventListener('visibilitychange', () => { if (running && !running.finishing && !running.cancelled) { try { event(running, document.hidden ? 'visibility_hidden' : 'visibility_visible'); } catch {} if (document.hidden) lockLost(running, 'visibility_hidden'); } });

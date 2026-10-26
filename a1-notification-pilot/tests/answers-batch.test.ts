@@ -35,3 +35,19 @@ test('批量提交拒绝缺项、乱序和越界，且不写入任何答案', ()
   assert.throws(() => engine.submitBatch(s, [{ phase: 'PROBE', answer: 1 }, { phase: 'EFFORT_GENERAL', answer: 10 }, { phase: 'EFFORT_RECOVERY', answer: 7 }], timing), /1—9/);
   assert.equal(store.events(session_id).filter(e => e.type === 'answer_saved').length, 0);
 });
+
+test('理解题接受"不记得了"(-1)与"没看见/没看清"(-2)：计为未答对并记录作答类型；其他越界编码仍拒绝', () => {
+  for (const [answer, type] of [[-1, 'dont_remember'], [-2, 'not_seen']] as const) {
+    const { store, engine, session_id } = setup();
+    const s = store.get(session_id);
+    Object.assign(s, { index: s.snapshot.blocks.findIndex(b => b.kind === 'notification'), phase: 'PROBE', attempt_id: null }); store.save(s);
+    assert.deepEqual(engine.view(s).question?.fallbacks.map(f => f.code), [-1, -2]);
+    engine.submitBatch(s, [{ phase: 'PROBE', answer }, { phase: 'EFFORT_GENERAL', answer: 5 }, { phase: 'EFFORT_RECOVERY', answer: 7 }], timing);
+    const probe = store.events(session_id).find(e => e.type === 'answer_saved' && e.data.phase === 'PROBE')!.data;
+    assert.equal(probe.answer, answer); assert.equal(probe.correct, false); assert.equal(probe.response_type, type);
+  }
+  const { store, engine, session_id } = setup();
+  const s = store.get(session_id);
+  Object.assign(s, { index: s.snapshot.blocks.findIndex(b => b.kind === 'notification'), phase: 'PROBE' }); store.save(s);
+  for (const answer of [4, -3]) assert.throws(() => engine.submitBatch(s, [{ phase: 'PROBE', answer }, { phase: 'EFFORT_GENERAL', answer: 5 }, { phase: 'EFFORT_RECOVERY', answer: 7 }], timing), /请选择一个答案/);
+});
