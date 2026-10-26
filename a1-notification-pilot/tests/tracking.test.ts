@@ -46,7 +46,7 @@ test('完整连续记录直接进入理解题，分析保留真实输入数量�
   } finally { store.db.close(); }
 });
 
-function recordedTrial(extra: (add: (type: string, at: number | null, data?: Record<string, unknown>) => void) => void, abortAfter = false) {
+function recordedTrial(extra: (add: (type: string, at: number | null, data?: Record<string, unknown>) => void) => void, abortAfter = false, shown = true) {
   const store = new Store(':memory:');
   const engine = new Engine(store), plan = buildPlan(materials, 'sop', 9, 'round1');
   const { session_id } = store.create('QA_DISRUPT', plan), session = store.get(session_id);
@@ -55,13 +55,14 @@ function recordedTrial(extra: (add: (type: string, at: number | null, data?: Rec
   const events: ClientEvent[] = [];
   const add = (type: string, at: number | null, data = {}) => events.push({ id: randomUUID(), type, at: at as number, seq: events.length, data });
   add('run_start', 0); extra(add);
-  add('tracking_started', 3000); add('notification_onset', 23000); add('notification_offset', 31500);
+  add('tracking_started', 3000); if (shown) { add('notification_onset', 23000); add('notification_offset', 31500); }
   for (let elapsed = 0; elapsed <= duration; elapsed += 50) add('tracking_sample', 3000 + elapsed, { x: .1, y: 0 });
   add('tracking_ended', 3000 + duration); add('run_end', 3000 + duration);
   for (let i = 0; i < events.length; i += 100) store.append(session, run.attempt_id, owner, events.slice(i, i + 100));
   engine.finish(session, owner);
   if (abortAfter) engine.interrupt(store.get(session_id), '主试后台操作', true);
-  const during = analyze(store, store.get(session_id)).tracking_summary.find(r => r.window === 'during')!;
+  const summary = analyze(store, store.get(session_id)).tracking_summary;
+  const during = summary.find(r => r.window === (shown ? 'during' : 'unknown'))!;
   store.db.close(); return during;
 }
 
@@ -92,6 +93,7 @@ test('通知期内的空格确认可多次记录，分析给出次数、首次�
     add('notification_ack', 25000, { n: 1, key: 'Space', planned_onset: 23000, planned_offset: 31500, since_planned_onset_ms: 2000 });
     add('notification_ack', 27500, { n: 2, key: 'Space', planned_onset: 23000, planned_offset: 31500, since_planned_onset_ms: 4500 });
   });
+  assert.equal(during.notification_acknowledged, true);
   assert.equal(during.notification_ack_n, 2);
   assert.equal(during.notification_ack_first_ms, 25000);
   assert.equal(during.notification_ack_latency_ms, 2000);
@@ -99,4 +101,7 @@ test('通知期内的空格确认可多次记录，分析给出次数、首次�
   assert.deepEqual(during.notification_ack_times_ms, [25000, 27500]);
   const none = recordedTrial(() => {});
   assert.equal(none.notification_ack_n, 0); assert.equal(none.notification_ack_latency_ms, null);
+  assert.equal(none.notification_acknowledged, false);
+  const unverified = recordedTrial(() => {}, false, false);
+  assert.equal(unverified.notification_acknowledged, null);
 });

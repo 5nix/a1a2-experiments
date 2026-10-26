@@ -75,6 +75,8 @@ export function analyzeTrackingAttempt(session: Session, block: Block, attempt: 
     domain: material?.domain ?? null, n_units: material?.n_units ?? null, question: material?.question ?? null, question_correct_answer: material?.correct ?? null,
     comprehension_answer: answer('PROBE')?.answer ?? null, comprehension_correct: answer('PROBE')?.correct ?? null,
     comprehension_response_type: answer('PROBE') ? probeResponseType(answer('PROBE')!.answer) : null,
+    // 显式标记"通知显示完也没确认"：只在通知显示已核实的通知段给出 true/false，显示未核实时留空，避免把没显示出来误读成没看到。
+    notification_acknowledged: block.kind === 'notification' && timingVerified ? acks.length > 0 : null,
     notification_ack_n: block.kind === 'notification' ? acks.length : null, notification_ack_first_ms: firstAck?.at ?? null,
     notification_ack_latency_ms: firstAck && timingVerified ? firstAck.at! - onset! : null,
     notification_ack_latency_planned_ms: firstAck && plannedOnset !== null ? firstAck.at! - plannedOnset : null,
